@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>SearchActivityResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <SearchActivityResp>
+      <GROUPID>100141</GROUPID>
+      <GROUPNAME>自在群0912</GROUPNAME>
+      <CREATETIME>2016-9-12 17:12:43</CREATETIME>
+      <HEADPORTRAIT>2016-09-12_051248.png</HEADPORTRAIT>
+    </SearchActivityResp>
+  </MIAP-Body>
+</MIAP>

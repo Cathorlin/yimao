@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>PageActivityListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <PageActivityListResp>
+      <ACTIVITYNAME>开饭啦！</ACTIVITYNAME>
+      <ACTIVITYID>12121</ACTIVITYID>
+      <HEADPORTRAIT>2016-08-09_105311.png</HEADPORTRAIT>
+      <TOURISMSIGN>签到</TOURISMSIGN>
+      <GROUPID>11861</GROUPID>
+    </PageActivityListResp>
+    <PageActivityListResp>
+      <ACTIVITYNAME>今天周几</ACTIVITYNAME>
+      <ACTIVITYID>13081</ACTIVITYID>
+      <HEADPORTRAIT>2016-08-18_100010.png</HEADPORTRAIT>
+      <TOURISMSIGN>4</TOURISMSIGN>
+      <GROUPID>12423</GROUPID>
+    </PageActivityListResp>
+    <PageActivityListResp>
+      <ACTIVITYNAME>星期五</ACTIVITYNAME>
+      <ACTIVITYID>10181</ACTIVITYID>
+      <HEADPORTRAIT>2016-09-02_092856.png</HEADPORTRAIT>
+      <TOURISMSIGN>签到</TOURISMSIGN>
+      <GROUPID>100001</GROUPID>
+    </PageActivityListResp>
+  </MIAP-Body>
+</MIAP>

@@ -1,0 +1,44 @@
+﻿html,body,div,span,applet,object,iframe,blockquote,pre,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,p,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,li,ul,button{border:0;margin:0;padding:0}
+body
+{
+	font-size: 12px;
+	font-family: Arial, "宋体" ,;
+	color: #333;
+	line-height: 18px;
+	background-color:#FAFAFA;    
+}
+.stext
+{
+    font-size: 12px;
+	font-family: Arial, "宋体" ,;
+	text-align:left;
+ }
+textarea
+{  
+     font-size: 10px;
+	font-family: Arial, "宋体" ,;
+    
+    }
+.main
+{
+   
+}
+.mleft
+{
+    border: 1px solid #000080;
+    float: left;
+}
+.right
+{
+    float: right;
+    border: 1px solid #000080;
+}
+table.tmain
+{
+    table-layout:fixed;    
+    width:99%;    
+}
+table#tmleft #tdleft
+{
+    width:90%;       
+}

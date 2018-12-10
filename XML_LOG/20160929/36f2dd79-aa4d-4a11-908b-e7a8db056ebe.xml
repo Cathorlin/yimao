@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>LabelListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <LabelListResp>
+      <LABELID>10045</LABELID>
+      <LABELNAME>区府办</LABELNAME>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>10050</LABELID>
+      <LABELNAME>审改办</LABELNAME>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>10051</LABELID>
+      <LABELNAME>普编办</LABELNAME>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>10052</LABELID>
+      <LABELNAME>博脉区</LABELNAME>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>100262</LABELID>
+      <LABELNAME>理论上</LABELNAME>
+    </LabelListResp>
+  </MIAP-Body>
+</MIAP>

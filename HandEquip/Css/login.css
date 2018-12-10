@@ -1,0 +1,8 @@
+﻿/*body { margin:0; font-size:12px;}*/
+table{ width:210px; margin:20px auto; border:1px solid #AACAEE;}
+.tr_1{ height:40px; vertical-align:middle;}
+.tr_2{ height:30px; vertical-align:middle;}
+.td_1{ width:60px; height:auto;}
+.td_2{ width:100px;}
+.button{ width:155px; height:30px; margin-left:10px; background-color:Background; color:White; font-weight:bold; font-size:15px;}
+.label_title{ font-size:16px; color:Green;}

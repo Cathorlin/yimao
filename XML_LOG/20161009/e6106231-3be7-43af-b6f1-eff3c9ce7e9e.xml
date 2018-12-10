@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>ApplyListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <ApplyListResp>
+      <GROUPID>12341</GROUPID>
+      <GROUPNAME>123321</GROUPNAME>
+      <MOBILENO>13816638969</MOBILENO>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </ApplyListResp>
+    <ApplyListResp>
+      <GROUPID>12325</GROUPID>
+      <GROUPNAME>321</GROUPNAME>
+      <MOBILENO>13816638969</MOBILENO>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </ApplyListResp>
+    <ApplyListResp>
+      <GROUPID>12321</GROUPID>
+      <GROUPNAME>1234</GROUPNAME>
+      <MOBILENO>13816638969</MOBILENO>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </ApplyListResp>
+  </MIAP-Body>
+</MIAP>

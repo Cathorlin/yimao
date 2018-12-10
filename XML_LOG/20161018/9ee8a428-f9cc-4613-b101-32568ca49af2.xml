@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>PageActivityListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <PageActivityListResp>
+      <ACTIVITYNAME>0929中饭</ACTIVITYNAME>
+      <ACTIVITYID>10621</ACTIVITYID>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+      <TOURISMSIGN>签到</TOURISMSIGN>
+      <GROUPID>100261</GROUPID>
+      <MOBILENO>13601687975</MOBILENO>
+      <MOBILE>13601687975</MOBILE>
+      <LABELRANGE>
+      </LABELRANGE>
+      <LABELNATURE>
+      </LABELNATURE>
+      <GROUPNAME>球来球往</GROUPNAME>
+    </PageActivityListResp>
+  </MIAP-Body>
+</MIAP>

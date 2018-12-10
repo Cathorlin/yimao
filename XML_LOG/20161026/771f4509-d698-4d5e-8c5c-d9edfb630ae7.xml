@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>RProgressResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <RProgressResp>
+      <MOBILENO>13817340324</MOBILENO>
+      <REPLYCONTENT>好</REPLYCONTENT>
+      <NICKNAME>yunyun</NICKNAME>
+      <LABELNAME>1号</LABELNAME>
+      <M042_ID>100281</M042_ID>
+      <M04102_ID>
+      </M04102_ID>
+      <M04102_NAME>
+      </M04102_NAME>
+    </RProgressResp>
+    <RProgressResp>
+      <MOBILENO>13761997975</MOBILENO>
+      <REPLYCONTENT>干部</REPLYCONTENT>
+      <NICKNAME>泓泓</NICKNAME>
+      <LABELNAME>2号</LABELNAME>
+      <M042_ID>100282</M042_ID>
+      <M04102_ID>
+      </M04102_ID>
+      <M04102_NAME>
+      </M04102_NAME>
+    </RProgressResp>
+    <RProgressResp>
+      <MOBILENO>13601687975</MOBILENO>
+      <REPLYCONTENT>a</REPLYCONTENT>
+      <NICKNAME>沙晨</NICKNAME>
+      <LABELNAME>3号</LABELNAME>
+      <M042_ID>100283</M042_ID>
+      <M04102_ID>
+      </M04102_ID>
+      <M04102_NAME>
+      </M04102_NAME>
+    </RProgressResp>
+  </MIAP-Body>
+</MIAP>

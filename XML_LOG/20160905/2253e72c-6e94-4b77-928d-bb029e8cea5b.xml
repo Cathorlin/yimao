@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>PActivityListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <PActivityListResp>
+      <ACTIVITYNAME>周末回家</ACTIVITYNAME>
+      <ACTIVITYID>12681</ACTIVITYID>
+      <HEADPORTRAIT>2016-08-10_085940.png</HEADPORTRAIT>
+      <GROUPID>11921</GROUPID>
+    </PActivityListResp>
+    <PActivityListResp>
+      <ACTIVITYNAME>0829</ACTIVITYNAME>
+      <ACTIVITYID>10101</ACTIVITYID>
+      <HEADPORTRAIT>2016-08-29_041631.png</HEADPORTRAIT>
+      <GROUPID>100061</GROUPID>
+    </PActivityListResp>
+    <PActivityListResp>
+      <ACTIVITYNAME>今年退</ACTIVITYNAME>
+      <ACTIVITYID>12002</ACTIVITYID>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+      <GROUPID>11861</GROUPID>
+    </PActivityListResp>
+  </MIAP-Body>
+</MIAP>

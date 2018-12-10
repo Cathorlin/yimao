@@ -1,0 +1,51 @@
+﻿html,body,div,span,applet,object,iframe,blockquote,pre,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,p,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,li,ul,button{border:0;outline:0;margin:0;padding:0}
+ul,li,ol{list-style:none}
+.w_600{width:735px; margin:0 auto; font-size:12px; font-family:"Arial",宋体;}
+.w_600 h1{font-size:16px;margin-left:10px;}
+.w_600 .w_main{float:left;width:735px;}
+.w_600 .w_main li{ line-height:30px; height:auto !important; min-height:30px; height:30px; vertical-align:middle;}
+.w_600 .w_main li .t1{float:left;width:80px; text-align:right; margin-left:10px;}
+.w_600 .w_right{float:left;width:635px;margin-left:10px;}
+.w_600 .w_right2{float:left;width:735px;margin-left:10px;}
+.w_600 .w_right .img_size{float:left; width:735px;}
+.w_600 .w_right .img_size li{float:left; margin:5px 20px 5px 0;}
+.w_600 .w_right .img_size .input_on{ z-index:1; width:102px; height:25px; cursor:pointer;}
+.w_600 .w_right .img_size .input_on1{ z-index:1; width:115px; height:25px; cursor:pointer;}
+.w_600 .w_right .img_size .fileupload{display:none;}
+.w_600 .w_right .img_size .fileupload1{display:none;}
+.w_button{float:left; margin:20px 0 20px 20px;}
+.w_button .button_c{width:100px; cursor:pointer;}
+.color_red{color:Red;float:left;}
+.f{float:left;}
+.text_w1{width:100px;float:left; margin-left:5px;}
+.text_w2{width:300px;float:left; margin-left:5px;}
+/*----产品图片---*/
+.module-upload .upload .file, .module-upload .overview, .module-upload .overview li, .module-upload .preview, .module-upload .act a { background: url(../lubang/images/module_upload.png) no-repeat 0 0;}
+.module-form { float:left; margin-bottom: 10px; overflow: hidden; padding:0;}
+.module-form .skin { float:left; background:#F8F8F8; border:1px solid #ECECEC; padding:0px 0 10px 1px; width:600px; margin:0; overflow: hidden;}
+.module-upload .tip { line-height:24px; height:24px; margin:0; padding:7px;}
+.module-upload .overview { background-position:104px 44px; float:left; width:115px; overflow:hidden; padding-left:5px; margin:0;}
+.module-upload .overview div { background:#FFD9C0; border: 1px solid #FFC097; height: 98px; width: 98px; overflow:hidden;}
+.module-upload .overview ul { padding:1px 0 0 1px; overflow:hidden; width:auto; margin:0;}
+.module-upload .overview li { background-position: -32px -20px; float: left; clear:none; padding-top:0; margin-right:2px;}
+.module-upload .overview li.s1 { background-position: -32px 0;}
+.module-upload .overview li a { float: left; height: 20px; overflow: hidden; text-indent: -9999px; width: 18px;}
+.module-upload .skin .list { float: left; width:470px; padding:0; margin:0; overflow: hidden;}
+.module-upload .skin .list ul { float: left; width:470px; padding:0; margin:0; overflow: hidden;}
+.module-upload .skin .list li { float: left; clear:none; margin-right:3px; padding:0; width:90px;overflow: hidden; position:relative;}
+.module-upload .preview { background-color:#fff; background-position: 20px -80px; border: 1px solid #CFCFCF;font-family: arial; height: 90px; text-align: center; vertical-align: middle; width: 88px; overflow: hidden;}
+.module-upload .s .preview { background-position: 16px -131px;}
+.module-upload .c .preview { background-position: -9999px 0;}
+.module-upload .f .preview { border-color: #FFC097;}
+.module-upload .preview img { max-height: 88px; max-width: 88px; vertical-align: middle;}
+.module-upload .upload .file{margin-top:7px;width:90px;height:20px;overflow:hidden;background-position:-32px -40px;display:block;cursor:pointer;}
+.module-upload .upload .file:hover{background: url(../lubang/images/module_upload.png) no-repeat -32px -60px;}
+.module-upload .upload input{opacity:0;filter:alpha(opacity=0);width:100px; height:40px; font-size:40px; direction:rtl;cursor:pointer;*margin-left:-8px;*margin-top:-5px; overflow:hidden; }
+.module-upload .act { background:#C1DBFF; display: none; height: 18px; left: 1px; opacity: 0.8; overflow: hidden; padding: 7px 0 0 15px; position: absolute; top: 64px; width: 73px; z-index:666; margin:0;}
+.module-upload .a .act { display: block;}
+.module-upload .act a { float: left; height: 11px; margin-right: 10px; overflow: hidden; text-indent: -9999px; width: 11px;}
+.module-upload .act a.left { background-position: -55px -3px;}
+.module-upload .f .act a.left { background-position: -55px -14px;}
+.module-upload .act a.right { background-position: -66px -3px;}
+.module-upload .l .act a.right { background-position: -66px -14px;}
+.module-upload .act a.del { background-position: -77px -3px;}

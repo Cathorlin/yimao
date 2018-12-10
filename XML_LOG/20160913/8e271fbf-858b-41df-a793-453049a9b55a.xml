@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>ActivityListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <ActivityListResp>
+      <ACTIVITYNAME>222</ACTIVITYNAME>
+      <ACTIVITYID>10028</ACTIVITYID>
+    </ActivityListResp>
+    <ActivityListResp>
+      <ACTIVITYNAME>1111</ACTIVITYNAME>
+      <ACTIVITYID>10030</ACTIVITYID>
+    </ActivityListResp>
+  </MIAP-Body>
+</MIAP>

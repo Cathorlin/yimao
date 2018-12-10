@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>AddMemberResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>0</ReturnCode>
+    <ReturnMessage>操作成功</ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <AddMemberResp>
+      <RESULT>0</RESULT>
+      <MSG>操作成功</MSG>
+      <CODE>100321</CODE>
+    </AddMemberResp>
+  </MIAP-Body>
+</MIAP>

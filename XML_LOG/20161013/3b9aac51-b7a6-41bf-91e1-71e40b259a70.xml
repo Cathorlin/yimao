@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>SelfSortResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>1</ReturnCode>
+    <ReturnMessage>该用户已在当前组最底端！</ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <SelfSortResp>
+      <RESULT>1</RESULT>
+      <MSG>该用户已在当前组最底端！</MSG>
+    </SelfSortResp>
+  </MIAP-Body>
+</MIAP>

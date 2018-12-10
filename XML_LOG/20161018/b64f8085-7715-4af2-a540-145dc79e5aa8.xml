@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>MemberListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <MemberListResp>
+      <NICKNAME>高士红</NICKNAME>
+      <MOBILE_NO>13917178198</MOBILE_NO>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+      <M042_NAME>金山区</M042_NAME>
+    </MemberListResp>
+    <MemberListResp>
+      <NICKNAME>王丹娟</NICKNAME>
+      <MOBILE_NO>13501827274</MOBILE_NO>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+      <M042_NAME>金山区</M042_NAME>
+    </MemberListResp>
+  </MIAP-Body>
+</MIAP>

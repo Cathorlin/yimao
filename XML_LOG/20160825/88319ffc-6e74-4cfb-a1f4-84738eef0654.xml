@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>SearchActivityResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <SearchActivityResp>
+      <GROUPID>11821</GROUPID>
+      <GROUPNAME>111</GROUPNAME>
+      <CREATETIME>2016-8-5 9:56:16</CREATETIME>
+      <HEADPORTRAIT>2016-08-05_095657.png</HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>12361</GROUPID>
+      <GROUPNAME>111</GROUPNAME>
+      <CREATETIME>2016-8-16 16:55:20</CREATETIME>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>100001</GROUPID>
+      <GROUPNAME>111</GROUPNAME>
+      <CREATETIME>2016-8-25 14:51:11</CREATETIME>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </SearchActivityResp>
+  </MIAP-Body>
+</MIAP>

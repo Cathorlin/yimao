@@ -1,0 +1,36 @@
+﻿html{ font-size:62.5%;}
+
+ body {
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+}
+Element {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+     user-select: none;
+     -webkit-appearance: none; 
+     
+}
+
+a,input{-webkit-tap-highlight-color:rgba(255,0,0,0);
+          border: 0; /* 方法1 */
+      -webkit-appearance: none; }
+Element {
+    -webkit-tap-highlight-color:rgba(255,255,255,0)
+}
+
+
+
+.ShowList{ width:100%;}
+.ShowList table { border:1px solid #d3d3d3; height:12rem; width:100%;}
+.ShowList table td{ height:2rem; line-height:2rem;}
+ #PurchaseNo,#Purchaser,#timer{ border:1px solid #d3d3d3;box-sizing:border-box; -webkit-border-radius:5px; -moz-border-radius:5px;  border-radius:5px; outline:0;  height:10rem;  width:10rem; height:2rem;}
+
+.ShowList .DropList{ width:10rem; outline:0; height:2.5rem;}
+
+ .bottom_btn{margin-top:1rem; height:3rem; line-height:3rem;  text-align:center;}
+#btn {vertical-align:middle; color:White;  -webkit-border-radius:5px; -moz-border-radius:5px;  border-radius:5px; height:3rem; width:8rem; background-color:#1E90FF;}
+.ShowDetails{ margin-top:3rem;}
+.ShowDetails table{border-right:1px solid #d3d3d3; height:3rem; border-bottom:1px solid #d3d3d3;} 
+.ShowDetails table td{border-left:1px solid #d3d3d3;  text-align:center;  border-top:1px solid #d3d3d3} 

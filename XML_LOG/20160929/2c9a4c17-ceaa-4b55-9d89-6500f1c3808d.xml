@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>RProgressResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <RProgressResp>
+      <MOBILENO>13761997975</MOBILENO>
+      <REPLYCONTENT>啥时候来啊</REPLYCONTENT>
+      <NICKNAME>泓泓</NICKNAME>
+      <LABELNAME>2号</LABELNAME>
+    </RProgressResp>
+    <RProgressResp>
+      <MOBILENO>13601687975</MOBILENO>
+      <REPLYCONTENT>哈哈哈哈公叫沙沙少沙沙晨上周三人为图信号不好意思啊我也不要不</REPLYCONTENT>
+      <NICKNAME>浪淘沙</NICKNAME>
+      <LABELNAME>3号</LABELNAME>
+    </RProgressResp>
+    <RProgressResp>
+      <MOBILENO>13817340324</MOBILENO>
+      <REPLYCONTENT>呢吗丁啉~\(≧皿≦)/~万能不能说话费用了解释怀疑惑乱说话费用了</REPLYCONTENT>
+      <NICKNAME>yunyun</NICKNAME>
+      <LABELNAME>1号</LABELNAME>
+    </RProgressResp>
+  </MIAP-Body>
+</MIAP>

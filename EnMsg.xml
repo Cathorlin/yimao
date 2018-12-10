@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MSG>
+  <M0001>Must fill in</M0001>
+  <M0002>Save the data failed! Perform test failed!</M0002>
+  <M0003>Test sequence fail！</M0003>
+  <M0004>Database connection failed！</M0004>
+  <M0005>Upload file</M0005>
+  <M0006>View the file</M0006>
+  <M0007>Save data success</M0007>
+  <M0008>Success</M0008>
+  <M0009>View</M0009>
+  <M0010>View</M0010>
+  <M0011>Saved Queries</M0011>
+  <M0012>Query</M0012>
+  <M0013>Advanced Query</M0013>
+  <M0014>Right-click the connection is not defined</M0014>
+  <M0015>Without any treatment, save invalid!</M0015>
+  <M0016>Changes of untreated, the changes could not be saved！</M0016>
+  <M0017>Write the change record failure！</M0017>
+  <M0018>The success of the operation</M0018>
+  <M0019>color:Blue;</M0019>
+  <M0020>70%</M0020>
+  <M0021>60%</M0021>
+  <M0022><span style="color:red;">*</span></M0022>
+  <M0023>Recent</M0023>
+  <M0024>Read Data</M0024>
+  <M0025>Save</M0025>
+  <M0026>Saved</M0026>
+  <M0027>Delete</M0027>
+  <M0028>Reset</M0028>
+  <M0029>Cancel</M0029>
+  <M0030>Confirm</M0030>
+  <M0031>Set as default</M0031>
+  <M0032></M0032>
+  <M0033>Null</M0033>
+  <M00331>Not Null</M00331>
+  <M0034>Selected</M0034>
+  <M0035>Not Selected</M0035>
+  <M0036>Ascending</M0036>
+  <M0037>Descending</M0037>
+  <M0038>Hide</M0038>
+  <M0039>Refresh</M0039>
+  <M0040>Like</M0040>
+  <M0041>Not Like</M0041>
+  <M0042>Between</M0042>
+  <M0043>Refresh Tree</M0043>
+  <M0050>Account Name</M0050>
+  <M0051>Password</M0051>
+  <M0052>Please enter the account name</M0052>
+  <M0053>Please enter the password</M0053>
+  <M0054>Identifying Code</M0054>
+  <M0055>Login In</M0055>
+  <M0056>Copy Object Lines</M0056>
+  <M0057>Paste Object Lines</M0057>
+  <M0058>Copy Object</M0058>
+  <M0059>Paste Object </M0059>
+  <M0060>IM-Environment</M0060>
+  <M0061>IM-Environment - Login</M0061>
+  <M0062>Administration Center</M0062>
+  <M0063>Open New Window</M0063>
+  <M0064>Forget Password</M0064>
+</MSG>

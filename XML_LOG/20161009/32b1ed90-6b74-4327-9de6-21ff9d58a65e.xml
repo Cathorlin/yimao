@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>ActivityResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <ActivityResp>
+      <ACTIVITYNAME>0916作业</ACTIVITYNAME>
+      <ACTIVITYINTRODUCTION>语文十数学=</ACTIVITYINTRODUCTION>
+      <STARTTIME>2016-9-16 22:12:00</STARTTIME>
+      <ENDTIME>2016-10-16 22:12:00</ENDTIME>
+      <HEADPORTRAIT>2016-09-16_103009.png</HEADPORTRAIT>
+      <TOURISMSIGN>签到</TOURISMSIGN>
+      <ACTIVITYID>10401</ACTIVITYID>
+      <STATE>
+      </STATE>
+    </ActivityResp>
+  </MIAP-Body>
+</MIAP>

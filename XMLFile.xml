@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionId>1</TransactionId>
+    <Version>1.0</Version>
+    <MessageName>sendcolineReq</MessageName>
+  </MIAP-Header>
+  <MIAP-Body>
+    <sendcolineReq>1</sendcolineReq>
+    <sendcolineReq>2</sendcolineReq>
+    </MIAP-Body>
+    </miap>

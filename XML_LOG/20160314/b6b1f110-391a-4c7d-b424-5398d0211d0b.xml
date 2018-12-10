@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20160314142046</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>TransResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>12</ReturnCode>
+    <ReturnMessage>无效交易</ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <TransResp>
+      <XML_RESULT>12</XML_RESULT>
+      <XML_MSG>无效交易！</XML_MSG>
+      <XML_AMOUNT>0</XML_AMOUNT>
+    </TransResp>
+  </MIAP-Body>
+</MIAP>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>MemberListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <MemberListResp>
+      <NICKNAME>刘喜来</NICKNAME>
+      <MOBILE_NO>13621665200</MOBILE_NO>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+      <M042_NAME>浦东新区</M042_NAME>
+    </MemberListResp>
+    <MemberListResp>
+      <NICKNAME>胡绍宝</NICKNAME>
+      <MOBILE_NO>13917690786</MOBILE_NO>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+      <M042_NAME>浦东新区</M042_NAME>
+    </MemberListResp>
+    <MemberListResp>
+      <NICKNAME>陶毅杰</NICKNAME>
+      <MOBILE_NO>15021333922</MOBILE_NO>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+      <M042_NAME>浦东新区</M042_NAME>
+    </MemberListResp>
+  </MIAP-Body>
+</MIAP>

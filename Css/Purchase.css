@@ -1,0 +1,79 @@
+﻿ 
+html{ font-size:62.5%;}
+ 
+ body {
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+}
+Element {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+     user-select: none;
+     -webkit-appearance: none; 
+     
+}
+select::-ms-expand {
+display: none;
+}
+a,input{-webkit-tap-highlight-color:rgba(255,0,0,0);
+          border: 0; /* 方法1 */
+           -webkit-appearance:none; }
+Element {
+    -webkit-tap-highlight-color:rgba(255,255,255,0)
+}
+.container{width:100%;}
+.container div{width:100%; height:3rem; line-height:3rem; float:left; background-color:#d3d3d3;}
+.div-left label{ margin-left:0.3rem;}
+.div-right select{ width:4rem; padding: 0 0 2px 0;  margin-left:1rem;}
+.ShowList{ width:100%;}
+.ShowList table { border:1px solid #d3d3d3; box-sizing:border-box; -webkit-border-radius:5px; -moz-border-radius:5px;  border-radius:5px; outline:0;  height:10rem; width:100%;}
+.ShowList table td{ height:2rem; line-height:2rem;}
+.ShowList table #PurchaseNo,#Purchaser,#timer,#Depart{width:8rem; height:3rem; border:1px solid #d3d3d3; -webkit-border-radius:5px; -moz-border-radius:5px;  border-radius:5px; outline:0;  height:10rem; width:10rem; height:2rem;}
+input[type=radio] {
+    display: inline-block;
+    vertical-align: middle;
+    width: 2rem;
+    height: 2rem;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 0;
+    outline: 0 !important;
+    line-height: 2rem;
+    color: #1E90FF;
+  
+}
+input[type=radio]:after {
+    content: "";
+    display:block;
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid #ddd;
+    box-sizing:border-box;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius:50%;
+    text-align: center;
+    line-height : 1.3rem;
+    font-size: 1.5rem;
+    color: #fff;
+  
+    background-color: #fff;
+    box-sizing:border-box;
+}
+input[type=radio]:checked:after {
+    content: "L";
+    transform:matrix(-0.766040,-0.642784,-0.642784,0.766040,0,0);
+    -webkit-transform:matrix(-0.766040,-0.642784,-0.642784,0.766040,0,0);
+    -moz-transform:matrix(-0.766040,-0.642784,-0.642784,0.766040,0,0);
+    border-color: #1E90FF;
+    background-color: #1E90FF;
+}
+.ShowList .DropList{ width:10rem; outline:0; height:2.5rem;}
+.ShowDetails{ margin-top:3rem; width:100%;}
+.ShowDetails table{border-right:1px solid #d3d3d3; border-bottom:1px solid #d3d3d3; } 
+.ShowDetails table td{border-left:1px solid #d3d3d3; padding:0; text-align:center; border-top:1px solid #d3d3d3} 
+.ShowDetails table  #Masterial_Name,#Qty,#Description,#Masterial_No{outline:0;  height:10rem; width:100%; height:2rem; padding:0;}
+.bottom_btn   {margin-top:1rem; height:3rem; line-height:3rem;  text-align:center;}
+#btn,#Add_Line{ vertical-align:middle; color:White; -webkit-border-radius:5px; -moz-border-radius:5px;  border-radius:5px;  height:3rem; width:6rem; background-color:#1E90FF;}
+

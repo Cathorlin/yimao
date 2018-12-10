@@ -1,0 +1,18 @@
+﻿body 
+{
+	margin:0 0 0 0 ;
+}
+
+table.head{}
+
+table.showcol
+{
+	 table-layout:fixed;
+	}
+
+table.showcol tr
+{
+	background-color: #f3ffe3;
+	background-repeat: repeat;
+	height:22px;
+}

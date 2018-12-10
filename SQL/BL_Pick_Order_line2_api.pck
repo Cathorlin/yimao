@@ -1,0 +1,288 @@
+create or replace package BL_Pick_Order_line2_api is
+  PROCEDURE Modify__(ROWLIST_  VARCHAR2,
+                     USER_ID_  VARCHAR2,
+                     A311_KEY_ VARCHAR2);
+  --当数据发生变化的时候 修改列信息
+  PROCEDURE ITEMCHANGE__(COLUMN_ID_   VARCHAR2,
+                         MAINROWLIST_ VARCHAR2,
+                         ROWLIST_     VARCHAR2,
+                         USER_ID_     VARCHAR2,
+                         OUTROWLIST_  OUT VARCHAR2);
+  function checkUseable(doaction_  in varchar2,
+                        column_id_ in varchar,
+                        ROWLIST_   in varchar2) return varchar2;
+  ----检查编辑 修改
+  function CheckButton__(dotype_   in varchar2,
+                         order_no_ in varchar2,
+                         user_id_  in varchar2) return varchar2;
+  --获取原始单号
+  function Get_Original_order_(order_no_     in varchar2,
+                               line_no_      in varchar2,
+                               rel_no_       in varchar2,
+                               line_item_no_ in number,
+                               type_         varchar2) return varchar2;
+  -- 获取单价
+  function Get_original_price_(order_no_     in varchar2,
+                               line_no_      in varchar2,
+                               rel_no_       in varchar2,
+                               line_item_no_ in number) return number; 
+ --获取发票单价
+  function Get_plinvdtl_price_(picklistno_   in varchar2,
+                               order_no_     in varchar2,
+                               line_no_      in varchar2,
+                               rel_no_       in varchar2,
+                               line_item_no_ in number) return number;  
+ --获取交货计划号
+ function  Get_delplan_no_(picklistno_   in varchar2,
+                           order_no_     in varchar2,
+                           line_no_      in varchar2,
+                           rel_no_       in varchar2,
+                           line_item_no_ in number)return varchar2;                                                         
+end BL_Pick_Order_line2_api;
+/
+create or replace package body BL_Pick_Order_line2_api is
+  type t_cursor is ref cursor;
+  /*
+  modify fjp 2013-02-28 增加订单单价，发票单价的取数
+  */
+  PROCEDURE Modify__(ROWLIST_  VARCHAR2,
+                     USER_ID_  VARCHAR2,
+                     A311_KEY_ VARCHAR2) IS
+    index_     varchar2(1);
+    doaction_  varchar2(1);
+    pos_       number;
+    pos1_      number;
+    i          number;
+    v_         varchar(1000);
+    column_id_ varchar(1000);
+    data_      varchar(4000);
+    mysql_     varchar2(4000);
+    ifmychange varchar2(1);
+    objid_     varchar2(100);
+    row_       BL_V_BL_PLDTL%rowtype;
+  begin
+    /*   insert into af(col,col01,col02)
+    select 'fan',ROWLIST_,USER_ID_ from dual;
+    commit;*/
+    -- select col01 into data_ from af where col='fan';
+    index_    := f_get_data_index();
+    objid_    := pkg_a.Get_Item_Value('OBJID', index_ || ROWLIST_);
+    doaction_ := pkg_a.Get_Item_Value('DOACTION', ROWLIST_);
+    if doaction_ = 'M' then
+      -- 更改数据
+    
+      data_  := ROWLIST_;
+      pos_   := instr(data_, index_);
+      i      := i + 1;
+      mysql_ := ' update BL_PLDTL set ';
+      loop
+        exit when nvl(pos_, 0) <= 0;
+        exit when i > 300;
+        v_    := substr(data_, 1, pos_ - 1);
+        data_ := substr(data_, pos_ + 1);
+        pos_  := instr(data_, index_);
+      
+        pos1_      := instr(v_, '|');
+        column_id_ := substr(v_, 1, pos1_ - 1);
+        if column_id_ <> 'OBJID' and column_id_ <> 'DOACTION' and
+           length(nvl(column_id_, '')) > 0 then
+          v_         := substr(v_, pos1_ + 1);
+          i          := i + 1;
+          ifmychange := '1';
+          --   if column_id_ = 'DATE_SURE' or column_id_='SURE_SHIPDATE' or column_id_='RECALCU_DATE' then            
+          --     mysql_ := mysql_ || ' ' || column_id_ || '=to_date(''' || v_  || ''',''YYYY-MM-DD HH24:MI:SS''),'; 
+          --  else     
+          mysql_ := mysql_ || ' ' || column_id_ || '=''' || v_ || ''',';
+          --  end if ;
+        end if;
+      end loop;
+      if ifmychange = '1' then
+        -- 更新sql语句 
+        mysql_ := substr(mysql_, 1, length(mysql_) - 1);
+        mysql_ := mysql_ || ' where rowidtochar(rowid)=''' || objid_ || '''';
+        execute immediate mysql_;
+      end if;
+      pkg_a.setSuccess(A311_KEY_, 'BL_V_BL_PLDTL', objid_);
+      return;
+    end if;
+  end;
+  PROCEDURE ITEMCHANGE__(COLUMN_ID_   VARCHAR2,
+                         MAINROWLIST_ VARCHAR2,
+                         ROWLIST_     VARCHAR2,
+                         USER_ID_     VARCHAR2,
+                         OUTROWLIST_  OUT VARCHAR2) IS
+    attr_out varchar2(4000);
+    row_     BL_V_BL_PLDTL%rowtype;
+  begin
+    if column_id_ = 'FINISHQTY' then
+      row_.FINISHQTY := pkg_a.Get_Item_Value('FINISHQTY', ROWLIST_);
+      row_.RELQTY    := row_.FINISHQTY;
+      pkg_a.Set_Item_Value('FINISHQTY', row_.FINISHQTY, attr_out);
+      pkg_a.Set_Item_Value('RELQTY', row_.RELQTY, attr_out);
+    end if;
+    OUTROWLIST_ := attr_out;
+    RETURN;
+  end;
+  function checkUseable(doaction_  in varchar2,
+                        column_id_ in varchar,
+                        ROWLIST_   in varchar2) return varchar2 is
+    row_ bl_v_customer_order%rowtype;
+  begin
+    row_.OBJID := pkg_a.Get_Item_Value('OBJID', rowlist_);
+    row_.STATE := pkg_a.Get_Item_Value('FLAG', rowlist_); --  Delivered
+    if row_.STATE <> '0' then
+      -- 'Delivered' or row_.STATE ='Planned')   then
+      IF column_id_ = 'REL_DELIVER_DATE' or column_id_ = 'FINISHQTY' then
+        return '0';
+      end if;
+    end if;
+  
+    return '1';
+  
+  end;
+  ----检查新增 修改 
+  function CheckButton__(dotype_   in varchar2,
+                         order_no_ in varchar2,
+                         user_id_  in varchar2) return varchar2 is
+  begin
+    return '1';
+  end;
+  function Get_Original_order_(order_no_     in varchar2,
+                               line_no_      in varchar2,
+                               rel_no_       in varchar2,
+                               line_item_no_ in number,
+                               type_         varchar2) return varchar2 is
+    cur_  t_cursor;
+    row0_ customer_order_line_tab%rowtype;
+  begin
+    open cur_ for
+      select t.*
+        from customer_order_line_tab t
+       where t.order_no = order_no_
+         and t.line_no = line_no_
+         and t.rel_no = rel_no_
+         and t.line_item_no = line_item_no_
+         and t.demand_order_ref1 is not null;
+    fetch cur_
+      into row0_;
+    if cur_%found then
+      close cur_;
+      if type_ = 'ORDER_NO' then
+        return row0_.demand_order_ref1;
+      end if;
+      if type_ = 'LINE_NO' then
+        return row0_.demand_order_ref2;
+      end if;
+      if type_ = 'REL_NO' then
+        return row0_.demand_order_ref3;
+      end if;
+      if type_ = 'LINE_ITEM_NO' then
+        return '';
+      end if;
+    end if;
+    close cur_;
+    if type_ = 'ORDER_NO' then
+      return order_no_;
+    end if;
+    if type_ = 'LINE_NO' then
+      return line_no_;
+    end if;
+    if type_ = 'REL_NO' then
+      return rel_no_;
+    end if;
+    if type_ = 'LINE_ITEM_NO' then
+      return line_item_no_;
+    end if;
+  end;
+    -- 获取单价
+  function Get_original_price_(order_no_     in varchar2,
+                               line_no_      in varchar2,
+                               rel_no_       in varchar2,
+                               line_item_no_ in number) return number
+  is 
+   cur_  t_cursor;
+   row_ customer_order_line_tab%rowtype;
+   price_ number;
+  begin    
+     open cur_ for
+      select t.*
+        from customer_order_line_tab t
+       where t.order_no = order_no_
+         and t.line_no = line_no_
+         and t.rel_no = rel_no_
+         and t.line_item_no = line_item_no_;
+        -- and t.demand_order_ref1 is not null;
+    fetch cur_
+     into row_;
+    close cur_;
+    if row_.demand_order_ref1 is null  then 
+       price_ :=  row_.SALE_UNIT_PRICE_WITH_TAX;
+    else
+        select FBUY_TAX_UNIT_PRICE  
+        into price_
+        from purchase_order_line_tab t
+        where t.order_no   = row_.demand_order_ref1
+         and  t.LINE_NO    = row_.demand_order_ref2
+         and  t.RELEASE_NO = row_.demand_order_ref3;
+    end if ;
+    return price_;
+  end; 
+   --获取发票单价
+  function Get_plinvdtl_price_(picklistno_   in varchar2,
+                               order_no_     in varchar2,
+                               line_no_      in varchar2,
+                               rel_no_       in varchar2,
+                               line_item_no_ in number) return number
+   is
+   cur_ t_cursor;
+   price_ number;
+   begin
+      open cur_ for 
+     SELECT   round(t.GROSS_CURR_AMOUNT/t.INVOICED_QTY,2)
+       from   CUSTOMER_ORDER_INV_ITEM T
+       inner join  Bl_Plinvdtl t1 on   t.INVOICE_NO = t1.invoice_no  
+                                       and  t.order_no = t1.order_no
+                                       and  t.line_no = t1.line_no
+                                       and  t.release_no   = t1.REL_NO
+                                       and  t.line_item_no = t1.LINE_ITEM_NO
+        where  t1.picklistno=picklistno_
+        and    t1.order_no =order_no_
+        and    t1.line_no = line_no_
+        and    t1.REL_NO  = rel_no_
+        and    t1.LINE_ITEM_NO=line_item_no_;
+        fetch cur_ into price_;
+        close cur_;
+        if price_ is null then 
+           price_ :=0;
+        end if ;
+     return price_;
+   end;
+   function  Get_delplan_no_(picklistno_   in varchar2,
+                             order_no_     in varchar2,
+                             line_no_      in varchar2,
+                             rel_no_       in varchar2,
+                             line_item_no_ in number)return varchar2
+   is 
+   cur_ t_cursor;
+   row_ BL_V_CUST_ORDER_LINE_PDELIVE%rowtype;
+   result_  varchar2(100);
+   begin 
+     open cur_ for 
+     select t.* 
+      from BL_V_CUST_ORDER_LINE_PDELIVE t 
+     where  t.picklistno= picklistno_
+      and   t.ORDER_NO = order_no_
+      and   t.LINE_NO = line_no_
+      and   t.REL_NO  = rel_no_
+      and   t.LINE_ITEM_NO= line_item_no_
+      and   t.state='2'
+      and   t.QTY_DELIVED >0;
+      fetch  cur_ into row_;
+      if cur_%found  then
+         result_ :=row_.DELPLAN_NO;
+      end if;
+      close cur_;
+     return result_;  
+   end;   
+end BL_Pick_Order_line2_api;
+/

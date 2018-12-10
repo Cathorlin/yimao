@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>PageActivityListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <PageActivityListResp>
+      <ACTIVITYNAME>三人测</ACTIVITYNAME>
+      <ACTIVITYID>10581</ACTIVITYID>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+      <TOURISMSIGN>询测试结果简答题。</TOURISMSIGN>
+      <GROUPID>100241</GROUPID>
+      <MOBILENO>13817340324</MOBILENO>
+      <MOBILE>13601687975</MOBILE>
+      <LABELRANGE>
+      </LABELRANGE>
+      <LABELNATURE>
+      </LABELNATURE>
+      <GROUPNAME>党小组</GROUPNAME>
+    </PageActivityListResp>
+    <PageActivityListResp>
+      <ACTIVITYNAME>syssys</ACTIVITYNAME>
+      <ACTIVITYID>11061</ACTIVITYID>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+      <TOURISMSIGN>周二民主生活会，提前提醒！</TOURISMSIGN>
+      <GROUPID>100401</GROUPID>
+      <MOBILENO>13795364985</MOBILENO>
+      <MOBILE>13601687975</MOBILE>
+      <LABELRANGE>小群</LABELRANGE>
+      <LABELNATURE>专用群</LABELNATURE>
+      <GROUPNAME>20170223</GROUPNAME>
+    </PageActivityListResp>
+  </MIAP-Body>
+</MIAP>

@@ -1,0 +1,90 @@
+﻿*
+{
+    margin:0px;
+    padding:0px;   
+}
+#top
+{
+   width:80%;
+   height:150px;
+   margin:30px auto;
+}
+ .title-info
+{
+   color: #2f6182;
+   font-size: 20px;
+   margin: -10px 0 0 10px;
+   font-weight:bold;  
+}
+.left-font
+{
+    padding:20px 20px 0px 20px;
+    font-size: 18px;
+  
+}
+.right-font
+{
+     padding:20px 20px 0px 20px; 
+     
+}  
+    
+input[type="text"]
+{
+    height:25px;
+    line-height:25px;
+    border-radius:3px;
+    border:1px solid #d3d3d3;
+}
+
+
+
+.btn_qr,.btn_cancel
+{
+      width: 125px;
+      height: 40px;
+      border:0;
+      font-size:20px;
+      font-weight: bold;
+      border-radius: 5px;
+      color:White;
+      background-color:#0080ff;
+}   
+.btn_qr,.btn_cancel
+{
+      cursor:pointer;
+      background-color:#1e99ff;
+}  
+#btn_css
+{
+    float:right;
+    margin-top:-130px;
+    margin-right:100px;
+    
+} 
+#qr
+{
+    margin-bottom:30px;
+   
+}
+
+#btn { height:35px; width:80px; outline:0; font-size:15px;  border:0; border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;}
+#btn:hover{ cursor:pointer;}
+
+.Show table 
+{ 
+    border-collapse: collapse; 
+    border: none; 
+    width: 500px;
+    margin:10px auto;
+ 
+} 
+.Show table td 
+{ 
+    
+    border:1px solid #d3d3d3;
+    
+}
+.WrapBorder{ height:150px; } 
+.WrapBorder1{ height:150px; margin-top:10px;}
+.DropList{ height:25px; border:0; border:1px solid #d3d3d3;}
+.Show table tr { text-align:center; vertical-align:middle; height:30px;}

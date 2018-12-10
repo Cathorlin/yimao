@@ -1,0 +1,594 @@
+create or replace package bl_RETURN_MATERIAL_API is
+
+  PROCEDURE BACKCARRAY__(ROWLIST_  VARCHAR2,
+                         USER_ID_  VARCHAR2,
+                         A311_KEY_ VARCHAR2);
+  PROCEDURE BACKNOCARRAY__(ROWLIST_  VARCHAR2,
+                           USER_ID_  VARCHAR2,
+                           A311_KEY_ VARCHAR2);
+  PROCEDURE COMPLETE__(rowid_  VARCHAR2,
+                       USER_ID_  VARCHAR2,
+                       A311_KEY_ VARCHAR2);
+  --客户退货主档否定                     
+  PROCEDURE DENY__(rowid_  VARCHAR2,--bl_v_return_material的objid
+                   USER_ID_  VARCHAR2,
+                   A311_KEY_ VARCHAR2);
+  PROCEDURE INDEMNITY__(ROWLIST_  VARCHAR2,
+                        USER_ID_  VARCHAR2,
+                        A311_KEY_ VARCHAR2);
+  --客户退货主档保存                     
+  PROCEDURE MODIFY__(ROWLIST_  VARCHAR2, --bl_v_return_material视图更改字段与值的字符串
+                     USER_ID_  VARCHAR2,
+                     A311_KEY_ VARCHAR2);
+  -- 更新bl_return_material表                   
+  procedure Usermodify__(Row_     IN bl_return_material%ROWTYPE,
+                         User_Id_ IN VARCHAR2);
+  --客户退货主档初始值                   
+  PROCEDURE NEW__(ROWLIST_ VARCHAR2, --空值
+                  USER_ID_ VARCHAR2, 
+                  A311_KEY_ VARCHAR2);
+   --客户退货主档下达               
+  PROCEDURE RELEASE__(rowid_    VARCHAR2,--bl_v_return_material的objid
+                      USER_ID_  VARCHAR2,
+                      A311_KEY_ VARCHAR2);
+  --提交
+  PROCEDURE Submit__(rowid_    VARCHAR2,--bl_v_return_material的objid
+                      USER_ID_  VARCHAR2,
+                      A311_KEY_ VARCHAR2); 
+  --工厂确定退回                                   
+  PROCEDURE UNTREAD__(rowid_  VARCHAR2,--bl_v_return_material_line的objid
+                      USER_ID_  VARCHAR2,
+                      A311_KEY_ VARCHAR2);
+  --工厂确定                    
+  PROCEDURE Determine__(ROWID_ VARCHAR2,--bl_v_return_material_v01的objid
+                        USER_ID_ VARCHAR2,
+                        A311_KEY_ VARCHAR2);
+  PROCEDURE REMOVE__(ROWLIST_  VARCHAR2,
+                     USER_ID_  VARCHAR2,
+                     A311_KEY_ VARCHAR2);
+  PROCEDURE ITEMCHANGE__(COLUMN_ID_   VARCHAR2,
+                         MAINROWLIST_ VARCHAR2,
+                         ROWLIST_     VARCHAR2,
+                         USER_ID_     VARCHAR2,
+                         OUTROWLIST_  OUT VARCHAR2);
+  --获明细值                       
+  function Get_Return_Material_Amount(RMA_NO_ varchar2,
+                                      type_ varchar2)
+                                      return number;
+  function checkUseable(doaction_  in varchar2,
+                        column_id_ in varchar,
+                        ROWLIST_   in varchar2) return varchar2;
+  function CheckButton__(dotype_   in varchar2,
+                         order_no_ in varchar2,
+                         user_id_  in varchar2) return varchar2;
+end bl_RETURN_MATERIAL_API;
+/
+create or replace package body BL_RETURN_MATERIAL_API is
+  ---------------------------------------------------------
+  /*create fjp 2012-10-25*/
+  ---------------------------------------------------------
+  type t_cursor is ref cursor;
+  PROCEDURE BACKCARRAY__(ROWLIST_  VARCHAR2,
+                         USER_ID_  VARCHAR2,
+                         A311_KEY_ VARCHAR2) IS
+  BEGIN
+    RETURN;
+  END;
+
+  PROCEDURE BACKNOCARRAY__(ROWLIST_  VARCHAR2,
+                           USER_ID_  VARCHAR2,
+                           A311_KEY_ VARCHAR2) IS
+  BEGIN
+    RETURN;
+  END;
+
+  PROCEDURE COMPLETE__(rowid_  VARCHAR2,
+                       USER_ID_  VARCHAR2,
+                       A311_KEY_ VARCHAR2) IS
+    cur_    t_cursor;
+    cur1_ t_cursor;
+    row_    BL_V_RETURN_MATERIAL%ROWTYPE;
+    row1_  bl_v_return_material_line%rowtype;                   
+  BEGIN
+    open cur_ for
+    select t.* from BL_V_RETURN_MATERIAL t where t.objid = rowid_;
+    fetch cur_
+      into row_;
+    if cur_%notfound then
+      close cur_;
+      Raise_Application_Error(-20101, '错误的rowid');
+      RETURN;
+    end if;
+    close cur_;
+     open  cur1_ for
+     select t.*
+     from bl_v_return_material_line t
+     where t.RMA_NO = row_.RMA_NO
+     and  t.state='Released';
+     fetch cur1_ into row1_;
+     while cur1_%found loop
+       BL_RETURN_MATERIAL1_API.Return_CustomerStock_(row1_.RMA_NO,row1_.RMA_line_NO);
+       fetch cur1_ into row1_;
+     end loop;
+     close cur1_;
+      update bl_return_material
+       set flag ='5'
+      where RMA_NO =row_.RMA_NO;
+      update bl_return_material_line
+       set flag ='5'
+      where RMA_NO =row_.RMA_NO
+       and  flag='3';
+    Pkg_a.Setsuccess(A311_Key_, 'BL_V_RETURN_MATERIAL', rowid_);
+    RETURN;
+  END;
+
+  PROCEDURE DENY__(rowid_  VARCHAR2,
+                   USER_ID_  VARCHAR2,
+                   A311_KEY_ VARCHAR2) IS
+    attr_   varchar2(4000);
+    info_   varchar2(4000);
+    action_ varchar2(100);
+    cur_    t_cursor;
+    row_    BL_V_RETURN_MATERIAL%ROWTYPE;
+  BEGIN
+    open cur_ for
+    select t.* from BL_V_RETURN_MATERIAL t where t.objid = rowid_;
+    fetch cur_
+      into row_;
+    if cur_%notfound then
+      close cur_;
+      Raise_Application_Error(-20101, '错误的rowid');
+      RETURN;
+    end if;
+    close cur_;
+    action_ := 'DO';
+    RETURN_MATERIAL_API.DENY__(info_,
+                                  rowid_,
+                                  row_.Objversion,
+                                  attr_,
+                                  action_);
+      update bl_return_material
+       set flag ='4'
+      where RMA_NO =row_.RMA_NO;
+      update bl_return_material_line
+       set flag ='4'
+      where RMA_NO =row_.RMA_NO;
+    Pkg_a.Setsuccess(A311_Key_, 'BL_V_RETURN_MATERIAL', rowid_);
+    RETURN;
+  END;
+
+  PROCEDURE INDEMNITY__(ROWLIST_  VARCHAR2,
+                        USER_ID_  VARCHAR2,
+                        A311_KEY_ VARCHAR2) IS
+  BEGIN
+    RETURN;
+  END;
+
+  PROCEDURE MODIFY__(ROWLIST_  VARCHAR2,
+                     USER_ID_  VARCHAR2,
+                     A311_KEY_ VARCHAR2) IS
+    row_           BL_V_RETURN_MATERIAL%rowtype;
+    attr_          varchar2(4000);
+    Attr_CUSTOMER_ VARCHAR2(4000);
+    attr_out_      varchar2(4000);
+    info_          varchar2(4000);
+    objid_         varchar2(4000);
+    objversion_    varchar2(4000);
+    action_        varchar2(100);
+    index_         varchar2(1);
+    doaction_      varchar2(1);
+    Cur_           t_Cursor;
+    Pos_           NUMBER;
+    Pos1_          NUMBER;
+    i              NUMBER;
+    v_             VARCHAR(1000);
+    Column_Id_     VARCHAR(1000);
+    Data_          VARCHAR(4000);
+    row0_         bl_return_material%rowtype;
+    Ifmychange  VARCHAR(10);
+  BEGIN
+    index_     := f_get_data_index();
+    row_.objid := pkg_a.Get_Item_Value('OBJID', ROWLIST_);
+    doaction_  := pkg_a.Get_Item_Value('DOACTION', ROWLIST_);
+    if doaction_ = 'I' then
+      /*新增*/
+      attr_ := '';
+      client_sys.Add_To_Attr('RETURN_APPROVER_ID',
+                             pkg_a.Get_Item_Value('RETURN_APPROVER_ID',
+                                                  ROWLIST_),
+                             attr_);
+      client_sys.Add_To_Attr('DATE_REQUESTED',
+                             pkg_a.Get_Item_Value('DATE_REQUESTED',
+                                                  ROWLIST_),
+                             attr_);
+      client_sys.Add_To_Attr('CONTRACT',
+                             pkg_a.Get_Item_Value('CONTRACT', ROWLIST_),
+                             attr_);
+      client_sys.Add_To_Attr('CURRENCY_CODE',
+                             pkg_a.Get_Item_Value('CURRENCY_CODE', ROWLIST_),
+                             attr_);
+      client_sys.Add_To_Attr('CUSTOMER_NO',
+                             pkg_a.Get_Item_Value('CUSTOMER_NO', ROWLIST_),
+                             attr_);
+      client_sys.Add_To_Attr('CUST_REF',
+                             pkg_a.Get_Item_Value('CUST_REF', ROWLIST_),
+                             attr_);
+      client_sys.Add_To_Attr('PRICE_WITH_TAX',
+                             pkg_a.Get_Item_Value('PRICE_WITH_TAX',
+                                                  ROWLIST_),
+                             attr_);
+      Row_.Customer_No := Pkg_a.Get_Item_Value('CUSTOMER_NO', Rowlist_);
+      Row_.Contract    := Pkg_a.Get_Item_Value('CONTRACT', Rowlist_);
+      Client_Sys.Add_To_Attr('CONTRACT', Row_.Contract, Attr_CUSTOMER_);
+      Client_Sys.Add_To_Attr('CUSTOMER_NO',
+                             Row_.Customer_No,
+                             Attr_CUSTOMER_);
+      Customer_Order_API.Get_Customer_Defaults__(Attr_CUSTOMER_);
+      client_sys.Add_To_Attr('SHIP_ADDR_NO',
+                             Client_Sys.Get_Item_Value('SHIP_ADDR_NO',
+                                                       Attr_CUSTOMER_),
+                             attr_);
+      client_sys.Add_To_Attr('LANGUAGE_CODE',
+                             Client_Sys.Get_Item_Value('LANGUAGE_CODE',
+                                                       Attr_CUSTOMER_),
+                             attr_);
+      client_sys.Add_To_Attr('CUSTOMER_NO_ADDR_NO',
+                             Client_Sys.Get_Item_Value('BILL_ADDR_NO',
+                                                       Attr_CUSTOMER_),
+                             attr_);
+      attr_out_ := attr_;
+      action_   := 'CHECK';
+      RETURN_MATERIAL_API.New__(info_, objid_, objversion_, attr_, action_);
+      attr_   := attr_out_;
+      action_ := 'DO';
+      RETURN_MATERIAL_API.New__(info_, objid_, objversion_, attr_, action_);
+      pkg_a.setSuccess(A311_KEY_, 'BL_V_RETURN_MATERIAL', objid_);
+      row0_.rma_no := Client_Sys.Get_Item_Value('RMA_NO', Attr_);
+      Row0_.flag   := '0';
+      Row0_.flowid   := 0;
+      row0_.return_type  := pkg_a.Get_Item_Value('RETURN_TYPE',ROWLIST_);
+      row0_.lot_batch_no := pkg_a.Get_Item_Value('LOT_BATCH_NO',ROWLIST_);
+      select bl_return_material_seq.NEXTVAL 
+       into row0_.blorder_no  
+       from dual; 
+      Usermodify__(Row0_, User_Id_);
+    end if;
+    IF Doaction_ = 'M' THEN
+      /*修改*/
+      OPEN Cur_ FOR
+        SELECT t.* FROM BL_V_RETURN_MATERIAL t WHERE t.Objid = Row_.Objid;
+      FETCH Cur_
+        INTO Row_;
+      IF Cur_%NOTFOUND THEN
+        CLOSE Cur_;
+        Raise_Application_Error(-20101, '错误的rowid');
+        RETURN;
+      END IF;
+      CLOSE Cur_;
+    
+      /*获取有几列发生了修改*/
+      Data_ := Rowlist_;
+      Pos_  := Instr(Data_, Index_);
+      i     := i + 1;
+      Ifmychange := '0';
+      LOOP
+        EXIT WHEN Nvl(Pos_, 0) <= 0;
+        EXIT WHEN i > 300;
+        v_    := Substr(Data_, 1, Pos_ - 1);
+        Data_ := Substr(Data_, Pos_ + 1);
+        Pos_  := Instr(Data_, Index_);
+      
+        Pos1_      := Instr(v_, '|');
+        Column_Id_ := Substr(v_, 1, Pos1_ - 1);
+        if Column_Id_ ='LOT_BATCH_NO'  then 
+           Ifmychange := '1';
+        else
+          --组要传入给IFS 的修改包       
+          IF Column_Id_ <> 'OBJID' AND Column_Id_ <> 'DOACTION' AND
+             Length(Nvl(Column_Id_, '')) > 0 THEN
+            v_ := Substr(v_, Pos1_ + 1);
+            Client_Sys.Add_To_Attr(Column_Id_, v_, Attr_);
+            i := i + 1;
+          END IF;
+       end if;
+      END LOOP;
+      Action_ := 'DO';
+      --调用 IFS 修改包  
+      RETURN_MATERIAL_API.MODIFY__(Info_,
+                                   Row_.Objid,
+                                   Row_.Objversion,
+                                   Attr_,
+                                   Action_);
+      Pkg_a.Setsuccess(A311_Key_, 'BL_V_RETURN_MATERIAL', Row_.Objid);
+      if Ifmychange='1' then 
+          row0_.rma_no := row_.RMA_NO;
+          row0_.lot_batch_no := pkg_a.Get_Item_Value('LOT_BATCH_NO',ROWLIST_);
+          Usermodify__(Row0_, User_Id_);
+      end if;
+    END IF;
+    RETURN;
+  END;
+  --记录保存 BL 的表
+  PROCEDURE Usermodify__(Row_     IN bl_return_material%ROWTYPE,
+                         User_Id_ IN VARCHAR2) IS
+    Cur_  t_Cursor;
+    Row0_ bl_return_material%ROWTYPE;
+  
+  BEGIN
+    OPEN Cur_ FOR
+      SELECT t.* FROM bl_return_material t WHERE t.rma_no = Row_.rma_no;
+    FETCH Cur_
+      INTO Row0_;
+    IF Cur_%NOTFOUND THEN
+      INSERT INTO bl_return_material
+        (rma_no,
+         flag,
+         flowid,
+         blorder_no,
+         RETURN_TYPE,
+         LOT_BATCH_NO,
+         Enter_Date,
+         Enter_User)
+        SELECT Row_.rma_no,
+               row_.flag,
+               row_.flowid,
+               row_.blorder_no,
+               row_.return_type,
+               row_.lot_batch_no,
+               sysdate,
+               User_Id_
+          FROM Dual;
+    ELSE
+      UPDATE bl_return_material
+         SET blorder_no    = Nvl(Row_.blorder_no, blorder_no),
+             flag          = Nvl(Row_.flag, flag),
+             flowid        = Nvl(Row_.flowid, flowid),
+             return_type   = nvl(row_.return_type,return_type),
+             LOT_BATCH_NO  = nvl(row_.LOT_BATCH_NO,LOT_BATCH_NO),
+             Modi_Date     = SYSDATE,
+             Modi_User     = User_Id_
+       WHERE rma_no = Row_.rma_no;
+    END IF;
+    CLOSE Cur_;
+  
+    RETURN;
+  END;
+  PROCEDURE NEW__(ROWLIST_ VARCHAR2, USER_ID_ VARCHAR2, A311_KEY_ VARCHAR2) IS
+    attr_       varchar2(4000);
+    info_       varchar2(4000);
+    objid_      varchar2(4000);
+    objversion_ varchar2(4000);
+    action_     varchar2(100);
+    attr_out    varchar2(4000);
+  BEGIN
+    action_ := 'PREPARE';
+    RETURN_MATERIAL_API.NEW__(info_, objid_, objversion_, attr_, action_);
+    attr_out := pkg_a.Get_Attr_By_Ifs(attr_);
+    pkg_a.setResult(A311_KEY_, attr_out);
+    RETURN;
+  END;
+
+  PROCEDURE RELEASE__(rowid_    VARCHAR2,
+                      USER_ID_  VARCHAR2,
+                      A311_KEY_ VARCHAR2) IS
+    attr_   varchar2(4000);
+    info_   varchar2(4000);
+    action_ varchar2(100);
+    cur_    t_cursor;
+    row_    BL_V_RETURN_MATERIAL%ROWTYPE;
+    ll_count_ number;
+  BEGIN
+    open cur_ for
+      select t.* from BL_V_RETURN_MATERIAL t where t.objid = rowid_;
+    fetch cur_
+      into row_;
+    if cur_%notfound then
+      close cur_;
+      Raise_Application_Error(-20101, '错误的rowid');
+      RETURN;
+    end if;
+    close cur_;
+    --如果是内部客户，判断明细是否都确定了
+    if row_.RETURN_TYPE ='3'  then 
+       select  count(*)
+        into ll_count_
+       from bl_return_material_line
+       where rma_no = row_.RMA_NO
+       and   flag  not in('2','4');
+       if ll_count_ >  0 then 
+           Raise_Application_Error(-20101, '明细行有未确认的退货申请，请先确认再下达');
+           RETURN;
+       end if ;
+    end if ;
+    action_ := 'DO';
+    RETURN_MATERIAL_API.RELEASE__(info_,
+                                  rowid_,
+                                  row_.Objversion,
+                                  attr_,
+                                  action_);
+    --调用自动生成采购申请函数
+    if row_.RETURN_TYPE ='3' then 
+      BL_RETURN_MATERIAL1_API.Return_CustomerRelease_(row_.RMA_NO,
+                                                       USER_ID_,
+                                                       A311_KEY_);  
+    end if;
+    --更新新增的表
+     UPDATE BL_RETURN_MATERIAL
+       SET  FLAG ='3' 
+      WHERE  RMA_NO = ROW_.RMA_NO;
+     UPDATE BL_RETURN_MATERIAL_LINE
+      SET   FLAG ='3'
+      WHERE  RMA_NO = ROW_.RMA_NO
+      AND   flag  ='2';                  
+    Pkg_a.Setsuccess(A311_Key_, 'BL_V_RETURN_MATERIAL', rowid_);
+    RETURN;
+  END;
+ PROCEDURE Submit__(rowid_    VARCHAR2,--bl_v_return_material的objid
+                      USER_ID_  VARCHAR2,
+                      A311_KEY_ VARCHAR2)
+ is 
+   cur_    t_cursor;
+   row_    BL_V_RETURN_MATERIAL%ROWTYPE;
+ begin
+     open cur_ for
+      select t.* from BL_V_RETURN_MATERIAL t where t.objid = rowid_;
+    fetch cur_
+      into row_;
+    if cur_%notfound then
+      close cur_;
+      Raise_Application_Error(-20101, '错误的rowid');
+      RETURN;
+    end if;
+    close cur_;
+    update BL_RETURN_MATERIAL
+     set  flag = '1'
+    where RMA_NO = row_.RMA_NO;
+    update Bl_Return_Material_Line
+      set flag ='1'
+    where RMA_NO = row_.RMA_NO
+      and  flag ='0';  
+   Pkg_a.Setsuccess(A311_Key_, 'BL_V_RETURN_MATERIAL', rowid_);
+   return ;
+ end;
+  PROCEDURE UNTREAD__(rowid_  VARCHAR2,
+                      USER_ID_  VARCHAR2,
+                      A311_KEY_ VARCHAR2) IS
+   cur_ t_cursor;
+   row_ RETURN_MATERIAL_LINE%rowtype;
+  BEGIN
+      open cur_ FOR
+      select t.*
+      from RETURN_MATERIAL_LINE t
+      where t.objid = rowid_;
+       fetch cur_ into  row_;
+       if cur_%notfound then 
+          close cur_;
+          Raise_Application_Error(-20101, '错误的rowid');
+          RETURN;
+       end if;
+       close cur_; 
+       update bl_return_material_line
+        set  flag ='0'
+        where  RMA_NO = row_.RMA_NO
+        and    RMA_LINE_NO = row_.rma_line_no;
+       Pkg_a.Setsuccess(A311_Key_, 'BL_V_RETURN_MATERIAL_LINE_V01', rowid_);
+    RETURN;
+  END;
+  PROCEDURE Determine__(ROWID_ VARCHAR2,
+                        USER_ID_ VARCHAR2,
+                        A311_KEY_ VARCHAR2)
+   IS
+   cur_  t_cursor;
+    row_ BL_V_RETURN_MATERIAL_V01%rowtype;
+   BEGIN
+      open cur_ FOR
+      select t.*
+      from BL_V_RETURN_MATERIAL_V01 t
+      where t.objid = rowid_;
+       fetch cur_ into  row_;
+       if cur_%notfound then 
+          close cur_;
+          Raise_Application_Error(-20101, '错误的rowid');
+          RETURN;
+       end if;
+       close cur_;
+       update bl_return_material_line
+         set  flag ='2'
+       where RMA_NO = row_.RMA_NO
+         and PCONTRACT = row_.PCONTRACT
+         and  flag ='1';
+      Pkg_a.Setsuccess(A311_Key_, 'BL_V_RETURN_MATERIAL_V01', rowid_);
+      RETURN ;
+   END;
+  PROCEDURE REMOVE__(ROWLIST_  VARCHAR2,
+                     USER_ID_  VARCHAR2,
+                     A311_KEY_ VARCHAR2) IS
+  BEGIN
+    RETURN;
+  END;
+  PROCEDURE ITEMCHANGE__(COLUMN_ID_   VARCHAR2,
+                         MAINROWLIST_ VARCHAR2, --main 
+                         ROWLIST_     VARCHAR2, --行rowlist 
+                         USER_ID_     VARCHAR2,
+                         OUTROWLIST_  OUT VARCHAR2 --输出
+                         ) IS
+    attr_out varchar2(4000);
+    Attr_   varchar2(4000);
+    Row_     BL_V_RETURN_MATERIAL%rowtype;
+  begin
+    IF Column_Id_ = 'CUSTOMER_NO' then
+      Row_.Customer_No   := Pkg_a.Get_Item_Value('CUSTOMER_NO', Rowlist_);
+      row_.CONTRACT      := Pkg_a.Get_Item_Value('CONTRACT', Rowlist_);
+      row_.CUSTOMER_NAME := Cust_Ord_Customer_Api.Get_Name(Row_.Customer_No);
+      Pkg_a.Set_Item_Value('CUSTOMER_NO', Row_.CUSTOMER_NO, Attr_Out);
+      Pkg_a.Set_Item_Value('CUSTOMER_NAME', Row_.CUSTOMER_NAME, Attr_Out);
+      IF Length(Row_.Contract) > 0
+         AND Length(Row_.Customer_No) > 0 THEN
+          Client_Sys.Add_To_Attr('CONTRACT', Row_.Contract, Attr_);
+          Client_Sys.Add_To_Attr('CUSTOMER_NO', Row_.Customer_No, Attr_);
+          Customer_Order_Api.Get_Customer_Defaults__(Attr_);
+          Attr_Out := Pkg_a.Get_Attr_By_Ifs(Attr_);
+      end if;
+    end if;
+    OUTROWLIST_ := attr_out;
+    RETURN;
+  end;
+ function Get_Return_Material_Amount(RMA_NO_ varchar2,
+                                      type_ varchar2)
+                                      return number
+  is
+   retrec_          RETURN_MATERIAL_TAB%ROWTYPE;
+   rounding_        NUMBER;
+   total_sale_line_ NUMBER;
+
+   CURSOR get_total_lines(rounding_ IN NUMBER) IS
+     SELECT SUM(ROUND(price_conv_factor * qty_to_return * sale_unit_price, rounding_))
+     FROM   RETURN_MATERIAL_LINE_TAB
+     WHERE  rma_no = rma_no_
+     AND    rowstate != 'Denied';
+   CURSOR get_total_lines_with_tax(rounding_ IN NUMBER) IS
+     SELECT ROUND(SUM(price_conv_factor * qty_to_return * sale_unit_price_with_tax), rounding_)
+     FROM   RETURN_MATERIAL_LINE_TAB
+     WHERE  rma_no = rma_no_
+     AND    rowstate != 'Denied';
+BEGIN
+   rounding_ :=2;
+   IF (type_ = 'TAX') THEN
+      OPEN get_total_lines_with_tax(rounding_);
+      FETCH get_total_lines_with_tax INTO total_sale_line_;
+      IF (get_total_lines_with_tax%NOTFOUND) THEN
+         total_sale_line_ := 0;
+      END IF;
+      CLOSE get_total_lines_with_tax;
+   ELSE
+      OPEN get_total_lines(rounding_);
+      FETCH get_total_lines INTO total_sale_line_;
+      IF (get_total_lines%NOTFOUND) THEN
+         total_sale_line_ := 0;
+      END IF;
+      CLOSE get_total_lines;
+   END IF;
+   RETURN nvl(total_sale_line_, 0);
+  end;
+  function checkUseable(doaction_  in varchar2,
+                        column_id_ in varchar,
+                        ROWLIST_   in varchar2) return varchar2 is
+  begin
+    if doaction_ = 'M' then
+      if column_id_ = 'CURRENCY_CODE' or column_id_ = 'CONTRACT' or
+         column_id_ = 'CUSTOMER_NO' OR column_id_ = 'PRICE_WITH_TAX' OR 
+         column_id_='RETURN_TYPE' then
+        return '0';
+      end if;
+    end if;
+    return '1';
+  end;
+  ----检查新增 修改 
+  function CheckButton__(dotype_   in varchar2,
+                         order_no_ in varchar2,
+                         user_id_  in varchar2) return varchar2 is
+  begin
+    return '1';
+  end;
+end bl_RETURN_MATERIAL_API;
+/

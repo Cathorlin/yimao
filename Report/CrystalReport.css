@@ -1,0 +1,21 @@
+﻿body
+{
+    font-size: 12px;
+    font-family: Arial, "宋体" ,;
+    color: #333;
+    line-height: 18px;
+    text-align: center;
+}
+
+
+table.crview
+{
+    table-layout:fixed;
+    
+    
+ }
+ input
+ {
+     font-size: 12px;
+ 
+  }

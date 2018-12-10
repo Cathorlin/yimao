@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>MemberListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <MemberListResp>
+      <M001_NAME>浪淘沙</M001_NAME>
+      <MOBILE_NO>13601687975</MOBILE_NO>
+      <M042_NAME>
+      </M042_NAME>
+    </MemberListResp>
+    <MemberListResp>
+      <M001_NAME>lawson</M001_NAME>
+      <MOBILE_NO>18117288058</MOBILE_NO>
+      <M042_NAME>
+      </M042_NAME>
+    </MemberListResp>
+    <MemberListResp>
+      <M001_NAME>强哥</M001_NAME>
+      <MOBILE_NO>13636320125</MOBILE_NO>
+      <M042_NAME>
+      </M042_NAME>
+    </MemberListResp>
+    <MemberListResp>
+      <M001_NAME>
+      </M001_NAME>
+      <MOBILE_NO>13524799919</MOBILE_NO>
+      <M042_NAME>
+      </M042_NAME>
+    </MemberListResp>
+    <MemberListResp>
+      <M001_NAME>
+      </M001_NAME>
+      <MOBILE_NO>13585619703</MOBILE_NO>
+      <M042_NAME>
+      </M042_NAME>
+    </MemberListResp>
+  </MIAP-Body>
+</MIAP>

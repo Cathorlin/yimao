@@ -1,0 +1,375 @@
+﻿HTML {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+BODY {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+DIV {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+P {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+UL {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+LI {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+DL {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+DT {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+DD {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H1 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H2 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H3 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H4 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H5 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H6 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+FORM {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+P {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+INPUT {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+SELECT {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+BUTTON {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+TEXTAREA {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+IFRAME {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+TABLE {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+TH {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+TD {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+IMG {
+	BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; VERTICAL-ALIGN: top; BORDER-TOP: 0px; BORDER-RIGHT: 0px
+}
+UL {
+	LIST-STYLE-TYPE: none
+}
+LI {
+	LIST-STYLE-TYPE: none
+}
+H1 {
+	FONT-SIZE: 14px
+}
+H2 {
+	FONT-SIZE: 14px
+}
+H3 {
+	FONT-SIZE: 14px
+}
+H4 {
+	FONT-SIZE: 14px
+}
+H5 {
+	FONT-SIZE: 14px
+}
+H6 {
+	FONT-SIZE: 14px
+}
+BODY {
+	FONT-FAMILY: "����"; FONT-SIZE: 12px
+}
+INPUT {
+	FONT-FAMILY: "����"; FONT-SIZE: 12px
+}
+SELECT {
+	FONT-FAMILY: "����"; FONT-SIZE: 12px
+}
+BUTTON {
+	FONT-FAMILY: "����"; FONT-SIZE: 12px
+}
+TEXTAREA {
+	FONT-FAMILY: "����"; FONT-SIZE: 12px
+}
+BUTTON {
+	CURSOR: pointer
+}
+I {
+	FONT-STYLE: normal
+}
+EM {
+	FONT-STYLE: normal
+}
+CITE {
+	FONT-STYLE: normal
+}
+BODY {
+	LINE-HEIGHT: 1.2; BACKGROUND: #fafcfe; COLOR: #666
+}
+A {
+	COLOR: #2f3743; TEXT-DECORATION: none
+}
+A:link {
+	COLOR: #2f3743; TEXT-DECORATION: none
+}
+A:visited {
+	
+}
+A:active {
+	COLOR: #ff6600; TEXT-DECORATION: underline
+}
+A:hover {
+	COLOR: #ff6600; TEXT-DECORATION: underline
+}
+A:focus {
+	OUTLINE-STYLE: none; OUTLINE-COLOR: invert; OUTLINE-WIDTH: medium
+}
+.fixed:after {
+	DISPLAY: block; HEIGHT: 0px; VISIBILITY: hidden; CLEAR: both; CONTENT: "."
+}
+.fixed {
+	MIN-HEIGHT: 1%; DISPLAY: block
+}
+.more {
+	FLOAT: right
+}
+.more A {
+	FONT-SIZE: 12px; FONT-WEIGHT: normal
+}
+.fl {
+	DISPLAY: inline; FLOAT: left
+}
+.fr {
+	DISPLAY: inline; FLOAT: left
+}
+.fr {
+	FLOAT: right
+}
+.clear {
+	CLEAR: both
+}
+.h8 {
+	HEIGHT: 8px; CLEAR: both; OVERFLOW: hidden
+}
+.h10 {
+	HEIGHT: 10px; CLEAR: both; OVERFLOW: hidden
+}
+.h12 {
+	HEIGHT: 12px; CLEAR: both; OVERFLOW: hidden
+}
+.h13 {
+	HEIGHT: 13px; CLEAR: both; OVERFLOW: hidden
+}
+.h15 {
+	HEIGHT: 15px; CLEAR: both; OVERFLOW: hidden
+}
+.h20 {
+	HEIGHT: 20px; CLEAR: both; OVERFLOW: hidden
+}
+.h25 {
+	HEIGHT: 25px; CLEAR: both; OVERFLOW: hidden
+}
+.h27 {
+	HEIGHT: 27px; CLEAR: both; OVERFLOW: hidden
+}
+.h63 {
+	HEIGHT: 63px; CLEAR: both; OVERFLOW: hidden
+}
+.width960 {
+	MARGIN: 0px auto; WIDTH: 960px
+}
+.hidden {
+	DISPLAY: none
+}
+.orange {
+	COLOR: #ff6600
+}
+.orange A {
+	COLOR: #ff6600
+}
+.orange A:hover {
+	COLOR: #ff6600
+}
+.gray {
+	COLOR: #c6c5c5
+}
+.arial {
+	FONT-FAMILY: Arial; FONT-SIZE: 12px; FONT-WEIGHT: normal
+}
+.arial2 {
+	FONT-FAMILY: Arial; COLOR: #ff6600; FONT-SIZE: 16px
+}
+.subd_color {
+	COLOR: #788eb7
+}
+.subd_color A {
+	WIDTH: 212px; DISPLAY: block; HEIGHT: 20px; COLOR: #788eb7; OVERFLOW: hidden
+}
+.subd_color A:hover {
+	COLOR: #00a000
+}
+.subd_color2 {
+	COLOR: #788eb7
+}
+.subd_color2 A {
+	COLOR: #788eb7
+}
+.subd_color2 A:hover {
+	COLOR: #00a000
+}
+.green {
+	COLOR: #00a000
+}
+.green A {
+	COLOR: #00a000
+}
+.green A:hover {
+	COLOR: #00a000
+}
+.blue {
+	COLOR: #0090c5
+}
+.bold {
+	FONT-WEIGHT: bold
+}
+.basic_color {
+	COLOR: #2f3743
+}
+.black {
+	COLOR: #000
+}
+.red {
+	COLOR: #f00
+}
+.padding_up {
+	FLOAT: left; PADDING-TOP: 6px
+}
+.padding_up2 {
+	WIDTH: 100%; FLOAT: left; PADDING-TOP: 10px
+}
+.padding_up3 {
+	WIDTH: 100%; FLOAT: left; PADDING-TOP: 4px
+}
+.font14 {
+	FONT-SIZE: 14px
+}
+.testing_header {
+	Z-INDEX: 888; POSITION: fixed; WIDTH: 100%; BACKGROUND: url(../images/testing_header_bg.png) repeat-x; HEIGHT: 63px; TOP: 0px; LEFT: 0px; _position: absolute; _bottom: auto
+}
+.testing_logo {
+	WIDTH: 242px; HEIGHT: 32px; PADDING-TOP: 15px
+}
+.count_down {
+	MARGIN: 4px 0px 0px 21px; WIDTH: 261px; BACKGROUND: url(../images/count_down_bg.png) no-repeat; HEIGHT: 54px
+}
+.count_down .time {
+	TEXT-ALIGN: center; LINE-HEIGHT: 18px; PADDING-LEFT: 56px; WIDTH: 74px; FONT-WEIGHT: bold; PADDING-TOP: 7px
+}
+.count_down .time_f {
+	COLOR: #ff6600; FONT-SIZE: 16px
+}
+.count_down .number {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 9px; WIDTH: 112px; PADDING-RIGHT: 0px; PADDING-TOP: 16px
+}
+.count_down .number UL {
+	
+}
+.count_down .number LI {
+	PADDING-LEFT: 10px; WIDTH: 25px; FLOAT: left; COLOR: #ff6600; FONT-SIZE: 14px; FONT-WEIGHT: bold
+}
+.testing_header .righter {
+	WIDTH: 410px
+}
+.function_button {
+	WIDTH: 297px; PADDING-TOP: 16px
+}
+.function_button UL {
+	
+}
+.function_button LI {
+	PADDING-LEFT: 14px; WIDTH: 85px; FLOAT: left; HEIGHT: 36px
+}
+.testing_header .righter .user {
+	WIDTH: 100px
+}
+.drop2 {
+	BACKGROUND: url(../images/user_san.gif) no-repeat right center
+}
+#sidebar2 {
+	POSITION: relative; WIDTH: 100px
+}
+.sidelist2 {
+	
+}
+.sidelist2 SPAN H3 {
+	Z-INDEX: 2; POSITION: relative; TEXT-ALIGN: center; LINE-HEIGHT: 63px; WIDTH: 100px; DISPLAY: block; FLOAT: left; HEIGHT: 63px; FONT-SIZE: 12px; OVERFLOW: hidden; FONT-WEIGHT: normal
+}
+.sidelist2 SPAN H3 A {
+	LINE-HEIGHT: 63px; WIDTH: 100px; DISPLAY: block; HEIGHT: 63px; COLOR: #f5ff5b
+}
+.sidelist2 SPAN H3 A:hover {
+	WIDTH: 100px; BACKGROUND: url(../images/user_bg.png) no-repeat; HEIGHT: 63px; COLOR: #fff; TEXT-DECORATION: none
+}
+.i-list2 {
+	Z-INDEX: 1000; POSITION: absolute; WIDTH: 108px; DISPLAY: none; BACKGROUND: #3f9715; TOP: 63px; LEFT: 0px
+}
+.i-list3 {
+	WIDTH: 108px; PADDING-TOP: 10px
+}
+.i-list3 UL {
+	WIDTH: 100%
+}
+.i-list3 LI {
+	TEXT-ALIGN: center; LINE-HEIGHT: 22px; WIDTH: 100%; COLOR: #fff; CLEAR: both
+}
+.i-list3 LI A {
+	DISPLAY: block; COLOR: #fff
+}
+.i-list3 LI A:hover {
+	COLOR: #f5ff5b
+}
+.hover2 {
+	BACKGROUND: url(../images/user_bg.png) no-repeat
+}
+.header_btn {
+	PADDING-LEFT: 10px; WIDTH: 333px; PADDING-TOP: 15px
+}
+.header_btn UL {
+	
+}
+.header_btn LI {
+	PADDING-LEFT: 14px; WIDTH: 97px; FLOAT: left; HEIGHT: 36px
+}
+.footer {
+	TEXT-ALIGN: center; LINE-HEIGHT: 24px; COLOR: #666
+}
+.footer A {
+	COLOR: #666
+}
+.footer A:hover {
+	COLOR: #2f3743
+}

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>PersonalInformationResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <PersonalInformationResp>
+      <NICKNAME>123</NICKNAME>
+      <HEADPORTRAIT>2016-08-05_094852.png</HEADPORTRAIT>
+      <AREA>浦东新区</AREA>
+    </PersonalInformationResp>
+  </MIAP-Body>
+</MIAP>

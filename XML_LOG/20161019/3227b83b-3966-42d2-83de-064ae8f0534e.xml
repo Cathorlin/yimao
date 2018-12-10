@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>GroupListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <GroupListResp>
+      <GROUPID>100141</GROUPID>
+      <GROUPNAME>自在群0912</GROUPNAME>
+      <HEADPORTRAIT>2016-09-12_051248.png</HEADPORTRAIT>
+      <MOBILENO>13601687975</MOBILENO>
+      <LABELRANGE>
+      </LABELRANGE>
+      <LABELNATURE>
+      </LABELNATURE>
+      <CREATETIME>Monday, September 12, 2016</CREATETIME>
+    </GroupListResp>
+    <GroupListResp>
+      <GROUPID>100241</GROUPID>
+      <GROUPNAME>党小组</GROUPNAME>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+      <MOBILENO>13817340324</MOBILENO>
+      <LABELRANGE>
+      </LABELRANGE>
+      <LABELNATURE>
+      </LABELNATURE>
+      <CREATETIME>Tuesday, September 27, 2016</CREATETIME>
+    </GroupListResp>
+  </MIAP-Body>
+</MIAP>

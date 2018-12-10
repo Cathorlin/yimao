@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>LabelListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <LabelListResp>
+      <LABELID>100301</LABELID>
+      <LABELNAME>SC</LABELNAME>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>100302</LABELID>
+      <LABELNAME>WZF</LABELNAME>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>100303</LABELID>
+      <LABELNAME>TDZ</LABELNAME>
+    </LabelListResp>
+  </MIAP-Body>
+</MIAP>

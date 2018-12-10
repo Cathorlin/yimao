@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>BindWeiXinResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>3</ReturnCode>
+    <ReturnMessage>当前微信号已经被绑定过了！</ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <BindWeiXinResp>
+      <RESULT>3</RESULT>
+      <MSG>当前微信号已经被绑定过了！</MSG>
+    </BindWeiXinResp>
+  </MIAP-Body>
+</MIAP>

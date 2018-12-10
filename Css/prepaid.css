@@ -1,0 +1,99 @@
+﻿*{ margin:0; padding:0;}
+  
+        #all
+        {
+            margin: 0px;
+            padding: 0px;
+            font: bold 11pt 微软雅黑;
+            letter-spacing: 3px;
+            color: #606060;
+        }
+        #all input
+        {
+            border: 1px solid #c7cbce;
+        }
+        #head
+        {
+            margin-left: 20px;
+        }
+        #tab1 tr td, #tab2 tr td
+        {
+            padding-top: 20px;
+        }
+        #tab1 tr td.btn_select
+        {
+            padding-left: 20px;
+        }
+        .btn-query
+        {
+            width: 65px;
+            height: 25px;
+           border:0;
+            font-weight: bold;
+            border-radius: 5px;
+            background:#1e99ff;
+            color:White;
+        }
+        .btn-query:hover
+        {
+             cursor:pointer;
+             background-color:#0080ff;
+        }
+         .btn-readcard
+        {
+            width: 65px;
+            height:25px;
+            border:0;
+            font-weight: bold;
+            border-radius: 5px;
+            background:#1e99ff;
+            color:White;
+        }
+        .btn-readcard:hover
+        {
+             cursor:pointer;
+            background-color:#0080ff;
+        }
+        #foot
+        {
+            margin-left: 20px;
+            margin-top:20px;
+        }
+        #prepaid
+        {
+            text-align:center;
+        }
+        .btn-prepaid
+        {
+            width: 185px;
+            height: 40px;
+            border:0;
+            font-size:20px;
+            font-weight: bold;
+            border-radius: 5px;
+            color:White;
+            background-color:#0080ff;
+        }
+        .btn-prepaid:hover
+        {
+              cursor:pointer;
+              background-color:#1E99FF;
+        }
+          .title-info
+        {
+            color: #2f6182;
+            font-size: 16px;
+            margin: -10px 0 0 10px;
+        }
+        #tab2 tr td.left_font
+        {
+            padding-left: 90px;
+        }
+        #txt_vip_id,#vip_info
+        {
+             height:25px;
+        }
+        
+        
+    #card_name{ width:210px; height:25px; border:1px solid #c7cbce;}
+     #card_count{ width:210px; height:25px; border:1px solid #c7cbce;}

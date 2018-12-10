@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>PageActivityListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <PageActivityListResp>
+      <ACTIVITYNAME>今天周几</ACTIVITYNAME>
+      <ACTIVITYID>13081</ACTIVITYID>
+      <HEADPORTRAIT>2016-08-18_100010.png</HEADPORTRAIT>
+      <TOURISMSIGN>4</TOURISMSIGN>
+      <GROUPID>12423</GROUPID>
+      <GROUPNAME>星期天</GROUPNAME>
+    </PageActivityListResp>
+  </MIAP-Body>
+</MIAP>

@@ -1,0 +1,499 @@
+create or replace package BL_PURCHASE_ORDER_RETRUN_API is
+
+  PROCEDURE NEW__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  PROCEDURE CANCEL__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  PROCEDURE MODIFY__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  PROCEDURE RELEASE__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  PROCEDURE SUBMIT__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  PROCEDURE CONFIRM__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  PROCEDURE DENY__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  PROCEDURE ITEMCHANGE__(column_id_ varchar2 ,MAINROWLIST_  VARCHAR2 ,ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,OUTROWLIST_ OUT VARCHAR2);
+   --获取编码
+  procedure getInspectNo(contract_ in varchar2 ,vendor_no_ in VARCHAR2,seq_ out varchar2 );
+end BL_PURCHASE_ORDER_RETRUN_API;
+/
+create or replace package body BL_PURCHASE_ORDER_RETRUN_API is
+ TYPE t_cursor IS REF CURSOR;
+   /*  新增初始化 New__
+  Rowlist_ 初始化的参数 可以传入requseturl 当前请求的url地址
+  User_Id_  当前用户
+  A311_Key_ A314的主键 */
+ PROCEDURE NEW__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2)
+ IS 
+  attr_out varchar2(4000);
+  row_ BL_V_PURCHASE_ORDER_RETRUN%rowtype;
+
+
+ BEGIN 
+     --获取用户默认的域
+    attr_out :=  pkg_a.Get_Attr_By_bm(ROWLIST_);
+    row_.CONTRACT :=  pkg_attr.get_default_contract(USER_ID_);
+
+    if (nvl(row_.CONTRACT,'0') <>  '0') then
+         pkg_a.Set_Item_Value('CONTRACT',row_.CONTRACT,attr_out);
+         pkg_a.Set_Item_Value('STATE','0',attr_out);
+    end if ;
+   /* 
+    open cur_ for
+    select  t.*
+    from bl_ciq_contract_tab t
+    where t.contract = row_.CONTRACT;
+    fetch cur_ into row1_;
+    if cur_%found then 
+        row_.IFCIQ := row1_.ifciq;
+        pkg_a.Set_Item_Value('IFCIQ',row_.IFCIQ,attr_out);
+        row_.LOCATION := row1_.outlaction;
+        pkg_a.Set_Item_Value('LOCATION',row_.LOCATION,attr_out);
+        row_.WAREHOUSE := IFSAPP.INVENTORY_LOCATION_API.Get_Warehouse(row_.CONTRACT, row_.LOCATION);
+        pkg_a.Set_Item_Value('WAREHOUSE',row_.WAREHOUSE,attr_out);
+    end if ;
+    close cur_;
+    */
+    pkg_a.setResult(A311_KEY_,attr_out);    
+    RETURN;
+ END;
+ 
+ PROCEDURE CANCEL__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2)
+ IS 
+   info_ varchar2(4000);
+   row_  BL_V_PURCHASE_ORDER_RETRUN%rowtype ;
+   cur_  t_cursor;
+   attr_  varchar2(4000);
+   action_ varchar2(20);
+   location_group_ varchar2(20);
+ BEGIN 
+      open cur_
+      for select t.*
+      from    BL_V_PURCHASE_ORDER_RETRUN t
+      where  t.OBJID =   ROWLIST_;
+      fetch cur_ into row_   ;
+      if cur_%notfound then       
+         close cur_ ;
+         raise_application_error(-20101, '错误的rowid');
+         return ;
+      end if ;    
+      close cur_ ; 
+       
+      ---判断状态
+      if row_.STATE >='2' then
+         pkg_a.setMsg(A311_KEY_,'','退货申请'|| row_.INSPECT_NO ||'已下达，不可取消');
+         return;
+      end if;
+
+      Update BL_V_PURCHASE_ORDER_RETRUN set state='4' where Rowid=row_.OBJID;
+          
+      Update BL_V_PURCHASE_ORDER_RETRUN_DTL set state='4'  where inspect_no=row_.INSPECT_NO;
+                     
+     --raise_application_error(-20101, '已经移库不能取消登记到达！');
+     --return ;                                             
+     pkg_a.setSuccess(A311_KEY_,'BL_V_PURCHASE_ORDER_RETRUN',row_.OBJID);
+     pkg_a.setMsg(A311_KEY_,'','退货申请'|| row_.INSPECT_NO ||'取消成功！');
+   RETURN;
+ END;
+  /*  保存数据 Modify__
+      Rowlist_  保存当前行的数据 
+      User_Id_  当前用户
+      A311_Key_ A314的主键     
+  */
+PROCEDURE Modify__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2)
+ IS 
+ index_ varchar2(1);
+ doaction_ varchar2(1);
+ pos_ number ;
+ pos1_ number ;
+ i number ;
+ v_  varchar(1000);
+ column_id_ varchar(1000);
+ data_ varchar(4000);
+ mysql_  varchar2(4000);
+ ifmychange varchar2(1);
+ objid_  varchar2(100);
+ row_ BL_V_PURCHASE_ORDER_RETRUN%ROWTYPE;
+ cur_ t_cursor;
+ row0_ bl_v_bl_picihead_v01%rowtype;
+ row1_ bl_picihead%rowtype;
+
+ BEGIN 
+    index_ := f_get_data_index();
+    objid_   := pkg_a.Get_Item_Value('OBJID',index_ || ROWLIST_);
+    doaction_ := pkg_a.Get_Item_Value('DOACTION', ROWLIST_);
+    IF doaction_='I' then 
+      --  获取值
+        row_.CONTRACT:=pkg_a.Get_Item_Value('CONTRACT',ROWLIST_ );
+        row_.VENDOR_NO:=pkg_a.Get_Item_Value('VENDOR_NO',ROWLIST_ );
+        getInspectNo(row_.CONTRACT, row_.VENDOR_NO,row_.INSPECT_NO);
+        row_.STATE:=pkg_a.Get_Item_Value('STATE',ROWLIST_ );
+        row_.price_with_tax:=pkg_a.Get_Item_Value('PRICE_WITH_TAX',ROWLIST_ );
+        ROW_.IS_OUTER_ORDER :=pkg_a.Get_Item_Value('IS_OUTER_ORDER',ROWLIST_ );
+        -- 创建给一个默认值
+        --row_.CREATEDATE:=to_char(sysdate,'yyyy-mm-dd');--pkg_a.Get_Item_Value('CREATEDATE',ROWLIST_ );
+        
+        --插入数据
+        insert into BL_PURCHASE_ORDER_RETRUN(
+                                INSPECT_NO ,                                                                      
+                                CONTRACT,
+                                VENDOR_NO,
+                                STATE,price_with_tax,IS_OUTER_ORDER)
+         select   row_.INSPECT_NO,
+                  row_.CONTRACT,
+                  row_.VENDOR_NO,
+                  row_.STATE,
+                  row_.price_with_tax,
+                  ROW_.IS_OUTER_ORDER
+         from dual;
+                  
+         select  t.rowid  
+                into  objid_ 
+                from  BL_PURCHASE_ORDER_RETRUN t 
+                where t.INSPECT_NO =  row_.INSPECT_NO;
+                
+         pkg_a.setSuccess(A311_KEY_,'BL_V_PURCHASE_ORDER_RETRUN',objid_);
+        return ;
+    end if ;
+    if doaction_='M' then 
+    -- 更改数据
+        open cur_
+        for select t.*
+        from    BL_V_PURCHASE_ORDER_RETRUN t
+        where  t.OBJID =   objid_;
+        fetch cur_     into row_   ;
+        if cur_%notfound then       
+           close cur_ ;
+           raise_application_error(-20101, '错误的rowid');
+           return ;
+        ELSE
+          IF row_.STATE>0 THEN
+            pkg_a.setMsg(A311_KEY_,'','退货申请'|| row_.INSPECT_NO ||'已提交，不可修改');
+            close cur_ ;  
+            return ;
+          END IF;
+        end if ;    
+        close cur_ ;  
+        
+        data_ := ROWLIST_;
+        pos_ := instr(data_,index_);
+        i := i + 1 ;
+        mysql_     :=' update BL_V_PURCHASE_ORDER_RETRUN set ';
+        ifmychange :='0';
+       loop 
+          exit when nvl(pos_,0) <=0 ;
+          exit when i > 300 ;      
+          v_ := substr(data_,1,pos_ - 1 ); 
+          data_ := substr(data_,pos_ +  1 ) ;
+          pos_ := instr(data_,index_);  
+          
+          pos1_ :=  instr(v_,'|');     
+          column_id_ := substr(v_,1 ,pos1_ - 1 );              
+          if column_id_ <>  'OBJID' and  column_id_ <> 'DOACTION' and length(nvl(column_id_,'')) > 0  then
+              v_ := substr(v_, pos1_ +  1 ) ;
+              i := i + 1 ;
+         
+                 ifmychange := '1';
+                  if column_id_ = 'DATE_SURE' or column_id_='SURE_SHIPDATE' or column_id_='RECALCU_DATE' then            
+                      mysql_ := mysql_ || ' ' || column_id_ || '=to_date(''' || v_  || ''',''YYYY-MM-DD HH24:MI:SS''),'; 
+                  else     
+                    mysql_ := mysql_ || ' ' || column_id_ || '=''' || v_  || ''',';
+                  end if ;
+         end if ;  
+        end  loop ;
+       if   ifmychange='1' then-- 更新sql语句 
+             mysql_     :=substr(mysql_,1,length(mysql_) -1);
+             mysql_     :=mysql_||' where rowidtochar(rowid)='''||objid_||'''';
+            
+             execute immediate mysql_;
+       end if ;
+       pkg_a.setSuccess(A311_KEY_,'BL_V_PURCHASE_ORDER_RETRUN',objid_);
+       return ;
+   end if ;
+ END;
+ 
+ PROCEDURE RELEASE__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2)
+  IS
+        row_ BL_V_PURCHASE_ORDER_RETRUN%rowtype;
+        cur_  t_cursor;
+        curDetail_ t_cursor;
+        rowDetail_ Bl_v_Purchase_Order_Retrun_Dtl%ROWTYPE;
+        Detail_ObjID_ VARCHAR2(20);
+        attr_ varchar2(4000);
+        STATE_ VARCHAR2(20);
+        Info_       VARCHAR2(4000);
+        Objversion_ VARCHAR2(4000);
+        Action_     VARCHAR2(100);
+        ORDER_line_objID_ VARCHAR(20);
+        isVenderIntern_ VARCHAR2(20);
+        isOrderFlag_ NUMBER DEFAULT 0; --0:无订单，1：有订单
+        
+     begin
+          row_.OBJID := ROWLIST_;
+          
+          --数据校验
+          open cur_
+          for select t.*
+          from    BL_V_PURCHASE_ORDER_RETRUN t
+          where  t.OBJID =   row_.OBJID;
+          fetch cur_     into row_   ;
+          if cur_%notfound then
+             close cur_ ;
+             pkg_a.setFailed(A311_KEY_,'BL_V_PURCHASE_ORDER_RETRUN',row_.OBJID);
+             raise_application_error(-20101, '错误的rowid');
+             return ;
+          end if ;
+          close cur_ ;
+
+          if row_.STATE >2 then
+              raise_application_error(-20101,'退货申请'|| row_.INSPECT_NO ||'已下达，不可重复下达');
+             return;
+          end if;
+          
+           --判断是否有订单退货
+           open cur_
+            for  SELECT * FROM Bl_v_Purchase_Order_Retrun_Dtl WHERE INSPECT_NO = row_.INSPECT_NO;
+            fetch cur_   into rowDetail_   ;
+            if cur_%FOUND THEN 
+               --有无订单
+               IF rowDetail_.ORDER_NO IS not NULL AND rowDetail_.LOT_BATCH_NO IS not NULL THEN
+                 isOrderFlag_ := 1; 
+               END IF ;
+               --是否还没未确认的行
+               state_ := 0;
+               LOOP
+                EXIT WHEN  cur_%notfound; 
+                IF rowDetail_.STATE != '2' THEN
+                  state_ := 1;
+                END IF;
+                Fetch cur_   into rowDetail_   ;
+              END LOOP;
+            end if ;
+          
+          --判断是外部订单还是内部订单
+          isVenderIntern_ := Identity_Invoice_Info_Api.Get_Identity_Type(Site_Api.Get_Company(ROW_.CONTRACT),ROW_.VENDOR_NO,'Supplier');
+
+          --内部订单判断是否所有退货申请明细已确认
+          IF isVenderIntern_ = 'INTERN' AND isOrderFlag_ = 1 THEN 
+           if state_ ='1' then
+             raise_application_error(-20101,'退货申请明细'|| row_.INSPECT_NO ||'还未全部确认，请检查！');
+             return;
+           end if;  
+          END IF;
+          
+            --修改下达状态
+          Update BL_V_PURCHASE_ORDER_RETRUN set state='3'  where Rowid=row_.OBJID;
+          Update BL_V_PURCHASE_ORDER_RETRUN_DTL set state='3'  where inspect_no=row_.INSPECT_NO;
+          
+         
+          
+          --本级有订单的退货申请处理，无订单的无法进入此循环
+          
+          open curDetail_
+          for    select T.OBJID,t1.STATE,t1.OBJID  from Bl_v_Purchase_Order_Retrun_Dtl  t
+                 INNER JOIN BL_V_PURCHASE_ORDER_LINE_PART T1 
+                 ON T.ORDER_NO = T1.ORDER_NO AND T.RELEASE_NO = T1.RELEASE_NO AND T.LINE_NO =T1.LINE_no
+          where  t.INSPECT_NO =   row_.INSPECT_NO;
+          fetch curDetail_ into Detail_ObjID_,state_ ,ORDER_line_objID_  ;
+          if curDetail_%found THEN
+              LOOP
+                EXIT WHEN  curDetail_%notfound; 
+                --如果订单关闭，则重打开
+                 IF state_ ='Closed' THEN
+                          
+                    SELECT Objversion
+                    INTO Objversion_
+                    FROM Bl_v_Purchase_Order_Line_Part
+                   WHERE Objid = ORDER_line_objID_;
+                  Action_ := 'DO';
+                  Purchase_Order_Line_Part_Api.Reopen__(Info_,
+                                                        ORDER_line_objID_,
+                                                        Objversion_,
+                                                        Attr_,
+                                                        Action_);
+                  Pkg_a.Setsuccess(A311_Key_, 'BL_V_PURCHASE_ORDER_LINE_PART', ORDER_line_objID_);
+                     
+                 end if;    
+                     
+                --修改检验数量
+                           
+                    open cur_
+                    for  SELECT * FROM Bl_v_Purchase_Order_Retrun_Dtl WHERE ROWID = Detail_ObjID_;
+                    fetch cur_   into rowDetail_   ;
+                    if cur_%found THEN 
+                        Purchase_Receipt_API.Modify_Qty_Inspected(rowDetail_.ORDER_NO,rowDetail_.LINE_NO,rowDetail_.RELEASE_NO,rowDetail_.RECEIPT_NO,rowDetail_.QTY_TO_INSPECT);
+                    end if ;
+                    close cur_ ;
+                        
+                Fetch curDetail_     into Detail_ObjID_,state_ ,ORDER_line_objID_  ;
+              END LOOP;
+          end if ;
+          close curDetail_ ;
+              
+           --内部订单需要生成子级退货申请
+          IF isVenderIntern_ = 'INTERN' THEN
+             BL_RETURN_MATERIAL1_API.Return_PurchaseRelease_(row_.INSPECT_NO,USER_ID_,A311_KEY_);
+          END IF;
+              
+          pkg_a.setMsg(A311_KEY_,'','退货申请'|| row_.INSPECT_NO ||'下达成功');
+          
+          RETURN;
+    END;
+ 
+ PROCEDURE SUBMIT__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2)
+ IS 
+        row_ BL_V_PURCHASE_ORDER_RETRUN%rowtype;
+        rowDetail_ Bl_v_Purchase_Order_Retrun_Dtl%ROWTYPE;
+        cur_  t_cursor;
+        attr_ varchar2(4000);
+     begin
+          row_.OBJID := ROWLIST_;
+
+          open cur_
+          for select t.*
+          from    BL_V_PURCHASE_ORDER_RETRUN t
+          where  t.OBJID =   row_.OBJID;
+          fetch cur_     into row_   ;
+          if cur_%notfound then
+             close cur_ ;
+             pkg_a.setFailed(A311_KEY_,'BL_V_PURCHASE_ORDER_RETRUN',row_.OBJID);
+             raise_application_error(-20101, '错误的rowid');
+             return ;
+          end if ;
+          close cur_ ;
+
+          open cur_
+          for  SELECT * FROM Bl_v_Purchase_Order_Retrun_Dtl WHERE INSPECT_NO = row_.INSPECT_NO;
+          fetch cur_   into rowDetail_   ;
+          if cur_%NOTFOUND THEN 
+             close cur_ ;
+             pkg_a.setMsg(A311_KEY_,'','退货申请'|| row_.INSPECT_NO ||'没有退货明细，请检查');
+             return;
+          end if ;
+
+          Update BL_V_PURCHASE_ORDER_RETRUN set state='1' where Rowid=row_.OBJID AND state<1;
+          
+          Update BL_V_PURCHASE_ORDER_RETRUN_DTL set state='1'  where inspect_no=row_.INSPECT_NO AND state<1;
+          
+          pkg_a.setMsg(A311_KEY_,'','退货申请'|| row_.INSPECT_NO ||'提交成功');
+          
+          RETURN;
+    END;
+ 
+   PROCEDURE CONFIRM__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2)
+   IS 
+        row_ BL_V_PURCHASE_ORDER_RETRUN%rowtype;
+        rowd_ BL_V_PURCHASE_ORDER_RETRUN_DTL%rowtype;
+        cur_  t_cursor;
+   BEGIN  
+         open cur_
+          for select t.*
+          from    Bl_v_Purchase_Order_Retrun t
+          where  t.OBJID =   ROWLIST_;
+          fetch cur_ into row_   ;
+          if cur_%notfound then
+             close cur_ ;
+             pkg_a.setFailed(A311_KEY_,'Bl_v_Purchase_Order_Retrun',ROWLIST_);
+             raise_application_error(-20101, '错误的rowid');
+             return ;
+          end if ;
+          close cur_ ; 
+          
+          --只更新他能看到的域的明细数据**          
+       
+          Update BL_V_PURCHASE_ORDER_RETRUN_DTL set state='2'  WHERE INSPECT_NO = row_.INSPECT_NO
+          AND co_contract IN(select DISTINCT contract  from bl_usecon t2 
+              inner join  a007 t1 on t1.bl_userid= t2.userid and  t1.a007_id=USER_ID_);
+              
+          open cur_
+          for select t.*
+          from    Bl_v_Purchase_Order_Retrun_Dtl t
+          where  t.INSPECT_NO =   row_.INSPECT_NO AND  state='1';
+          fetch cur_ into rowd_   ;
+          if cur_%notfound then
+              Update BL_V_PURCHASE_ORDER_RETRUN set state='2'  WHERE INSPECT_NO = row_.INSPECT_NO;
+             return ;
+          end if ;
+          close cur_ ;   
+          
+          pkg_a.setMsg(A311_KEY_,'','退货申请确认成功');
+       
+     RETURN;
+   END;
+   PROCEDURE DENY__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2)
+   IS 
+        cur_  t_cursor;
+        row_ Bl_v_Purchase_Order_Retrun%ROWTYPE;
+   BEGIN 
+          open cur_
+          for select t.*
+          from    Bl_v_Purchase_Order_Retrun t
+          where  t.OBJID =   ROWLIST_;
+          fetch cur_ into row_   ;
+          if cur_%notfound then
+             close cur_ ;
+             pkg_a.setFailed(A311_KEY_,'Bl_v_Purchase_Order_Retrun',ROWLIST_);
+             raise_application_error(-20101, '错误的rowid');
+             return ;
+          end if ;
+          close cur_ ; 
+          
+          --只更新他能看到的域的明细数据**     
+          Update BL_V_PURCHASE_ORDER_RETRUN_DTL set state='0'  WHERE INSPECT_NO=row_.INSPECT_NO
+                 AND co_contract IN(select DISTINCT contract  from bl_usecon t2 
+                 inner join  a007 t1 on t1.bl_userid= t2.userid and  t1.a007_id=USER_ID_);
+         
+          
+          pkg_a.setMsg(A311_KEY_,'','退货申请否定成功');
+          
+      RETURN;
+   END;
+  
+  /*  列发生变化的时候
+      Column_Id_   当前修改的列
+      Mainrowlist_ 主档的数据 明细有值，主档为空
+      Rowlist_  保存当前行的数据 
+      User_Id_  当前用户
+      Outrowlist_  输出的数据   
+  */
+PROCEDURE ITEMCHANGE__(column_id_ varchar2 ,MAINROWLIST_  VARCHAR2 , ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,OUTROWLIST_ OUT VARCHAR2)
+ IS 
+ attr_out varchar2(4000);
+ row_  BL_V_PURCHASE_ORDER_RETRUN%rowtype;
+ isOuterOrder_ VARCHAR2(20);
+
+ BEGIN 
+   if  column_id_ = 'VENDOR_NO' or column_id_='CONTRACT' then -- 供应商,域信息
+        -- 供应商代码
+        row_.VENDOR_NO           := pkg_a.Get_Item_Value('VENDOR_NO',ROWLIST_);
+        row_.CONTRACT            := pkg_a.Get_Item_Value('CONTRACT',ROWLIST_);
+        row_.VENDOR_NAME         := Supplier_API.Get_Vendor_name(row_.VENDOR_NO); 
+        --row_.CONTACT             := Supplier_Address_API.Get_Contact(row_.VENDOR_NO,Supplier_Address_API.Get_Address_No(row_.VENDOR_NO,Address_Type_Code_API.Get_Client_Value(1)));
+        pkg_a.Set_Item_Value('VENDOR_NAME',          row_.VENDOR_NAME,   attr_out);
+        row_.PRICE_WITH_TAX      :=IDENTITY_INVOICE_INFO_API.Price_With_Tax( Site_API.Get_Company(row_.CONTRACT),row_.VENDOR_NO,'SUPPLIER');
+        pkg_a.Set_Item_Value('PRICE_WITH_TAX',       row_.PRICE_WITH_TAX,     attr_out);
+        isOuterOrder_ := Identity_Invoice_Info_Api.Get_Identity_Type(Site_Api.Get_Company(ROW_.CONTRACT),ROW_.VENDOR_NO,'Supplier');
+        pkg_a.Set_Item_Value('IS_OUTER_ORDER', isOuterOrder_,   attr_out);  
+        
+        OUTROWLIST_ :=attr_out;                                                              
+    end if;
+ end  ;
+    /*获取退货申请号码*/
+ procedure getInspectNo(contract_ in varchar2 ,vendor_no_ in VARCHAR2,seq_ out varchar2)
+   is
+    row_ BL_V_PURCHASE_ORDER_RETRUN%rowtype ;
+    cur  t_cursor ;
+    seqw_  number;--流水号
+
+  begin
+   -- 查询最大的退货申请号
+    open cur for 
+        select  NVL(MAX(TO_NUMBER( substr(INSPECT_NO,10,4))),'0') 
+                from  BL_V_PURCHASE_ORDER_RETRUN t
+                where t.VENDOR_NO = vendor_no_ 
+                and  t.CONTRACT  = contract_;--o_char(sysdate,'yy');
+        fetch  cur into seqw_ ;
+
+        seq_ :=to_char(sysdate,'yy')||contract_||trim(to_char(vendor_no_,'0000'))||trim(to_CHAR(seqw_ + 1,'0000'));
+         
+    close cur ;    
+    return ;  
+   end  ;
+   
+end BL_PURCHASE_ORDER_RETRUN_API;
+/

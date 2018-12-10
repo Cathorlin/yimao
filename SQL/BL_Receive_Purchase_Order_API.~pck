@@ -1,0 +1,468 @@
+create or replace package BL_Receive_Purchase_Order_API is
+  --外部采购订单的入库
+  PROCEDURE Move_Receipt(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  --内部采购订单的移库（写保隆事物记录）
+  PROCEDURE In_Move_Receipt(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  PROCEDURE Packed_Arrival__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  PROCEDURE Create_New_Receipt(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2);
+  --获取内部采购订单的备货单号
+  FUNCTION  Get_InPickList_(order_no_ varchar2,
+                            line_no_ varchar2,
+                            RELEASE_NO_ varchar2,
+                            RECEIPT_NO_ number,
+                            type_  varchar2)return  varchar2;
+end BL_Receive_Purchase_Order_API;
+/
+create or replace package body BL_Receive_Purchase_Order_API is
+ type t_cursor is ref cursor;
+ /*  create wtl 
+   modify fjp 2012-11-08 增加采购入库功能
+    modify fjp 2012-11-15 增加内部采购入库 
+    modify  fjp 2013-01-17 增加内部采购入库的记录
+    modify  fjp 2013-01-29  增加采购订单入库清空掉自动预留
+    modify fjp 2013-02-04  更改事物日期为入库日期*/
+ --外部采购订单移库
+ PROCEDURE Move_Receipt(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2)
+ IS 
+  row_ BL_V_RI_LOCATION_ST%rowtype;
+  cur_ t_cursor;
+  qty_in_store_ number;
+  Info_              Varchar2(1000);
+  State_             Varchar2(20);
+  Pallet_Id_         Varchar2(100);
+  row1_    customer_order_line_tab%rowtype;
+ BEGIN 
+/*    INSERT  INTO AF(COL,COL01)
+      VALUES('Move_Receipt1',ROWLIST_);
+      COMMIT;*/
+/*      SELECT  COL01 INTO ROWLISTOLD_ FROM AF  WHERE COL='Move_Receipt1' ;*/
+    row_.objid := pkg_a.Get_Item_Value('OBJID',ROWLIST_);
+    open  cur_ for 
+   Select t.*
+   from  BL_V_RI_LOCATION_ST t 
+   where t.OBJID =   row_.OBJID;
+   fetch  cur_ into row_ ;
+   if cur_%notfound then
+      close cur_ ;
+      raise_application_error(-20101, '错误的rowid');
+      return ;
+   end if ;   
+   close cur_ ;
+   row_.DEFAULT_MOVE_LOCATION := pkg_a.Get_Item_Value('DEFAULT_MOVE_LOCATION',ROWLIST_);
+   if nvl(row_.DEFAULT_MOVE_LOCATION,'NULL') = 'NULL'  THEN 
+        raise_application_error(-20101, '请录入录入库位');
+        return ; 
+   END IF ;
+   qty_in_store_  :=pkg_a.Get_Item_Value('QTY_IN_STORE',ROWLIST_);
+   if  qty_in_store_ > row_.QTY_IN_STORE then
+       raise_application_error(-20101, '录入的数量大于此订单可入库的数量');
+        return ; 
+   end if ;
+  RECEIVE_PURCHASE_ORDER_API.Move_Receipt (row_.LOCATION_NO,
+                                           row_.LOT_BATCH_NO,
+                                           row_.SERIAL_NO,
+                                           row_.ENG_CHG_LEVEL,
+                                           row_.WAIV_DEV_REJ_NO,
+                                           row_.ORDER_NO,
+                                           row_.LINE_NO,
+                                           row_.RELEASE_NO,
+                                           row_.RECEIPT_NO,
+                                           row_.DEFAULT_MOVE_LOCATION,
+                                           row_.LOT_BATCH_NO,
+                                           qty_in_store_);
+    --清空自动预留功能 modify fjp 2013-01-29
+     --调用IFS的预留函数清0
+     open cur_ for 
+     select t.*
+     from purchase_order_line_tab t1 
+     inner join customer_order_line_tab t  
+            ON t1.DEMAND_ORDER_NO = t.ORDER_NO
+           AND t1.DEMAND_RELEASE = t.LINE_NO
+           AND t1.DEMAND_SEQUENCE_NO = t.REL_NO
+           AND t1.DEMAND_OPERATION_NO = t.LINE_ITEM_NO
+     where t1.ORDER_NO = row_.ORDER_NO
+       and t1.LINE_NO  = row_.LINE_NO
+       and t1.RELEASE_NO =row_.RELEASE_NO;
+       fetch  cur_ into row1_;
+       while cur_%found loop
+         qty_in_store_  := (-1)*qty_in_store_;
+         Reserve_Customer_Order_Api.Reserve_Manually__(Info_,
+                                                        State_,
+                                                        row1_.Order_No,
+                                                        row1_.Line_No,
+                                                        row1_.Rel_No,
+                                                        row1_.Line_Item_No,
+                                                        row1_.Contract,
+                                                        row_.part_no,
+                                                        row_.DEFAULT_MOVE_LOCATION,
+                                                        row_.Lot_Batch_No,
+                                                        row_.Serial_No,
+                                                        row_.Eng_Chg_Level,
+                                                        row_.Waiv_Dev_Rej_No,
+                                                        Pallet_Id_,
+                                                        qty_in_store_);
+         fetch  cur_ into row1_;                                               
+       end loop;
+        close cur_;
+    --end--                                
+   PKG_A.setSuccess(a311_key_,'BL_V_RI_LOCATION_ST',row_.OBJID);                                        
+   RETURN;
+ END;
+ PROCEDURE In_Move_Receipt(ROWLIST_ VARCHAR2,
+                           USER_ID_ VARCHAR2,
+                           A311_KEY_ VARCHAR2)
+  is
+  row_ BL_V_RI_LOCATION_ST_PL%rowtype;
+  cur_ t_cursor;
+  qty_in_store_ number;
+  DEFAULT_MOVE_LOCATION_  VARCHAR2(100);
+  Maxtransid_ NUMBER;
+  pickno_     varchar2(100);--提货单号
+  rowst_      Inventory_Transaction_Hist2%rowtype;
+  receive_date_ date;
+ begin 
+   row_.objid := pkg_a.Get_Item_Value('OBJID',ROWLIST_);
+    open  cur_ for 
+   Select t.*
+   from  BL_V_RI_LOCATION_ST_PL t 
+   where t.OBJID =   row_.OBJID;
+   fetch  cur_ into row_ ;
+   if cur_%notfound then
+      close cur_ ;
+      raise_application_error(-20101, '错误的rowid');
+      return ;
+   end if ;   
+   close cur_ ;
+   DEFAULT_MOVE_LOCATION_ := pkg_a.Get_Item_Value('DEFAULT_MOVE_LOCATION',ROWLIST_);
+   if nvl(DEFAULT_MOVE_LOCATION_,'NULL') <> 'NULL' THEN 
+      ROW_.DEFAULT_MOVE_LOCATION :=DEFAULT_MOVE_LOCATION_;
+   END IF ;
+   if nvl(row_.picklistno,'NULL') = 'NULL' then 
+        raise_application_error(-20101, '备货单号不能为空');
+        return ; 
+   end if ;
+   if  nvl(ROW_.DEFAULT_MOVE_LOCATION,'NULL') = 'NULL' then
+        raise_application_error(-20101, '请录入移入的库位');
+        return ; 
+   end if ;
+   qty_in_store_  :=pkg_a.Get_Item_Value('QTY_IN_STORE',ROWLIST_);
+   if nvl(qty_in_store_,0)=0  then 
+      qty_in_store_ :=row_.QTY_IN_STORE;
+   end if ;
+   if  qty_in_store_ > row_.QTY_IN_STORE then
+       raise_application_error(-20101, '录入的数量大于此订单可入库的数量');
+       return ; 
+   end if ;
+   --增加内部采购入库的记录
+           --获取事物号
+        SELECT Nvl(MAX(Transaction_Id), 0)
+          INTO Maxtransid_
+          FROM Inventory_Transaction_Hist2
+         WHERE Order_No = Row_.Order_No
+           AND Release_No = Row_.Line_No
+           AND Sequence_No = Row_.Release_No;
+   --end
+  RECEIVE_PURCHASE_ORDER_API.Move_Receipt (row_.LOCATION_NO,
+                                           row_.LOT_BATCH_NO,
+                                           row_.SERIAL_NO,
+                                           row_.ENG_CHG_LEVEL,
+                                           row_.WAIV_DEV_REJ_NO,
+                                           row_.ORDER_NO,
+                                           row_.LINE_NO,
+                                           row_.RELEASE_NO,
+                                           row_.RECEIPT_NO,
+                                           row_.DEFAULT_MOVE_LOCATION,
+                                           row_.LOT_BATCH_NO,
+                                           qty_in_store_);
+   ----增加内部采购入库的记录2013-01-18
+   ---modify fjp 2013-01-21
+/*   pickno_ :=BL_Receive_Purchase_Order_API.Get_InPickList_(Row_.ORDER_NO,
+                                                           Row_.LINE_NO,
+                                                           Row_.RELEASE_NO,
+                                                           Row_.RECEIPT_NO,
+                                                           'PICKNO');*/
+--modify fjp 2013-02-04
+   select PICKNO,RECIVED_DATE 
+    into pickno_,receive_date_ 
+   from bl_picklist  
+   where picklistno = row_.Picklistno;
+   ---end----
+      INSERT INTO Bl_Plinv_Reg_Dtl_Tab
+      (Picklistno,
+       Transaction_Id,
+       Pickno,
+       Order_No,
+       Line_No,
+       Release_No,
+       Location,
+       Lot_Batch_No,
+       Receipt_No)
+      SELECT Row_.Picklistno,
+             Transaction_Id,
+             pickno_,
+             Row_.Order_No,
+             Row_.Line_No,
+             Row_.Release_No,
+             row_.LOCATION_NO,
+             Row_.Lot_Batch_No,
+             Line_Item_No
+        FROM Inventory_Transaction_Hist2
+       WHERE Order_No = Row_.Order_No
+         AND Release_No = Row_.Line_No
+         AND Sequence_No = Row_.Release_No
+         and TRANSACTION_CODE='INVM-IN'
+         AND Transaction_Id > Maxtransid_; 
+    --end  
+    --modify fjp 2013-02-04 更改事物日期为入库日期
+       if   receive_date_ is not null then 
+           open  cur_ for 
+            select t.* 
+            from  Inventory_Transaction_Hist2 t 
+            where  Order_No = Row_.Order_No
+             AND   Release_No = Row_.Line_No
+             AND   Sequence_No = Row_.Release_No
+             and   TRANSACTION_CODE='INVM-IN'
+             AND   Transaction_Id > Maxtransid_;
+             FETCH cur_ INTO rowst_;
+            WHILE  cur_%FOUND LOOP
+              Inventory_Transaction_Hist_API.Modify_Date_Applied(ROWST_.transaction_id,
+                                                                 receive_date_);
+              FETCH cur_ INTO rowst_; 
+            END LOOP;
+            CLOSE cur_;   
+        end if;                                            
+   PKG_A.setSuccess(a311_key_,'BL_V_RI_LOCATION_ST_PL',row_.OBJID);                                        
+   RETURN;
+ end ;
+PROCEDURE Packed_Arrival__(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2)
+ IS 
+ row_   BL_V_PURCHASE_ORDER_LINE_NEW%rowtype ;
+ cur_  t_cursor;
+ message_ varchar2(4000);
+ info_ varchar2(4000);
+  arrival_result_keys_ varchar2(4000);
+  bar_codes_ varchar2(4000);
+  receipt_info_ varchar2(4000);
+  ifexist  varchar2(20);
+  print_arrival_ varchar2(4000);
+  print_bar_codes_ varchar2(4000);
+  QTY_TO_INSPECT_  number;
+ BEGIN
+   row_.OBJID := pkg_a.Get_Item_Value('OBJID',ROWLIST_);
+   open  cur_ for 
+   Select t.*
+   from  BL_V_PURCHASE_ORDER_LINE_NEW t 
+   where t.OBJID =   row_.OBJID;
+   fetch  cur_ into row_ ;
+   if cur_%notfound then
+      close cur_ ;
+      raise_application_error(-20101, '错误的rowid');
+      return ;
+   end if ;   
+   close cur_ ;
+   --MESSAGE_SYS.Add_Attribute(message_,name_,value_ ) ;!
+--$ORDER_NO=10199
+--$LINE_NO=1 a0
+--$RELEASE_NO=2
+--$QTY_A  a0
+    row_.DUE_AT_DOCK :=  pkg_a.Get_Item_Value('DUE_AT_DOCK',ROWLIST_);
+    
+   MESSAGE_SYS.Add_Attribute(message_,'ORDER_NO',row_.ORDER_NO);
+   MESSAGE_SYS.Add_Attribute(message_,'LINE_NO',row_.LINE_NO);
+   MESSAGE_SYS.Add_Attribute(message_,'RELEASE_NO',row_.RELEASE_NO);
+   MESSAGE_SYS.Add_Attribute(message_,'QTY_ARRIVED',  row_.DUE_AT_DOCK);
+   message_ := '!'  || message_;
+   IFSAPP.Receive_Purchase_Order_API.Packed_Over_Delivery_Check__(info_, message_) ;
+   --raise_application_error(-20101, info_);
+   message_ := '!' ;
+
+   
+   MESSAGE_SYS.Add_Attribute(message_,'ORDER_NO',row_.ORDER_NO);
+   MESSAGE_SYS.Add_Attribute(message_,'LINE_NO',row_.LINE_NO);
+   MESSAGE_SYS.Add_Attribute(message_,'RELEASE_NO',row_.RELEASE_NO);
+   MESSAGE_SYS.Add_Attribute(message_,'RECEIPT_REFERENCE',row_.RECEIPT_REFERENCE);
+   if user_id_ = 'ADMIN' then
+        MESSAGE_SYS.Add_Attribute(message_,'RECEIVER','IFSAPP');
+   else
+        MESSAGE_SYS.Add_Attribute(message_,'RECEIVER',user_id_);
+   end if;
+   --获取需要检验的数量
+   QTY_TO_INSPECT_ :=Receive_Purchase_Order_Api.Get_Qty_To_Inspect(row_.ORDER_NO,
+                                                            row_.LINE_NO,
+                                                            row_.RELEASE_NO,
+                                                            row_.DUE_AT_DOCK);
+   ifexist := inventory_part_api.part_exist(contract_ => row_.CONTRACT,
+                                              part_no_ => row_.PART_NO);
+    if ifexist = '1' then
+       MESSAGE_SYS.Add_Attribute(message_,'QTY_ARRIVED',row_.DUE_AT_DOCK);
+       MESSAGE_SYS.Add_Attribute(message_,'QTY_TO_INSPECT',QTY_TO_INSPECT_);
+       MESSAGE_SYS.Add_Attribute(message_,'ARRIVAL_DATE',sysdate);
+       MESSAGE_SYS.Add_Attribute(message_,'RECEIVE_CASE',row_.RECEIVE_CASE);
+       MESSAGE_SYS.Add_Attribute(message_,'QC_CODE',row_.qc_code);
+       MESSAGE_SYS.Add_Attribute(message_,'CONTRACT',row_.CONTRACT);
+       MESSAGE_SYS.Add_Attribute(message_,'PART_NO',row_.PART_NO);
+       MESSAGE_SYS.Add_Attribute(message_,'INVENTORY_PART','TRUE');
+       ---------------------------2012-10-25 01begin------------------------
+       row_.LOCATION_NO :=pkg_a.Get_Item_Value('LOCATION_NO',ROWLIST_);
+       if nvl(row_.LOCATION_NO,'-') = '-' then
+          raise_application_error(-20101, '请输入库位号');
+          return ;
+       end if ;  
+       ---------------------------2012-10-25 01begin------------------------ 
+       MESSAGE_SYS.Add_Attribute(message_,'LOCATION_NO',row_.LOCATION_NO);
+       row_.LOT_BATCH_NO :=  pkg_a.Get_Item_Value('LOT_BATCH_NO',ROWLIST_);
+       if nvl(row_.LOT_BATCH_NO,'-') = '-' then
+          raise_application_error(-20101, '请输入批号');
+          return ;
+       end if ;    
+       MESSAGE_SYS.Add_Attribute(message_,'LOT_BATCH_NO',row_.LOT_BATCH_NO);
+       MESSAGE_SYS.Add_Attribute(message_,'SERIAL_NO','*');
+       MESSAGE_SYS.Add_Attribute(message_,'CONDITION_CODE','');
+       MESSAGE_SYS.Add_Attribute(message_,'ENG_CHG_LEVEL','1');
+       MESSAGE_SYS.Add_Attribute(message_,'WAIV_DEV_REJ_NO','*');
+       
+       --row_.RECEIPT_REFERENCE :=  pkg_a.Get_Item_Value('RECEIPT_REFERENCE',ROWLIST_);
+
+      
+    else
+       MESSAGE_SYS.Add_Attribute(message_,'QTY_ARRIVED',row_.DUE_AT_DOCK);
+       MESSAGE_SYS.Add_Attribute(message_,'QTY_TO_INSPECT',QTY_TO_INSPECT_);
+       MESSAGE_SYS.Add_Attribute(message_,'ARRIVAL_DATE',sysdate);
+       MESSAGE_SYS.Add_Attribute(message_,'RECEIVE_CASE',row_.RECEIVE_CASE);
+       MESSAGE_SYS.Add_Attribute(message_,'QC_CODE',row_.qc_code);
+       MESSAGE_SYS.Add_Attribute(message_,'CONTRACT',row_.CONTRACT);
+       MESSAGE_SYS.Add_Attribute(message_,'PART_NO',row_.PART_NO);
+       MESSAGE_SYS.Add_Attribute(message_,'INVENTORY_PART','FALSE');
+    end if ;
+   
+   message_ :=  message_ ;
+
+   IFSAPP.Receive_Purchase_Order_API.Packed_Arrival__(info_ ,
+                                                      arrival_result_keys_,
+                                                      bar_codes_ ,
+                                                      receipt_info_,
+                                                      message_,
+                                                      print_arrival_,
+                                                      print_bar_codes_);
+    
+   PKG_A.setSuccess(a311_key_,'BL_V_PURCHASE_ORDER_LINE_NEW',row_.OBJID);
+   PKG_A.setMsg(a311_key_,'S0003');
+   
+   RETURN;
+ END;
+
+PROCEDURE Create_New_Receipt(ROWLIST_ VARCHAR2,USER_ID_ VARCHAR2,A311_KEY_ VARCHAR2)
+ IS 
+ row_   BL_V_PURCHASE_ORDER_LINE_NEW%rowtype ;
+  row__   INVENTORY_PART_IN_TRANSIT_CC%rowtype ;
+ cur_  t_cursor;
+ ReceiptNo_ varchar2(50);
+ message_ varchar2(4000);
+ BEGIN 
+   row_.OBJID := pkg_a.Get_Item_Value('OBJID',ROWLIST_);
+   open  cur_ for 
+   Select t.*
+   from  BL_V_PURCHASE_ORDER_LINE_NEW t 
+   where t.OBJID =   row_.OBJID;
+   fetch  cur_ into row_ ;
+   if cur_%notfound then
+      close cur_ ;
+      raise_application_error(-20101, '错误的rowid');
+      return ;
+   end if ;   
+   close cur_ ;
+open cur_ for 
+select t.*
+  from IFSAPP.INVENTORY_PART_IN_TRANSIT_CC t
+ where DELIVERING_CONTRACT = row_.VENDOR_NO AND CONTRACT = row_.CONTRACT AND
+       PART_NO IN row_.PART_NO  AND CONFIGURATION_ID IN ('*'); 
+       fetch cur_ into row__ ;
+ if cur_%notfound then
+      close cur_ ;
+      raise_application_error(-20101, '错误的rowid INVENTORY_PART_IN_TRANSIT_CC' );
+      return ;
+   end if ;   
+   close cur_ ;
+   
+      row_.DUE_AT_DOCK :=  pkg_a.Get_Item_Value('DUE_AT_DOCK',ROWLIST_);
+  receive_purchase_order_api.create_new_receipt(receipt_no_ => ReceiptNo_,
+                                                order_no_ => row_.ORDER_NO,
+                                                line_no_ => row_.LINE_NO,
+                                                release_no_ => row_.RELEASE_NO,
+                                                receipt_reference_ => row_.RECEIPT_REFERENCE,
+                                                receiver_ => 'IFSAPP',
+                                                qty_arrived_ => row_.DUE_AT_DOCK,
+                                                qty_to_inspect_ => 0,
+                                                arrival_date_ => sysdate,
+                                                receive_case_ => row_.RECEIVE_CASE,
+                                                qc_code_ =>  row_.qc_code);      
+     ---------------------------2012-10-25 01begin------------------------
+       row_.LOCATION_NO :=pkg_a.Get_Item_Value('LOCATION_NO',ROWLIST_);
+       if nvl(row_.LOCATION_NO,'-') = '-' then
+          raise_application_error(-20101, '请输入库位号');
+          return ;
+       end if ;  
+       ---------------------------2012-10-25 01begin------------------------ 
+  MESSAGE_SYS.Add_Attribute(message_,'LOCATION_NO',row_.LOCATION_NO);
+  MESSAGE_SYS.Add_Attribute(message_,'LOT_BATCH_NO',row__.LOT_BATCH_NO);
+  MESSAGE_SYS.Add_Attribute(message_,'SERIAL_NO',row__.serial_no);
+  MESSAGE_SYS.Add_Attribute(message_,'ENG_CHG_LEVEL',  row__.eng_chg_level);
+  MESSAGE_SYS.Add_Attribute(message_,'QTY_IN_STORE',  row_.DUE_AT_DOCK);
+  MESSAGE_SYS.Add_Attribute(message_,'LAST_SPLITTED_LINE',  'Y');
+  MESSAGE_SYS.Add_Attribute(message_,'WAIV_DEV_REJ_NO',  row__.waiv_dev_rej_no);
+  message_ := '!'  || message_;
+            
+  receive_purchase_order_api.packed_inventory_receipt__(order_no_ => row_.ORDER_NO,
+                                                        line_no_ => row_.LINE_NO,
+                                                        release_no_ => row_.RELEASE_NO,
+                                                        receipt_no_ => ReceiptNo_,
+                                                        message_ => message_,
+                                                        tot_qty_received_ => row_.DUE_AT_DOCK,
+                                                        remove_transit_qty_ => 'TRUE');
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+   PKG_A.setSuccess(a311_key_,'BL_V_PURCHASE_ORDER_LINE_NEW',row_.OBJID);
+   PKG_A.setMsg(a311_key_,'S0003');
+ 
+ 
+   RETURN;
+ END;
+  FUNCTION  Get_InPickList_(order_no_ varchar2,
+                            line_no_ varchar2,
+                            RELEASE_NO_ varchar2,
+                            RECEIPT_NO_ number,
+                            type_  varchar2)return  varchar2
+  is 
+   result_ varchar2(20);
+   cur_ t_cursor;
+   row_  BL_PLINV_REG_DTL_TAB%rowtype;
+  begin 
+     open  cur_ 
+      for 
+       select t.*
+       from BL_PLINV_REG_DTL_TAB t
+       where t.order_no    = order_no_
+        and  t.line_no     = line_no_
+        and  t.release_no  = RELEASE_NO_
+        and t.receipt_no  = RECEIPT_NO_
+        and nvl(t.flag,'0')='0';
+         fetch cur_ into row_;
+        if cur_%found   then 
+          if type_ = 'PICKLISTNO'  then 
+             result_ := row_.picklistno;
+          end if;
+          if type_ = 'PICKNO' then
+             result_ := row_.PICKNO;
+          end if ;
+        end if ;
+        close cur_;
+     return result_;
+  end;
+  
+end BL_Receive_Purchase_Order_API;
+/

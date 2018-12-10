@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>CreateLabelResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>1</ReturnCode>
+    <ReturnMessage> "甲组": invalid identifier</ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <CreateLabelResp>
+      <RESULT>
+      </RESULT>
+      <MSG>
+      </MSG>
+      <CODE>0</CODE>
+    </CreateLabelResp>
+  </MIAP-Body>
+</MIAP>

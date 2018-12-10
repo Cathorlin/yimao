@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20160811163530</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>TransResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>A1</ReturnCode>
+    <ReturnMessage>13|抱歉！每人每日限制使用2张，今日您已使用2张，交易失败！</ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <TransResp>
+      <XML_RESULT>A1</XML_RESULT>
+      <XML_MSG>13|抱歉！每人每日限制使用2张，今日您已使用2张，交易失败！</XML_MSG>
+      <XML_AMOUNT>0</XML_AMOUNT>
+    </TransResp>
+  </MIAP-Body>
+</MIAP>

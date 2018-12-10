@@ -1,0 +1,103 @@
+﻿*{ margin:0; padding:0}
+    #all
+        {
+            margin: 0px;
+            padding: 0px;
+            font: bold 11pt 微软雅黑;
+            letter-spacing: 3px;
+            color: #606060;
+        }
+        #all input
+        {
+            border: 1px solid #c7cbce;
+        }
+        #money
+        {
+            margin-left: 20px;
+        }
+        #tab1 tr td
+        {
+            padding-top: 20px;
+        }
+        
+        .checkbox-money
+        {
+            color: #cc2424;
+            font-size: 14px;
+            font-weight: bold;
+            height:25px;
+        }
+        .show-money
+        {
+            margin-left: 20px;
+            color: #cc2424;
+            font-size: 19px;
+        }
+        #card_no,#emp_name,#emp_level,#validate,#balance,#points
+        {
+            height:25px;
+           
+            
+            
+        }
+       
+        
+        #auto-print
+        {
+            float: left;
+            margin-top: 10px;
+        }
+        #operate
+        {
+            float: right;
+            margin-right: 30px;
+        }
+        
+        #info
+        {
+            margin-left: 20px;
+            overflow: hidden;
+        }
+        .btn-operate
+        {
+            margin-right: 8px;
+        }
+        #vip-info
+        {
+            margin-top: 60px;
+        }
+        .title-info
+        {
+            color: #2f6182;
+            font-size: 16px;
+            margin: -10px 0 0 10px;
+        }
+        #tab tr td.left-font
+        {
+            padding-left: 90px;
+        }
+        .right-font
+        {
+            padding-left: 200px;
+        }
+        #tab tr td
+        {
+            padding-top: 10px;
+        }
+        .btn-operate
+        {
+            width: 65px;
+            height: 25px;
+            border:0;
+            font-weight: bold;
+            border-radius: 5px;
+            background-color:#0080ff;
+            color:White;
+            margin-top:17px;
+           
+        }
+        .btn-operate:hover
+        {
+            cursor:pointer;
+            background-color:#1E99FF; 
+        }

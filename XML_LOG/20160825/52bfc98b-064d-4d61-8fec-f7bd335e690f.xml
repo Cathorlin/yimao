@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>DistrictListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <DistrictListResp>
+      <DISTRICT_KEY>838</DISTRICT_KEY>
+      <DISTRICT>宿城区</DISTRICT>
+    </DistrictListResp>
+    <DistrictListResp>
+      <DISTRICT_KEY>839</DISTRICT_KEY>
+      <DISTRICT>宿豫县</DISTRICT>
+    </DistrictListResp>
+    <DistrictListResp>
+      <DISTRICT_KEY>840</DISTRICT_KEY>
+      <DISTRICT>沭阳县</DISTRICT>
+    </DistrictListResp>
+    <DistrictListResp>
+      <DISTRICT_KEY>841</DISTRICT_KEY>
+      <DISTRICT>泗阳县</DISTRICT>
+    </DistrictListResp>
+    <DistrictListResp>
+      <DISTRICT_KEY>842</DISTRICT_KEY>
+      <DISTRICT>泗洪县</DISTRICT>
+    </DistrictListResp>
+  </MIAP-Body>
+</MIAP>

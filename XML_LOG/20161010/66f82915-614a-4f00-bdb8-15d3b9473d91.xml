@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>UserLoginResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>-1</ReturnCode>
+    <ReturnMessage>手机号码和密码不匹配</ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <UserLoginResp>
+      <RESULT>-1</RESULT>
+      <MOBILE_NO>
+      </MOBILE_NO>
+      <M001_KEY>
+      </M001_KEY>
+    </UserLoginResp>
+  </MIAP-Body>
+</MIAP>

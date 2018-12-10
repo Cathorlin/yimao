@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>ReplyProgressResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <ReplyProgressResp>
+      <MOBILENO>13601687975</MOBILENO>
+      <REPLYCONTENT>我也耒了</REPLYCONTENT>
+      <NICKNAME>浪淘沙</NICKNAME>
+      <LABELNAME>3号</LABELNAME>
+    </ReplyProgressResp>
+    <ReplyProgressResp>
+      <MOBILENO>13761997975</MOBILENO>
+      <REPLYCONTENT>啥时候来啊</REPLYCONTENT>
+      <NICKNAME>泓泓</NICKNAME>
+      <LABELNAME>2号</LABELNAME>
+    </ReplyProgressResp>
+    <ReplyProgressResp>
+      <MOBILENO>13817340324</MOBILENO>
+      <REPLYCONTENT>来了</REPLYCONTENT>
+      <NICKNAME>yunyun</NICKNAME>
+      <LABELNAME>1号</LABELNAME>
+    </ReplyProgressResp>
+  </MIAP-Body>
+</MIAP>

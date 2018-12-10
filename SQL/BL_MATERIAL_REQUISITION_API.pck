@@ -1,0 +1,351 @@
+CREATE OR REPLACE PACKAGE BL_MATERIAL_REQUISITION_API IS
+  /*  新增初始化 New__
+  Rowlist_ 初始化的参数 可以传入requseturl 当前请求的url地址
+  User_Id_  当前用户
+  A311_Key_ A314的主键 */
+  PROCEDURE NEW__(ROWLIST_ VARCHAR2, USER_ID_ VARCHAR2, A311_KEY_ VARCHAR2);
+
+  /*  保存数据 Modify__
+      Rowlist_  保存当前行的数据 
+      User_Id_  当前用户
+      A311_Key_ A314的主键     
+  */
+  PROCEDURE MODIFY__(ROWLIST_  VARCHAR2,
+                     USER_ID_  VARCHAR2,
+                     A311_KEY_ VARCHAR2);
+  /*  列发生变化的时候
+      Column_Id_   当前修改的列
+      Mainrowlist_ 主档的数据 明细有值，主档为空
+      Rowlist_  保存当前行的数据 
+      User_Id_  当前用户
+      Outrowlist_  输出的数据   
+  */
+  PROCEDURE ITEMCHANGE__(COLUMN_ID_   VARCHAR2,
+                         MAINROWLIST_ VARCHAR2,
+                         ROWLIST_     VARCHAR2,
+                         USER_ID_     VARCHAR2,
+                         OUTROWLIST_  OUT VARCHAR2);
+  /*  列发生变化的时候
+      Dotype_   ADD_ROW  DEL_ROW 主要控制 明细的添加行 和 删除行 按钮 
+      KEY_ 主档的主键值
+      User_Id_  当前用户
+  */
+  --材料申请下达
+  PROCEDURE RELEASED__(ROWID_    VARCHAR2,
+                       USER_ID_  VARCHAR2,
+                       A311_KEY_ VARCHAR2);
+  PROCEDURE RELEASEDCANCEL__(ROWID_    VARCHAR2,
+                             USER_ID_  VARCHAR2,
+                             A311_KEY_ VARCHAR2);
+  FUNCTION CHECKBUTTON__(DOTYPE_  IN VARCHAR2,
+                         KEY_     IN VARCHAR2,
+                         USER_ID_ IN VARCHAR2) RETURN VARCHAR2;
+
+  /*  实现业务逻辑控制列的 编辑性
+      Doaction_   I M 明细肯定为 M   I 新增 M 修改 页面载入在 当前用有列的 可用性的以后 调用  
+      Column_Id_  列
+      Rowlist_  当前用户
+  */
+  FUNCTION CHECKUSEABLE(DOACTION_  IN VARCHAR2,
+                        COLUMN_ID_ IN VARCHAR,
+                        ROWLIST_   IN VARCHAR2) RETURN VARCHAR2;
+
+END BL_MATERIAL_REQUISITION_API;
+/
+CREATE OR REPLACE PACKAGE BODY BL_MATERIAL_REQUISITION_API IS
+  TYPE T_CURSOR IS REF CURSOR;
+  --【COLUMN】  列名称 按实际的逻辑 用实际的列名
+  -- 【VALUE】  列的数据 按具体的实际逻辑 用对应的参数来替代
+  /*
+  报错
+  Raise_Application_Error(pkg_a.raise_error,'出错了 ！！！！！');
+  */
+
+  /*  新增初始化 New__
+  Rowlist_ 初始化的参数 可以传入requseturl 当前请求的url地址
+  User_Id_  当前用户
+  A311_Key_ A314的主键 */
+  PROCEDURE NEW__(ROWLIST_ VARCHAR2, USER_ID_ VARCHAR2, A311_KEY_ VARCHAR2) IS
+    ATTR_OUT VARCHAR2(4000);
+    row_ BL_V_MATERIAL_REQUISITION%rowtype;
+  BEGIN
+    ATTR_OUT := '';
+     Row_.Contract := Pkg_Attr.Get_Default_Contract(User_Id_);
+    If (Nvl(Row_.Contract, '0') <> '0') Then
+      Pkg_a.Set_Item_Value('CONTRACT', Row_.Contract, Attr_Out);
+    End If;
+    -- pkg_a.Set_Item_Value('【COLUMN】', '【VALUE】', attr_out);
+    PKG_A.SETRESULT(A311_KEY_, ATTR_OUT);
+  END;
+
+  /*  保存数据 Modify__
+      Rowlist_  保存当前行的数据 
+      User_Id_  当前用户
+      A311_Key_ A314的主键     
+  */
+  PROCEDURE MODIFY__(ROWLIST_  VARCHAR2,
+                     USER_ID_  VARCHAR2,
+                     A311_KEY_ VARCHAR2) IS
+    OBJID_      VARCHAR2(50);
+    INFO_       VARCHAR2(4000);
+    OBJVERSION_ VARCHAR2(4000);
+    INDEX_      VARCHAR2(1);
+    CUR_        T_CURSOR;
+    DOACTION_   VARCHAR2(10);
+    ACTION_     VARCHAR2(100);
+    POS_        NUMBER;
+    POS1_       NUMBER;
+    I           NUMBER;
+    V_          VARCHAR(1000);
+    COLUMN_ID_  VARCHAR(1000);
+    DATA_       VARCHAR(4000);
+    ATTR_       VARCHAR2(4000);
+    ROW_        BL_V_MATERIAL_REQUISITION%ROWTYPE;
+  BEGIN
+  
+    INDEX_     := F_GET_DATA_INDEX();
+    ROW_.OBJID := PKG_A.GET_ITEM_VALUE('OBJID', INDEX_ || ROWLIST_);
+    DOACTION_  := PKG_A.GET_ITEM_VALUE('DOACTION', ROWLIST_);
+    --新增
+    IF DOACTION_ = 'I' THEN
+      ATTR_ := '';
+      CLIENT_SYS.ADD_TO_ATTR('CONTRACT',
+                             PKG_A.GET_ITEM_VALUE('CONTRACT', ROWLIST_),
+                             ATTR_);
+      CLIENT_SYS.ADD_TO_ATTR('INT_CUSTOMER_NO',
+                             PKG_A.GET_ITEM_VALUE('INT_CUSTOMER_NO',
+                                                  ROWLIST_),
+                             ATTR_);
+      CLIENT_SYS.ADD_TO_ATTR('DUE_DATE',
+                             PKG_A.GET_ITEM_VALUE('DUE_DATE', ROWLIST_),
+                             ATTR_);
+      /*      CLIENT_SYS.ADD_TO_ATTR('DATE_ENTERED',
+      PKG_A.GET_ITEM_VALUE('DATE_ENTERED', ROWLIST_),
+      ATTR_);*/
+      CLIENT_SYS.ADD_TO_ATTR('DESTINATION_ID',
+                             PKG_A.GET_ITEM_VALUE('DESTINATION_ID',
+                                                  ROWLIST_),
+                             ATTR_);
+      CLIENT_SYS.ADD_TO_ATTR('INTERNAL_DESTINATION',
+                             PKG_A.GET_ITEM_VALUE('INTERNAL_DESTINATION',
+                                                  ROWLIST_),
+                             ATTR_);
+    
+      CLIENT_SYS.ADD_TO_ATTR('NOTE_TEXT',
+                             PKG_A.GET_ITEM_VALUE('NOTE_TEXT', ROWLIST_),
+                             ATTR_);
+      ACTION_ := 'DO';
+      MATERIAL_REQUISITION_API.NEW__(INFO_,
+                                     OBJID_,
+                                     OBJVERSION_,
+                                     ATTR_,
+                                     ACTION_);
+      --改回计划状态
+      ACTION_ := 'DO';
+      INFO_   := '';
+      ATTR_   := '';
+      CLIENT_SYS.ADD_TO_ATTR('STATUS_CODE', 'Planned', ATTR_);
+      MATERIAL_REQUISITION_API.MODIFY__(INFO_,
+                                        OBJID_,
+                                        OBJVERSION_,
+                                        ATTR_,
+                                        ACTION_);
+      PKG_A.SETSUCCESS(A311_KEY_, 'BL_V_MATERIAL_REQUISITION', OBJID_);
+      RETURN;
+    END IF;
+    --修改
+    IF DOACTION_ = 'M' THEN
+      OPEN CUR_ FOR
+        SELECT T.*
+          FROM BL_V_MATERIAL_REQUISITION T
+         WHERE T.OBJID = ROW_.OBJID;
+      FETCH CUR_
+        INTO ROW_;
+      IF CUR_%NOTFOUND THEN
+        CLOSE CUR_;
+        RAISE_APPLICATION_ERROR(-20101, '错误的rowid');
+        RETURN;
+      END IF;
+      CLOSE CUR_;
+    
+      DATA_ := ROWLIST_;
+      POS_  := INSTR(DATA_, INDEX_);
+      I     := I + 1;
+      LOOP
+        EXIT WHEN NVL(POS_, 0) <= 0;
+        EXIT WHEN I > 300;
+        V_         := SUBSTR(DATA_, 1, POS_ - 1);
+        DATA_      := SUBSTR(DATA_, POS_ + 1);
+        POS_       := INSTR(DATA_, INDEX_);
+        POS1_      := INSTR(V_, '|');
+        COLUMN_ID_ := SUBSTR(V_, 1, POS1_ - 1);
+        IF COLUMN_ID_ <> 'OBJID' AND COLUMN_ID_ <> 'DOACTION' AND
+           LENGTH(NVL(COLUMN_ID_, '')) > 0 THEN
+          V_ := SUBSTR(V_, POS1_ + 1);
+          CLIENT_SYS.ADD_TO_ATTR(COLUMN_ID_, V_, ATTR_);
+          I := I + 1;
+        END IF;
+      END LOOP;
+      ACTION_ := 'DO';
+      MATERIAL_REQUISITION_API.MODIFY__(INFO_,
+                                        ROW_.OBJID,
+                                        ROW_.OBJVERSION,
+                                        ATTR_,
+                                        ACTION_);
+      PKG_A.SETSUCCESS(A311_KEY_, 'BL_V_MATERIAL_REQUISITION', ROW_.OBJID);
+      RETURN;
+    END IF;
+    --删除
+    IF DOACTION_ = 'D' THEN
+      --pkg_a.Setsuccess(A311_Key_, '[TABLE_ID]', Objid_);
+      RETURN;
+    END IF;
+  
+  END;
+  /*  列发生变化的时候
+      Column_Id_   当前修改的列
+      Mainrowlist_ 主档的数据 明细有值，主档为空
+      Rowlist_  保存当前行的数据 
+      User_Id_  当前用户
+      Outrowlist_  输出的数据   
+  */
+  PROCEDURE ITEMCHANGE__(COLUMN_ID_   VARCHAR2,
+                         MAINROWLIST_ VARCHAR2,
+                         ROWLIST_     VARCHAR2,
+                         USER_ID_     VARCHAR2,
+                         OUTROWLIST_  OUT VARCHAR2) IS
+    ATTR_OUT VARCHAR2(4000);
+    ROW_     BL_V_MATERIAL_REQUISITION%ROWTYPE;
+  BEGIN
+    IF COLUMN_ID_ = 'INT_CUSTOMER_NO' THEN
+      ROW_.INT_CUSTOMER_NO := PKG_A.GET_ITEM_VALUE('INT_CUSTOMER_NO',
+                                                   ROWLIST_);
+      ROW_.NAME            := INTERNAL_CUSTOMER_API.GET_NAME(ROW_.INT_CUSTOMER_NO);
+      PKG_A.SET_ITEM_VALUE('NAME', ROW_.NAME, ATTR_OUT);
+    END IF;
+    IF COLUMN_ID_ = 'DESTINATION_ID' THEN
+      ROW_.CONTRACT       := PKG_A.GET_ITEM_VALUE('CONTRACT', ROWLIST_);
+      ROW_.DESTINATION_ID := PKG_A.GET_ITEM_VALUE('DESTINATION_ID',
+                                                  ROWLIST_);
+      ROW_.DESTINATION    := INTERNAL_DESTINATION_API.GET_DESCRIPTION(ROW_.CONTRACT,
+                                                                      ROW_.DESTINATION_ID);
+      PKG_A.SET_ITEM_VALUE('DESTINATION', ROW_.DESTINATION, ATTR_OUT);
+    END IF;
+    OUTROWLIST_ := ATTR_OUT;
+  END;
+  /*  列发生变化的时候
+      Dotype_   ADD_ROW  DEL_ROW 主要控制 明细的添加行 和 删除行 按钮 
+      KEY_ 主档的主键值
+      User_Id_  当前用户
+  */
+  PROCEDURE RELEASED__(ROWID_    VARCHAR2,
+                       USER_ID_  VARCHAR2,
+                       A311_KEY_ VARCHAR2) IS
+    INFO_   VARCHAR2(4000);
+    ACTION_ VARCHAR2(100);
+    ATTR_   VARCHAR2(4000);
+    CUR_    T_CURSOR;
+    ROW_    BL_V_MATERIAL_REQUISITION%ROWTYPE;
+  BEGIN
+    OPEN CUR_ FOR
+      SELECT T.* FROM BL_V_MATERIAL_REQUISITION T WHERE T.OBJID = ROWID_;
+    FETCH CUR_
+      INTO ROW_;
+    IF CUR_%NOTFOUND THEN
+      CLOSE CUR_;
+      RAISE_APPLICATION_ERROR(-20101, '错误的rowid');
+      RETURN;
+    END IF;
+    CLOSE CUR_;
+    ACTION_ := 'CHECK';
+    CLIENT_SYS.ADD_TO_ATTR('STATUS_CODE', 'Released', ATTR_);
+    MATERIAL_REQUISITION_API.MODIFY__(INFO_,
+                                      ROW_.OBJID,
+                                      ROW_.OBJVERSION,
+                                      ATTR_,
+                                      ACTION_);
+    ACTION_ := 'DO';
+    ATTR_   := '';
+    CLIENT_SYS.ADD_TO_ATTR('STATUS_CODE', 'Released', ATTR_);
+    MATERIAL_REQUISITION_API.MODIFY__(INFO_,
+                                      ROW_.OBJID,
+                                      ROW_.OBJVERSION,
+                                      ATTR_,
+                                      ACTION_);
+    RETURN;
+  END;
+  PROCEDURE RELEASEDCANCEL__(ROWID_    VARCHAR2,
+                             USER_ID_  VARCHAR2,
+                             A311_KEY_ VARCHAR2) IS
+    INFO_   VARCHAR2(4000);
+    ACTION_ VARCHAR2(100);
+    ATTR_   VARCHAR2(4000);
+    CUR_    T_CURSOR;
+    ROW_    BL_V_MATERIAL_REQUISITION%ROWTYPE;
+  BEGIN
+    OPEN CUR_ FOR
+      SELECT T.* FROM BL_V_MATERIAL_REQUISITION T WHERE T.OBJID = ROWID_;
+    FETCH CUR_
+      INTO ROW_;
+    IF CUR_%NOTFOUND THEN
+      CLOSE CUR_;
+      RAISE_APPLICATION_ERROR(-20101, '错误的rowid');
+      RETURN;
+    END IF;
+    CLOSE CUR_;
+    ACTION_ := 'CHECK';
+    CLIENT_SYS.ADD_TO_ATTR('STATUS_CODE', 'Planned', ATTR_);
+    MATERIAL_REQUISITION_API.MODIFY__(INFO_,
+                                      ROW_.OBJID,
+                                      ROW_.OBJVERSION,
+                                      ATTR_,
+                                      ACTION_);
+    ACTION_ := 'DO';
+    ATTR_   := '';
+    CLIENT_SYS.ADD_TO_ATTR('STATUS_CODE', 'Planned', ATTR_);
+    MATERIAL_REQUISITION_API.MODIFY__(INFO_,
+                                      ROW_.OBJID,
+                                      ROW_.OBJVERSION,
+                                      ATTR_,
+                                      ACTION_);
+    RETURN;
+  END;
+  FUNCTION CHECKBUTTON__(DOTYPE_  IN VARCHAR2,
+                         KEY_     IN VARCHAR2,
+                         USER_ID_ IN VARCHAR2) RETURN VARCHAR2 IS
+  BEGIN
+    IF DOTYPE_ = 'ADD_ROW' THEN
+      RETURN '1';
+    
+    END IF;
+    IF DOTYPE_ = 'DEL_ROW' THEN
+      RETURN '1';
+    
+    END IF;
+    RETURN '1';
+  END;
+
+  /*  实现业务逻辑控制列的 编辑性
+      Doaction_   I M 明细肯定为 M   I 新增 M 修改 页面载入在 当前用有列的 可用性的以后 调用  
+      Column_Id_  列
+      Rowlist_  当前用户
+      返回: 1 可用
+      0 不可用
+  */
+  FUNCTION CHECKUSEABLE(DOACTION_  IN VARCHAR2,
+                        COLUMN_ID_ IN VARCHAR,
+                        ROWLIST_   IN VARCHAR2) RETURN VARCHAR2 IS
+    ROW_ BL_V_MATERIAL_REQUISITION%ROWTYPE;
+  BEGIN
+    /*    if Column_Id_ = 'INTERNAL_DESTINATION' or
+       Column_Id_ = 'INT_CUSTOMER_NO' or Column_Id_ = 'DESTINATION_ID' then
+      return '1';
+    end if;*/
+    ROW_.OBJID := PKG_A.GET_ITEM_VALUE('OBJID', ROWLIST_);
+    ROW_.OBJID := NVL(ROW_.OBJID, 'NULL');
+    IF ROW_.OBJID <> 'NULL' THEN
+      RETURN '0';
+    END IF;
+  END;
+END BL_MATERIAL_REQUISITION_API;
+/

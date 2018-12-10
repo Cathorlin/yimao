@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>AttendActivityListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <AttendActivityListResp>
+      <ACTIVITYNAME>1231</ACTIVITYNAME>
+      <MOBILENO>13601687975</MOBILENO>
+      <MOBILE>13816638969</MOBILE>
+      <ACTIVITYID>10681</ACTIVITYID>
+    </AttendActivityListResp>
+    <AttendActivityListResp>
+      <ACTIVITYNAME>0916作业</ACTIVITYNAME>
+      <MOBILENO>13601687975</MOBILENO>
+      <MOBILE>13601687975</MOBILE>
+      <ACTIVITYID>10401</ACTIVITYID>
+    </AttendActivityListResp>
+    <AttendActivityListResp>
+      <ACTIVITYNAME>首轮测笔记</ACTIVITYNAME>
+      <MOBILENO>13601687975</MOBILENO>
+      <MOBILE>13601687975</MOBILE>
+      <ACTIVITYID>10321</ACTIVITYID>
+    </AttendActivityListResp>
+  </MIAP-Body>
+</MIAP>

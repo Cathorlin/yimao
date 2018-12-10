@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="index_xml.aspx.cs" Inherits="index_xml" %>

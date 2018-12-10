@@ -1,0 +1,33 @@
+﻿/*定义菜单方框的样式1*/
+.skin0 {
+position:absolute;
+padding-top:4px;
+text-align:left;
+width:100px;               /*宽度，可以根据实际的菜单项目名称的长度进行适当地调整*/
+border:2px solid black;
+background-color:menu;     /*菜单的背景颜色方案，这里选择了系统默认的菜单颜色*/
+font-family:"宋体";
+line-height:20px;
+cursor:default;
+visibility:hidden;        /*初始时，设置为不可见*/
+}
+/*定义菜单方框的样式2*/
+.skin1 {
+padding-top:4px;
+cursor:default;
+font:menutext;
+position:absolute;
+text-align:left;
+font-family: "宋体";
+font-size: 10pt;
+width:100px;              /*宽度，可以根据实际的菜单项目名称的长度进行适当地调整*/
+background-color:menu;    /*菜单的背景颜色方案，这里选择了系统默认的菜单颜色*/
+border:1 solid buttonface;
+visibility:hidden;        /*初始时，设置为不可见*/
+border:2 outset buttonhighlight;
+}
+
+/*定义菜单条的显示样式*/
+.menuitems {
+padding:2px 1px 2px 10px;
+}

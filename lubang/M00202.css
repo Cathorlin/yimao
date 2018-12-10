@@ -1,0 +1,151 @@
+﻿
+#m012
+{
+	float: left;
+	width: 620px;
+	text-align:left;
+}
+#m012 .listm012
+{
+	margin: 0px 0 24px 0;
+	width: 620px;
+}
+ 
+#m012 .listm012   ul li{ margin:0px 0 0px 20px;}
+#m012 .listm012   ul li .showrow {width:610px;padding :0 0 7px 0;border-bottom:1px dashed #ddd; display:inline-block;}
+#m012 .listm012   ul li .showrow .pic{float:left;}
+#m012 .listm012   ul li .showrow .pic img {float:left;width:125px;height:107px; border:1px solid #AAEECA; padding:2px;}
+#m012 .listm012   ul li .showrow .txt {float:left;}
+#m012 .listm012   ul li .showrow .txt li{ line-height:19px;}
+#m012 .listm012   ul li .showrow .txt li a{color:red;}
+#m012 .listm012   ul li .showrow .txt li a:hover{color:#ff6600;}
+#m012 .listm012   ul li .showrow .txt .give{float:right; padding-right:20px;}
+#m012 .listm012   ul li .showrow .txt .amount{color:red; font-family:Arial;}
+#m012 .listm012   ul li .showrow .txt .desc{width:400px;
+	 white-space:nowrap;  /*溢出的时候文字换行，并配合上面的固定高度，对文字进行裁切*/ 
+    overflow:hidden; 
+    text-overflow:ellipsis;  /*截断文字，显示省略号(...)*/ 
+    -o-text-overflow:ellipsis;  /*Opera的专用截断文字的属性*/ }
+#m012 .listm012   ul li .showrow .txt .nm1{float:left; width:350px;color:#666; margin-left:10px;text-align:left;}
+#m012 .listm012   ul li .showrow .txt .nm2{float:left; width:490px;margin:3px 0 0 10px;font:12px 宋体;text-align:left;}
+#m012 .listm012   ul li .showrow .txt .nm2 a{color:#666;}
+#m012 .listm012   ul li .showrow .txt .nm2 a:hover{color:#FF6600;}
+#m012 .listm012 ul li .showrow .txt .dp
+{
+	float: left;
+	margin: -20px 0 0 350px;
+	width: 130px;
+	position: static;
+}
+
+
+#m012 .listm012   ul li .showrow .txt .nm3
+{
+	 float:left; width:490px;color:#666; margin:3px 0 0 10px; text-align:left;
+	 white-space:nowrap;  /*溢出的时候文字换行，并配合上面的固定高度，对文字进行裁切*/ 
+    overflow:hidden; 
+    text-overflow:ellipsis;  /*截断文字，显示省略号(...)*/ 
+    -o-text-overflow:ellipsis;  /*Opera的专用截断文字的属性*/ 
+}
+#m012 .listm012   ul li .showrow .txt .nm4{float:left; width:490px;color:#666; margin:3px 0 0 10px; text-align:left;}
+#m012 .listm012   ul li .showrow .txt .dp a{color:red;}
+#m012 .listm012   ul li .showrow .txt .dp a:hover{color:#FF6600;}
+#m012 .listm012   ul li .showrow .txt .dp span{color:#666;margin-left:5px;}
+
+
+/*M001*/
+#m001
+{
+	float: left;
+	width: 620px;
+    text-align:left;
+}
+#m001 .listm001
+{
+	margin: 0px 0 24px 0;
+	width: 620px;
+}
+ 
+#m001 .listm001   ul li{ margin:0px 0 0px 20px;}
+#m001 .listm001   ul li .showrow {width:610px;padding :0 0 7px 0;border-bottom:1px dashed #ddd; display:inline-block;}
+#m001 .listm001   ul li .showrow .pic{float:left;}
+#m001 .listm001   ul li .showrow .pic img {float:left;width:125px;height:107px; border:1px solid #ddd;padding:2px;}
+#m001 .listm001   ul li .showrow .txt {float:left;width:450px;}
+#m001 .listm001   ul li .showrow .txt li{line-height:23px;}
+#m001 .listm001   ul li .showrow .txt .vip_amount{float:right;}
+#m001 .listm001   ul li .showrow .txt li span{color:Red;font-family:Arial;}
+#m001 .listm001   ul li .showrow .txt .jion_quit{float:right;}
+#m001 .listm001   ul li .showrow .txt .jion_quit a{color:Red;}
+#m001 .listm001   ul li .showrow .txt .jion_quit a:hover{color:#ff6600;}
+#m001 .listm001   ul li .showrow .txt .nm1{float:left; width:350px;color:#666; margin-left:10px;text-align:left;}
+#m001 .listm001   ul li .showrow .txt .nm2{float:left; width:490px;color:#666;margin:3px 0 0 10px;font:12px 宋体;text-align:left;}
+#m001 .listm001   ul li .showrow .txt .dp {float:right; padding-right:30px; width:130px;}
+
+#m001 .listm001   ul li .showrow .txt .nm3
+{
+	 float:left; width:490px;color:#666; margin:3px 0 0 10px; text-align:left;
+	 white-space:nowrap;  /*溢出的时候文字换行，并配合上面的固定高度，对文字进行裁切*/ 
+    overflow:hidden; 
+    text-overflow:ellipsis;  /*截断文字，显示省略号(...)*/ 
+    -o-text-overflow:ellipsis;  /*Opera的专用截断文字的属性*/ 
+}
+#m001 .listm001   ul li .showrow .txt .nm4{float:left; width:490px;color:#666; margin:3px 0 0 10px; text-align:left;}
+#m001 .listm001   ul li .showrow .txt .dp a{color:red; margin-left:5px;}
+#m001 .listm001   ul li .showrow .txt .dp a:hover{color:#FF6600;}
+#m001 .listm001   ul li .showrow .txt .dp span{color:#666;}
+
+
+
+
+#header .account{float:right;padding-top:5px;height:34px;font-family:Tahoma,Geneva,sans-serif}
+#header .account .box{float:right;position:relative;padding:0 2px}
+#header .account .box span.name{display:inline-block;padding:3px 9px 0;height:30px;border-bottom:0;color:#fff}
+#header .account .box span.name a{padding-right:8px;background:url(../pic/com_icon.png?t=201107201740) right -114px no-repeat;color:#fff;text-decoration:none}
+#header .account .box span.normal{border:0}
+#header .account .box span.normal a{padding-right:0;background:0}
+#header .account .box span.normal a:hover{color:#AACAEE}
+#header .account .box span.on{background:#fff;border:1px solid #c9c9c9;border-bottom:0;padding:3px 8px 0}
+#header .account .box span.on a{background:url(../pic/com_icon.png?t=201107201740) right -144px no-repeat;color:#000}
+#header .account .box .here{position:absolute;top:-28px;left:-95px;width:155px;line-height:normal;height:31px;line-height:24px;line-height:28px;_line-height:24px;color:#000;overflow:hidden;background:url(../pic/com_pic.png?t=201107201740) -404px 0 no-repeat;text-align:center;font-family:Tahoma,Geneva,sans-serif}
+#header .account .box span.close{display:inline-block;width:10px;height:10px;margin-right:2px;margin-top:8px;overflow:hidden;background:url(../pic/com_icon.png?t=201107201740) 0 -180px no-repeat;cursor:pointer}
+#header .account .pt{position:absolute;top:34px;left:2px;border:1px solid #c9c9c9;border-top:0;background:#fff}
+#header .account .pt a{color:#36c;text-decoration:none}
+#header .account .pt a:hover{color:#f00}
+#header .account .links{width:54px;padding:5px 9px;top:24px}
+#header .account .links ul li{padding-bottom:1px}
+#header .account .logon{width:190px}
+#header .account .logon input.text{border:1px solid #ddd;border-color:#aaa #dddddd #AACAEE #aaaaaa;padding:1px 2px 1px 2px;width:158px;height:19px;line-height:19px;font-size:12px;font-family:Tahoma,Geneva,sans-serif}
+#header .account .logon input.code{width:40px}
+#header .account .logon ul{padding:6px 12px}
+#header .account .logon ul li{padding:3px 0;clear:both;font-family:Tahoma}
+#header .account .logon label.reme{padding-top:2px}
+#header .account .logon label.reme input{margin-right:3px;*margin-right:0;*margin-left:-3px;vertical-align:-2px;*vertical-align:-3px}
+#header .account .logon input.btn{width:69px;height:25px;background:url(../pic/com_pic.png?t=201107201740) -569px top no-repeat;text-align:center;font:bold 12px/22px simsun;color:#fff;border:0;cursor:pointer;overflow:hidden}
+#header .account .logon input.logining{background:url(../pic/indicator.gif?t=201107201740) center center no-repeat;cursor:auto}
+#header .account .logon input.btn_on{filter:alpha(opacity=80);opacity:.8}
+#header .account .logon ul li.line{border-top:1px solid #AACAEE;margin-top:3px}
+#header .account .logon input.btn_en{font-family:Arial,Helvetica,sans-serif}
+#header .account .links_en{width:75px;padding:5px 9px;top:24px;right:2px;left:auto;font-size:11px}
+
+.blockCity{ position:absolute;font-size:9pt;  background-color:White; padding:5px; border:1px solid #F5C66B;line-height:160%; width:250px; display:none;}
+.blockCity a{
+color:#000000;
+font-size:9pt;
+text-decoration:none;
+}
+.blockCity a:hover
+{
+font-size:10pt;
+}
+.blockCity table
+{
+border:1px dotted #F5C66B;
+background-color:#fef1dd;
+}
+.blockCity table td
+{
+width:auto;
+text-align:left;
+}
+.list_color a{color:blue; font-size:14px;}
+.list_color a:hover{color:#ff6600;font-size:14px;border-bottom:1px dashed #ff6600;}

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>ReplyMessageResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>1</ReturnCode>
+    <ReturnMessage> value too large for column "SYSDB"."M04302"."ENTER_USER" (actual: 11, maximum: 10)</ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <ReplyMessageResp>
+      <RESULT>
+      </RESULT>
+      <MSG>
+      </MSG>
+    </ReplyMessageResp>
+  </MIAP-Body>
+</MIAP>

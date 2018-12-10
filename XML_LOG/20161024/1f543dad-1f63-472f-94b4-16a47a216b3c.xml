@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>ActivityListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <ActivityListResp>
+      <ACTIVITYNAME>123</ACTIVITYNAME>
+      <MOBILENO>13816638969</MOBILENO>
+      <MOBILE>13816638969</MOBILE>
+      <ACTIVITYID>10801</ACTIVITYID>
+    </ActivityListResp>
+    <ActivityListResp>
+      <ACTIVITYNAME>123123</ACTIVITYNAME>
+      <MOBILENO>13816638969</MOBILENO>
+      <MOBILE>13816638969</MOBILE>
+      <ACTIVITYID>10802</ACTIVITYID>
+    </ActivityListResp>
+  </MIAP-Body>
+</MIAP>

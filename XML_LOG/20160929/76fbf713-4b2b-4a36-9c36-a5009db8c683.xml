@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>DynamicPassResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>1</ReturnCode>
+    <ReturnMessage>您的手机号码不是联盟卡的会员</ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <DynamicPassResp>
+      <RESULT>1</RESULT>
+    </DynamicPassResp>
+  </MIAP-Body>
+</MIAP>

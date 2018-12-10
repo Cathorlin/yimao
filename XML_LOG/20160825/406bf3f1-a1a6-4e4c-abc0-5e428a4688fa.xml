@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>SearchActivityResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <SearchActivityResp>
+      <GROUPID>11701</GROUPID>
+      <GROUPNAME>羽毛球</GROUPNAME>
+      <CREATETIME>2016-8-3 12:08:47</CREATETIME>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>11721</GROUPID>
+      <GROUPNAME>球来球往</GROUPNAME>
+      <CREATETIME>2016-8-3 15:30:57</CREATETIME>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>11761</GROUPID>
+      <GROUPNAME>球来球往</GROUPNAME>
+      <CREATETIME>2016-8-3 15:45:29</CREATETIME>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>11801</GROUPID>
+      <GROUPNAME>102</GROUPNAME>
+      <CREATETIME>2016-8-4 16:22:45</CREATETIME>
+      <HEADPORTRAIT>2016-08-04_042238.png</HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>11821</GROUPID>
+      <GROUPNAME>111</GROUPNAME>
+      <CREATETIME>2016-8-5 9:56:16</CREATETIME>
+      <HEADPORTRAIT>2016-08-05_095657.png</HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>11861</GROUPID>
+      <GROUPNAME>机关编制干部</GROUPNAME>
+      <CREATETIME>2016-8-5 13:46:38</CREATETIME>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>11881</GROUPID>
+      <GROUPNAME>12341</GROUPNAME>
+      <CREATETIME>2016-8-5 18:13:20</CREATETIME>
+      <HEADPORTRAIT>2016-08-05_061310.png</HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>11921</GROUPID>
+      <GROUPNAME>家庭营</GROUPNAME>
+      <CREATETIME>2016-8-5 22:59:22</CREATETIME>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>11681</GROUPID>
+      <GROUPNAME>101</GROUPNAME>
+      <CREATETIME>2016-8-3 10:31:19</CREATETIME>
+      <HEADPORTRAIT>2016-08-03_103112.png</HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>12361</GROUPID>
+      <GROUPNAME>111</GROUPNAME>
+      <CREATETIME>2016-8-16 16:55:20</CREATETIME>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </SearchActivityResp>
+    <SearchActivityResp>
+      <GROUPID>100001</GROUPID>
+      <GROUPNAME>111</GROUPNAME>
+      <CREATETIME>2016-8-25 14:51:11</CREATETIME>
+      <HEADPORTRAIT>
+      </HEADPORTRAIT>
+    </SearchActivityResp>
+  </MIAP-Body>
+</MIAP>

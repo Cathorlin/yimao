@@ -1,0 +1,944 @@
+CREATE OR REPLACE PACKAGE Bl_Po_Line_Part_Api IS
+
+  PROCEDURE New__(Rowlist_ VARCHAR2, User_Id_ VARCHAR2, A311_Key_ VARCHAR2);
+  PROCEDURE Usermodify__(Row_     IN Bl_Purchase_Order_Line_Part%ROWTYPE,
+                         User_Id_ IN VARCHAR2);
+  PROCEDURE Confirm__(Rowid_    VARCHAR2,
+                      User_Id_  VARCHAR2,
+                      A311_Key_ VARCHAR2);
+  PROCEDURE Modify__(Rowlist_  VARCHAR2,
+                     User_Id_  VARCHAR2,
+                     A311_Key_ VARCHAR2);
+  PROCEDURE Remove__(Rowlist_  VARCHAR2,
+                     User_Id_  VARCHAR2,
+                     A311_Key_ VARCHAR2);
+  PROCEDURE Reopen__(Rowid_    VARCHAR2,
+                     User_Id_  VARCHAR2,
+                     A311_Key_ VARCHAR2);
+  PROCEDURE Set_Cancel_Reason(Rowlist_  VARCHAR2,
+                              User_Id_  VARCHAR2,
+                              A311_Key_ VARCHAR2);
+  PROCEDURE Unpack_Direct_Delivery(Rowlist_  VARCHAR2,
+                                   User_Id_  VARCHAR2,
+                                   A311_Key_ VARCHAR2);
+  PROCEDURE Itemchange__(Column_Id_   VARCHAR2,
+                         Mainrowlist_ VARCHAR2,
+                         Rowlist_     VARCHAR2,
+                         User_Id_     VARCHAR2,
+                         Outrowlist_  OUT VARCHAR2);
+  --判断当前列是否可编辑--
+  FUNCTION Checkuseable(Doaction_  IN VARCHAR2,
+                        Column_Id_ IN VARCHAR,
+                        Rowlist_   IN VARCHAR2) RETURN VARCHAR2;
+  ----检查 按钮 编辑 修改
+  FUNCTION Checkbutton__(Dotype_   IN VARCHAR2,
+                         Order_No_ IN VARCHAR2,
+                         User_Id_  IN VARCHAR2) RETURN VARCHAR2;
+END Bl_Po_Line_Part_Api;
+/
+CREATE OR REPLACE PACKAGE BODY Bl_Po_Line_Part_Api IS
+  TYPE t_Cursor IS REF CURSOR;
+  PROCEDURE New__(Rowlist_ VARCHAR2, User_Id_ VARCHAR2, A311_Key_ VARCHAR2) IS
+    Attr_       VARCHAR2(4000);
+    Info_       VARCHAR2(4000);
+    Objid_      VARCHAR2(4000);
+    Objversion_ VARCHAR2(4000);
+    Action_     VARCHAR2(100);
+    Attr_Out    VARCHAR2(4000);
+    Main_Row_   Bl_v_Purchase_Order%ROWTYPE;
+    Cur_        t_Cursor;
+  BEGIN
+    --  初始化新增页面
+    Action_ := 'PREPARE';
+    Attr_   := Pkg_a.Get_Attr_By_Bm(Rowlist_);
+    -- 默认新增的时候把抬头的含税写到明细中
+    Main_Row_.Order_No := Pkg_a.Get_Item_Value('ORDER_NO', Rowlist_);
+    OPEN Cur_ FOR
+      SELECT t.Price_With_Tax
+        FROM Purchase_Order t
+       WHERE t.Order_No = Main_Row_.Order_No;
+    FETCH Cur_
+      INTO Main_Row_.Price_With_Tax;
+    CLOSE Cur_;
+    Purchase_Order_Line_Part_Api.New__(Info_,
+                                       Objid_,
+                                       Objversion_,
+                                       Attr_,
+                                       Action_);
+    Attr_Out := Pkg_a.Get_Attr_By_Ifs(Attr_);
+    Pkg_a.Set_Item_Value('PRICE_WITH_TAX',
+                         Main_Row_.Price_With_Tax,
+                         Attr_Out);
+    Pkg_a.Setresult(A311_Key_, Attr_Out);
+    RETURN;
+  END;
+  -- 写入新表
+  PROCEDURE Usermodify__(Row_     IN Bl_Purchase_Order_Line_Part%ROWTYPE,
+                         User_Id_ IN VARCHAR2) IS
+    Cur_  t_Cursor;
+    Row0_ Bl_Purchase_Order_Line_Part%ROWTYPE;
+  
+  BEGIN
+    OPEN Cur_ FOR
+      SELECT t.*
+        FROM Bl_Purchase_Order_Line_Part t
+       WHERE t.Order_No = Row_.Order_No
+         AND t.Line_No = Row_.Line_No
+         AND t.Release_No = Row_.Release_No;
+    FETCH Cur_
+      INTO Row0_;
+    IF Cur_%NOTFOUND THEN
+      INSERT INTO Bl_Purchase_Order_Line_Part
+        (Order_No,
+         Line_No,
+         Release_No,
+         Bld001_Pack,
+         CUSTOMER_PART_NO,
+         PO_IDENTIFIER,
+         Enter_Date,
+         Enter_User)
+        SELECT Row_.Order_No,
+               Row_.Line_No,
+               Row_.Release_No,
+               Row_.Bld001_Pack,
+               row_.customer_part_no,
+               row_.po_identifier,
+               SYSDATE,
+               User_Id_
+          FROM Dual;
+    ELSE
+      UPDATE Bl_Purchase_Order_Line_Part t
+         SET Bld001_Pack      = Nvl(Row_.Bld001_Pack, Bld001_Pack),
+             customer_part_no = Nvl(Row_.customer_part_no, customer_part_no),
+             po_identifier    = Nvl(Row_.po_identifier, po_identifier),
+             Modi_Date        = SYSDATE,
+             Modi_User        = User_Id_
+       WHERE t.Order_No = Row_.Order_No
+         AND t.Line_No = Row_.Line_No
+         AND t.Release_No = Row_.Release_No;
+    END IF;
+    CLOSE Cur_;
+  
+  END;
+  PROCEDURE Confirm__(Rowid_    VARCHAR2,
+                      User_Id_  VARCHAR2,
+                      A311_Key_ VARCHAR2) IS
+    Attr_       VARCHAR2(4000);
+    Info_       VARCHAR2(4000);
+    Objid_      VARCHAR2(4000);
+    Objversion_ VARCHAR2(4000);
+    Action_     VARCHAR2(100);
+    Cur_        t_Cursor;
+  BEGIN
+    Objid_ := Rowid_;
+    OPEN Cur_ FOR
+      SELECT Objversion
+        FROM Bl_v_Purchase_Order_Line_Part
+       WHERE Objid = Objid_;
+    FETCH Cur_
+      INTO Objversion_;
+    IF Cur_%NOTFOUND THEN
+      CLOSE Cur_;
+      Pkg_a.Setfailed(A311_Key_, 'BL_V_PURCHASE_ORDER_LINE_PART', Objid_);
+      Raise_Application_Error(-20101, '错误的rowid');
+      RETURN;
+    END IF;
+    CLOSE Cur_;
+    Action_ := 'DO';
+    Purchase_Order_Line_Part_Api.Confirm__(Info_,
+                                           Objid_,
+                                           Objversion_,
+                                           Attr_,
+                                           Action_);
+    Pkg_a.Setsuccess(A311_Key_, 'BL_V_PURCHASE_ORDER_LINE_PART', Objid_);
+  END;
+
+  PROCEDURE Modify__(Rowlist_  VARCHAR2,
+                     User_Id_  VARCHAR2,
+                     A311_Key_ VARCHAR2) IS
+    Row_        Bl_v_Purchase_Order_Line_Part%ROWTYPE;
+    Attr_       VARCHAR2(4000);
+    Info_       VARCHAR2(4000);
+    Objid_      VARCHAR2(4000);
+    Objversion_ VARCHAR2(4000);
+    Action_     VARCHAR2(100);
+    Doaction_   VARCHAR2(10);
+    Index_      VARCHAR2(1);
+    Cur_        t_Cursor;
+    Pos_        NUMBER;
+    Pos1_       NUMBER;
+    i           NUMBER;
+    v_          VARCHAR2(1000);
+    Column_Id_  VARCHAR2(4000);
+    Data_       VARCHAR2(4000);
+    Row0_       Bl_Purchase_Order_Line_Part%ROWTYPE;
+    Mysql_      VARCHAR2(4000);
+    Ifmychange  VARCHAR2(1);
+  BEGIN
+    Index_     := f_Get_Data_Index();
+    Row_.Objid := Pkg_a.Get_Item_Value('OBJID', Rowlist_);
+    Doaction_  := Pkg_a.Get_Item_Value('DOACTION', Rowlist_);
+    IF Doaction_ = 'I' THEN
+      /*新增*/
+      Attr_ := '';
+      Client_Sys.Add_To_Attr('ORDER_NO',
+                             Pkg_a.Get_Item_Value('ORDER_NO', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('LINE_NO',
+                             Pkg_a.Get_Item_Value('LINE_NO', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('RELEASE_NO',
+                             Pkg_a.Get_Item_Value('RELEASE_NO', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('VENDOR_NO',
+                             Pkg_a.Get_Item_Value('VENDOR_NO', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('CURRENCY_CODE',
+                             Pkg_a.Get_Item_Value('CURRENCY_CODE', Rowlist_),
+                             Attr_); --币种
+      Client_Sys.Add_To_Attr('COMPANY',
+                             Pkg_a.Get_Item_Value('COMPANY', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('PART_NO',
+                             Pkg_a.Get_Item_Value('PART_NO', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('DESCRIPTION',
+                             Pkg_a.Get_Item_Value('DESCRIPTION', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('BUY_QTY_DUE',
+                             Pkg_a.Get_Item_Value('BUY_QTY_DUE', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('BUY_UNIT_MEAS',
+                             Pkg_a.Get_Item_Value('BUY_UNIT_MEAS', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('PLANNED_RECEIPT_DATE',
+                             Pkg_a.Get_Item_Value('PLANNED_RECEIPT_DATE',
+                                                  Rowlist_),
+                             Attr_);
+      --  client_sys.Add_To_Attr('PLANNED_DELIVERY_DATE','2012-08-10-00.00.00',attr_ );
+      Client_Sys.Add_To_Attr('WANTED_DELIVERY_DATE',
+                             Pkg_a.Get_Item_Value('WANTED_DELIVERY_DATE',
+                                                  Rowlist_),
+                             Attr_);
+      -- client_sys.Add_To_Attr('PROMISED_DELIVERY_DATE','2012-08-10-00.00.00',attr_ );
+      Client_Sys.Add_To_Attr('BUY_UNIT_PRICE',
+                             Pkg_a.Get_Item_Value('BUY_UNIT_PRICE',
+                                                  Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('FBUY_UNIT_PRICE',
+                             Pkg_a.Get_Item_Value('FBUY_UNIT_PRICE',
+                                                  Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('FBUY_TAX_UNIT_PRICE',
+                             Pkg_a.Get_Item_Value('FBUY_TAX_UNIT_PRICE',
+                                                  Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('PRICE_UNIT_MEAS',
+                             Pkg_a.Get_Item_Value('PRICE_UNIT_MEAS',
+                                                  Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('BUY_UNIT_PRICE',
+                             Pkg_a.Get_Item_Value('BUY_UNIT_PRICE',
+                                                  Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('PRICE_CONV_FACTOR',
+                             Pkg_a.Get_Item_Value('PRICE_CONV_FACTOR',
+                                                  Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('DISCOUNT',
+                             Pkg_a.Get_Item_Value('DISCOUNT', Rowlist_),
+                             Attr_);
+      --client_sys.Add_To_Attr('ADDITIONAL_COST_AMOUNT','0',attr_ );
+      Client_Sys.Add_To_Attr('TAX_AMOUNT',
+                             Pkg_a.Get_Item_Value('TAX_AMOUNT', Rowlist_),
+                             Attr_);
+      -- client_sys.Add_To_Attr('AUTOMATIC_INVOICE_DB','MANUAL',attr_ );
+      --client_sys.Add_To_Attr('BLANKET_ORDER','',attr_ );
+      -- client_sys.Add_To_Attr('BLANKET_LINE','',attr_ );
+      Client_Sys.Add_To_Attr('CURRENCY_RATE',
+                             Pkg_a.Get_Item_Value('CURRENCY_RATE', Rowlist_),
+                             Attr_); --汇率
+      -- client_sys.Add_To_Attr('PURCHASE_PAYMENT_TYPE','Normal',attr_ );
+      -- client_sys.Add_To_Attr('TAXABLE','FALSE',attr_ );
+      --client_sys.Add_To_Attr('TAX_SHIP_ADDRESS','Not Used',attr_ );
+      -- client_sys.Add_To_Attr('CLOSE_CODE','Automatic',attr_ );
+      --  client_sys.Add_To_Attr('CLOSE_TOLERANCE','0',attr_ );
+      Client_Sys.Add_To_Attr('RECEIVE_CASE',
+                             Pkg_a.Get_Item_Value('RECEIVE_CASE', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('INSPECTION_CODE',
+                             Pkg_a.Get_Item_Value('INSPECTION_CODE',
+                                                  Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('SAMPLE_PERCENT',
+                             Pkg_a.Get_Item_Value('SAMPLE_PERCENT',
+                                                  Rowlist_),
+                             Attr_);
+      -- client_sys.Add_To_Attr('SAMPLE_QTY','0',attr_ );
+      Client_Sys.Add_To_Attr('QC_CODE',
+                             Pkg_a.Get_Item_Value('QC_CODE', Rowlist_),
+                             Attr_);
+      -- client_sys.Add_To_Attr('ORD_CONF_REMINDER','No Order Reminder',attr_ );
+      -- client_sys.Add_To_Attr('ORD_CONF_REM_NUM','0',attr_ );
+      -- client_sys.Add_To_Attr('DELIVERY_REMINDER','No Delivery Reminder',attr_ );
+      -- client_sys.Add_To_Attr('DELIVERY_REM_NUM','0',attr_ );
+      Client_Sys.Add_To_Attr('CONTRACT',
+                             Pkg_a.Get_Item_Value('CONTRACT', Rowlist_),
+                             Attr_);
+      -- client_sys.Add_To_Attr('DEFAULT_ADDR_FLAG_DB','Y',attr_ );
+      Client_Sys.Add_To_Attr('ADDRESS_ID', '01', Attr_);
+      -- client_sys.Add_To_Attr('ADDR_FLAG_DB','N',attr_ );
+      Client_Sys.Add_To_Attr('UNIT_MEAS',
+                             Pkg_a.Get_Item_Value('UNIT_MEAS', Rowlist_),
+                             Attr_);
+      -- client_sys.Add_To_Attr('PROCESS_TYPE','',attr_ );
+      --client_sys.Add_To_Attr('MANUFACTURER_ID','',attr_ );
+      -- client_sys.Add_To_Attr('MANUFACTURER_PART_NO','',attr_ );
+      -- client_sys.Add_To_Attr('IS_EXCHANGE_PART','FALSE',attr_ );
+      -- client_sys.Add_To_Attr('EXCHANGE_ITEM_DB','ITEM NOT EXCHANGED',attr_ );
+      --  client_sys.Add_To_Attr('QTY_SCRAPPED_SUPPLIER','0',attr_ );
+      -- client_sys.Add_To_Attr('WARRANTY_ID','',attr_ );
+      --  client_sys.Add_To_Attr('PURCHASE_SITE','11',attr_ );
+      Client_Sys.Add_To_Attr('DEF_VAT_CODE',
+                             Pkg_a.Get_Item_Value('DEF_VAT_CODE', Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('FBUY_UNIT_PRICE',
+                             Pkg_a.Get_Item_Value('FBUY_UNIT_PRICE',
+                                                  Rowlist_),
+                             Attr_);
+      Client_Sys.Add_To_Attr('BUY_UNIT_PRICE',
+                             Pkg_a.Get_Item_Value('BUY_UNIT_PRICE',
+                                                  Rowlist_),
+                             Attr_);
+      -- client_sys.Add_To_Attr('DATE_TYPE','PLANNED_RECEIPT_DATE',attr_ );
+    
+      Action_ := 'DO';
+      Purchase_Order_Line_Part_Api.New__(Info_,
+                                         Objid_,
+                                         Objversion_,
+                                         Attr_,
+                                         Action_);
+      Pkg_a.Setsuccess(A311_Key_, 'BL_V_PURCHASE_ORDER_LINE_PART', Objid_);
+    
+      Row0_.Order_No         := Pkg_a.Get_Item_Value('ORDER_NO', Rowlist_);
+      Row0_.Line_No          := Client_Sys.Get_Item_Value('LINE_NO', Attr_);
+      Row0_.Release_No       := Client_Sys.Get_Item_Value('RELEASE_NO',
+                                                          Attr_);
+      Row0_.Bld001_Pack      := Pkg_a.Get_Item_Value('BLD001_PACK',
+                                                     Rowlist_);
+      row0_.customer_part_no := Pkg_a.Get_Item_Value('CUSTOMER_PART_NO',
+                                                     Rowlist_);
+      row0_.po_identifier    := Pkg_a.Get_Item_Value('PO_IDENTIFIER',
+                                                     Rowlist_);
+      Usermodify__(Row0_, User_Id_);
+      RETURN;
+    END IF;
+    IF Doaction_ = 'M' THEN
+      /*修改*/
+      OPEN Cur_ FOR
+        SELECT t.*
+          FROM Bl_v_Purchase_Order_Line_Part t
+         WHERE t.Objid = Row_.Objid;
+      FETCH Cur_
+        INTO Row_;
+      IF Cur_%NOTFOUND THEN
+        CLOSE Cur_;
+        Raise_Application_Error(-20101, '错误的rowid');
+        RETURN;
+      END IF;
+      CLOSE Cur_;
+      Data_      := Rowlist_;
+      Pos_       := Instr(Data_, Index_);
+      i          := i + 1;
+      Mysql_     := 'update BL_PURCHASE_ORDER_LINE_PART  set  ';
+      Ifmychange := '0';
+      LOOP
+        EXIT WHEN Nvl(Pos_, 0) <= 0;
+        EXIT WHEN i > 300;
+        v_         := Substr(Data_, 1, Pos_ - 1);
+        Data_      := Substr(Data_, Pos_ + 1);
+        Pos_       := Instr(Data_, Index_);
+        Pos1_      := Instr(v_, '|');
+        Column_Id_ := Substr(v_, 1, Pos1_ - 1);
+        IF Column_Id_ = 'BLD001_PACK'  or Column_Id_='PO_IDENTIFIER' or Column_Id_='CUSTOMER_PART_NO' THEN
+          Ifmychange := '1';
+          v_         := Substr(v_, Pos1_ + 1);
+          Mysql_     := Mysql_ || ' ' || Column_Id_ || '=''' || v_ || ''',';
+        ELSE
+          IF Column_Id_ <> 'OBJID' AND Length(Nvl(Column_Id_, '')) > 0 AND
+             Column_Id_ <> 'DOACTION' THEN
+            v_ := Substr(v_, Pos1_ + 1);
+            Client_Sys.Add_To_Attr(Column_Id_, v_, Attr_);
+            i := i + 1;
+          END IF;
+        END IF;
+      END LOOP;
+    
+      Action_ := 'DO';
+      Purchase_Order_Line_Part_Api.Modify__(Info_,
+                                            Row_.Objid,
+                                            Row_.Objversion,
+                                            Attr_,
+                                            Action_);
+      --用户自定义列
+      IF Ifmychange = '1' THEN
+        Row0_.Order_No    := Row_.Order_No;
+        Row0_.Line_No     := Row_.Line_No;
+        Row0_.Release_No  := Row_.Release_No;
+        Row0_.Bld001_Pack := Pkg_a.Get_Item_Value('BLD001_PACK', Rowlist_);
+        row0_.customer_part_no := Pkg_a.Get_Item_Value('CUSTOMER_PART_NO', Rowlist_);
+        row0_.po_identifier := Pkg_a.Get_Item_Value('PO_IDENTIFIER', Rowlist_);
+        Usermodify__(Row0_, User_Id_);
+      END IF;
+      Pkg_a.Setsuccess(A311_Key_, 'BL_V_PURCHASE_ORDER_LINE_PART', Objid_);
+      RETURN;
+    END IF;
+    IF Doaction_ = 'D' THEN
+      --明细删除 
+      OPEN Cur_ FOR
+        SELECT t.*
+          FROM Bl_v_Purchase_Order_Line_Part t
+         WHERE t.Objid = Row_.Objid;
+      FETCH Cur_
+        INTO Row_;
+      IF Cur_%NOTFOUND THEN
+        CLOSE Cur_;
+        Raise_Application_Error(-20101, '错误的rowid');
+        RETURN;
+      END IF;
+      CLOSE Cur_;
+      Action_ := 'CHECK';
+      Purchase_Order_Line_Part_Api.Remove__(Info_,
+                                            Row_.Objid,
+                                            Row_.Objversion,
+                                            Action_);
+      Action_ := 'DO';
+      Purchase_Order_Line_Part_Api.Remove__(Info_,
+                                            Row_.Objid,
+                                            Row_.Objversion,
+                                            Action_);
+      Pkg_a.Setsuccess(A311_Key_,
+                       'BL_V_PURCHASE_ORDER_LINE_PART',
+                       Row_.Objid);
+      RETURN;
+    END IF;
+  END;
+
+  PROCEDURE Remove__(Rowlist_  VARCHAR2,
+                     User_Id_  VARCHAR2,
+                     A311_Key_ VARCHAR2) IS
+  BEGIN
+    RETURN;
+  END;
+
+  PROCEDURE Reopen__(Rowid_    VARCHAR2,
+                     User_Id_  VARCHAR2,
+                     A311_Key_ VARCHAR2) IS
+    Attr_       VARCHAR2(4000);
+    Info_       VARCHAR2(4000);
+    Objid_      VARCHAR2(4000);
+    Objversion_ VARCHAR2(4000);
+    Action_     VARCHAR2(100);
+    --cur_ t_cursor;
+  BEGIN
+    Objid_ := Rowid_;
+    SELECT Objversion
+      INTO Objversion_
+      FROM Bl_v_Purchase_Order_Line_Part
+     WHERE Objid = Objid_;
+    Action_ := 'DO';
+    Purchase_Order_Line_Part_Api.Reopen__(Info_,
+                                          Objid_,
+                                          Objversion_,
+                                          Attr_,
+                                          Action_);
+    Pkg_a.Setsuccess(A311_Key_, 'BL_V_PURCHASE_ORDER_LINE_PART', Objid_);
+  END;
+
+  PROCEDURE Set_Cancel_Reason(Rowlist_  VARCHAR2,
+                              User_Id_  VARCHAR2,
+                              A311_Key_ VARCHAR2) IS
+    Row_        Bl_v_Purchase_Order_Line_Part%ROWTYPE;
+    Cur_        t_Cursor;
+    Exists_Cur_ t_Cursor;
+    Row_Cur_    Purchase_Req_Line_Part%ROWTYPE;
+    Info_       VARCHAR2(4000);
+    Co_Row      Customer_Order_Line%ROWTYPE;
+    A311_       A311%ROWTYPE;
+    Po_Rowlist  VARCHAR2(4000);
+  BEGIN
+  
+    Row_.Objid := Pkg_a.Get_Item_Value('OBJID', Rowlist_);
+    OPEN Cur_ FOR
+      SELECT t.*
+        FROM Bl_v_Purchase_Order_Line_Part t
+       WHERE Objid = Row_.Objid;
+    FETCH Cur_
+      INTO Row_;
+    IF Cur_%NOTFOUND THEN
+      CLOSE Cur_;
+      Raise_Application_Error(-20101, '错误的rowid');
+      RETURN;
+    END IF;
+    CLOSE Cur_;
+    --取消采购订单行
+    Row_.Cancel_Reason := Pkg_a.Get_Item_Value('CANCEL_REASON', Rowlist_);
+    Purchase_Order_Line_Part_Api.Set_Cancel_Reason(Row_.Order_No,
+                                                   Row_.Line_No,
+                                                   Row_.Release_No,
+                                                   Row_.Cancel_Reason);
+    OPEN Exists_Cur_ FOR
+      SELECT t.*
+        FROM Purchase_Req_Line_Part t
+       WHERE t.Order_No = Row_.Order_No
+         AND t.Assg_Line_No = Row_.Line_No
+         AND t.Assg_Release_No = Row_.Release_No
+         AND Rownum = 1;
+    FETCH Exists_Cur_
+      INTO Row_Cur_;
+    IF Exists_Cur_%NOTFOUND THEN
+      Purchase_Order_Line_Part_Api.Cancel_Line(Row_.Order_No,
+                                               Row_.Line_No,
+                                               Row_.Release_No,
+                                               Info_);
+    ELSE
+      Purchase_Order_Line_Util_Api.Reopen_Requisition(Row_.Order_No,
+                                                      Row_.Line_No,
+                                                      Row_.Release_No);
+    END IF;
+    CLOSE Exists_Cur_;
+    --设置成功标示
+    Pkg_a.Setsuccess(A311_Key_,
+                     'BL_V_PURCHASE_ORDER_LINE_PART',
+                     Row_.Objid);
+    Pkg_a.Setmsg(A311_Key_,
+                 '',
+                 '订单' || Row_.Order_No || '明细行第' || Row_.Line_No || '行取消成功');
+    --找对应的下域的客户订单--
+    OPEN Cur_ FOR
+      SELECT t.*
+        FROM Customer_Order_Line t
+       WHERE t.Demand_Order_Ref1 = Row_.Order_No
+         AND t.Demand_Order_Ref2 = Row_.Line_No
+         AND t.Demand_Order_Ref3 = Row_.Release_No;
+    FETCH Cur_
+      INTO Co_Row;
+    --取消下域的客户订单
+    IF Cur_%FOUND THEN
+      CLOSE Cur_;
+      A311_.A311_Id     := 'BL_PO_LINE_PART_API.Set_Cancel_Reason';
+      A311_.Enter_User  := User_Id_;
+      A311_.A014_Id     := 'A014_ID=OrderLine_Cancel';
+      A311_.Table_Id    := 'BL_V_CUSTOMER_ORDER_LINE';
+      A311_.Table_Objid := Co_Row.Objid;
+      Pkg_a.Beginlog(A311_);
+      Po_Rowlist := '';
+      Pkg_a.Set_Item_Value('OBJID', A311_.Table_Objid, Po_Rowlist);
+      Pkg_a.Set_Item_Value('CANCEL_REASON', Row_.Cancel_Reason, Po_Rowlist);
+      Bl_Customer_Order_Line_Api.Set_Cancel_Reason(Po_Rowlist,
+                                                   User_Id_,
+                                                   A311_.A311_Key);
+    ELSE
+      CLOSE Cur_;
+    END IF;
+  
+  END;
+
+  PROCEDURE Unpack_Direct_Delivery(Rowlist_  VARCHAR2,
+                                   User_Id_  VARCHAR2,
+                                   A311_Key_ VARCHAR2) IS
+  BEGIN
+    RETURN;
+  END;
+  PROCEDURE Itemchange__(Column_Id_   VARCHAR2,
+                         Mainrowlist_ VARCHAR2,
+                         Rowlist_     VARCHAR2,
+                         User_Id_     VARCHAR2,
+                         Outrowlist_  OUT VARCHAR2) IS
+    Attr_                   VARCHAR2(4000);
+    Info_                   VARCHAR2(4000);
+    Objid_                  VARCHAR2(4000);
+    Objversion_             VARCHAR2(4000);
+    Action_                 VARCHAR2(100);
+    Attr_Out                VARCHAR2(4000);
+    Row_                    Bl_v_Purchase_Order_Line_Part%ROWTYPE;
+    Main_Row_               Bl_v_Purchase_Order%ROWTYPE;
+    Price_Conv_Factor_      NUMBER;
+    Price_Unit_Meas_        VARCHAR2(20);
+    Discount_               NUMBER;
+    Additional_Cost_Amount_ NUMBER;
+    Curr_Rate_              NUMBER;
+    Curr_Code_              VARCHAR2(20);
+    Percentage_             NUMBER;
+    cur_                    t_Cursor;
+    row1_                   BL_REPORT_V02%rowtype;
+    Agreement_              Agreement_Sales_Part_Deal%rowtype;
+    BLD001_                 BL_V_PACHAGE_SET_TAB%Rowtype; ----   包装标志号
+    PO_                     BL_V_SALES_PART_CROSS_REF_LINE%Rowtype; ---   客户PO标识
+    customer_par_           SALES_PART_CROSS_REFERENCE%rowtype; --客户件号
+    PARTCOUNT_              Number;
+    pocount_                NUMBER;
+    BLD001count_            NUMBER;
+  BEGIN
+    IF Column_Id_ = 'PART_NO' or Column_Id_ = 'REPORTID' THEN
+      Main_Row_.Contract   := Pkg_a.Get_Item_Value('CONTRACT', Mainrowlist_);
+      Main_Row_.Vendor_No  := Pkg_a.Get_Item_Value('VENDOR_NO',
+                                                   Mainrowlist_);
+      row_.Reportid        := pkg_a.Get_Item_Value('REPORTID', Rowlist_);
+      Main_Row_.LABEL_NOTE := pkg_a.Get_Item_Value('LABEL_NOTE',
+                                                   Mainrowlist_);
+      if Column_Id_ = 'REPORTID' then
+        open cur_ for
+          select t.* from BL_REPORT_V02 t where t.REPORTID = row_.Reportid;
+        fetch cur_
+          into row1_;
+        if cur_%found then
+          Row_.Part_No := row1_.Part_No;
+        end if;
+        close cur_;
+      else
+        Row_.Part_No := Pkg_a.Get_Item_Value('PART_NO', Rowlist_);
+      end if;
+      Row_.Description     := Purchase_Part_Api.Get_Description(Main_Row_.Contract,
+                                                                Row_.Part_No);
+      Row_.Qc_Code         := Purchase_Part_Api.Get_Qc_Code(Main_Row_.Contract,
+                                                            Row_.Part_No);
+      Row_.Unit_Meas       := Purchase_Part_Supplier_Api.Get_Unit_Meas(Main_Row_.Contract,
+                                                                       Row_.Part_No);
+      Row_.Def_Vat_Code    := Purchase_Part_Supplier_Api.Get_Def_Vat_Code(Main_Row_.Contract,
+                                                                          Row_.Part_No,
+                                                                          Main_Row_.Vendor_No);
+      Row_.Receive_Case    := Purchase_Part_Supplier_Api.Get_Receive_Case(Main_Row_.Contract,
+                                                                          Row_.Part_No,
+                                                                          Main_Row_.Vendor_No);
+      Row_.Inspection_Code := Purchase_Part_Supplier_Api.Get_Inspection_Code(Main_Row_.Contract,
+                                                                             Row_.Part_No,
+                                                                             Main_Row_.Vendor_No);
+      Row_.Sample_Percent  := Purchase_Part_Supplier_Api.Get_Sample_Percent(Main_Row_.Contract,
+                                                                            Row_.Part_No,
+                                                                            Main_Row_.Vendor_No);
+      Pkg_a.Set_Item_Value('PART_NO', Row_.Part_No, Attr_Out);
+      Pkg_a.Set_Item_Value('CONTRACT', Main_Row_.Contract, Attr_Out);
+      Pkg_a.Set_Item_Value('VENDOR_NO', Main_Row_.Vendor_No, Attr_Out);
+      Pkg_a.Set_Item_Value('DESCRIPTION', Row_.Description, Attr_Out);
+      Pkg_a.Set_Item_Value('QC_CODE', Row_.Qc_Code, Attr_Out);
+      Pkg_a.Set_Item_Value('UNIT_MEAS', Row_.Unit_Meas, Attr_Out);
+      Pkg_a.Set_Item_Value('DEF_VAT_CODE', Row_.Def_Vat_Code, Attr_Out);
+      Pkg_a.Set_Item_Value('RECEIVE_CASE', Row_.Receive_Case, Attr_Out);
+      Pkg_a.Set_Item_Value('INSPECTION_CODE',
+                           Row_.Inspection_Code,
+                           Attr_Out);
+      Pkg_a.Set_Item_Value('SAMPLE_PERCENT', Row_.Sample_Percent, Attr_Out);
+    
+      row_.PART_NO := pkg_a.Get_Item_Value('PART_NO', Rowlist_);
+    
+      --客户件号
+    
+      open cur_ for
+        select T.*
+          FROM SALES_PART_CROSS_REFERENCE T
+         WHERE T.customer_no = Main_Row_.LABEL_NOTE
+           AND T.contract = Main_Row_.CONTRACT
+           AND t.CATALOG_NO = row_.PART_NO;
+      FETCH CUR_
+        INTO customer_par_;
+      CLOSE CUR_;
+      PKG_A.Set_Item_Value('CUSTOMER_PART_NO',
+                           customer_par_.CUSTOMER_PART_NO,
+                           Attr_Out);
+      -- 客户PO标识
+      open cur_ for
+        select t.*
+          from BL_V_SALES_PART_CROSS_REF_LINE t
+         where t.CONTRACT = Main_Row_.CONTRACT
+           and t.CUSTOMER_NO = Main_Row_.LABEL_NOTE
+           and t.CATALOG_NO = row_.PART_NO
+           AND T.CUSTOMER_PART_NO = customer_par_.CUSTOMER_PART_NO;
+      fetch cur_
+        into PO_;
+      close cur_;
+      ---只有一条数据 才带出
+      select count(*)
+        into pocount_
+        from BL_V_SALES_PART_CROSS_REF_LINE t
+       where t.CONTRACT = Main_Row_.CONTRACT
+         and t.CUSTOMER_NO = Main_Row_.LABEL_NOTE
+         and t.CATALOG_NO = row_.PART_NO;
+      if pocount_ <> 1 then
+        pkg_a.Set_Item_Value('PO_IDENTIFIER', '', Attr_Out);
+      else
+        pkg_a.Set_Item_Value('PO_IDENTIFIER', PO_.PO_IDENTIFIER, Attr_Out);
+      end if;
+      -- 客户包装号
+      open cur_ for
+        select t.*
+          from BL_V_PACHAGE_SET_TAB t
+         where T.CUSTOMER_NO = Main_Row_.LABEL_NOTE
+           AND T.CATALOG_NO = row_.PART_NO
+           AND T.CONTRACT = Main_Row_.CONTRACT;
+      FETCH CUR_
+        INTO BLD001_;
+      CLOSE CUR_;
+      --
+      SELECT COUNT(*)
+        INTO BLD001count_
+        FROM BL_V_PACHAGE_SET_TAB t
+       where T.CUSTOMER_NO = Main_Row_.LABEL_NOTE
+         AND T.CATALOG_NO = row_.PART_NO
+         AND T.CONTRACT = Main_Row_.CONTRACT;
+      IF BLD001count_ <> 1 then
+        pkg_a.Set_Item_Value('BLD001_PACK', '', Attr_Out);
+      else
+        pkg_a.Set_Item_Value('BLD001_PACK', BLD001_.PACHAGE_NO, Attr_Out);
+      end if;
+    END IF;
+    IF Column_Id_ = 'BUY_QTY_DUE' or Column_Id_ = 'REPORTID' THEN
+      Row_.Contract  := Pkg_a.Get_Item_Value('CONTRACT', Mainrowlist_);
+      Row_.Vendor_No := Pkg_a.Get_Item_Value('VENDOR_NO', Mainrowlist_);
+      row_.Reportid  := pkg_a.Get_Item_Value('REPORTID', Rowlist_);
+      if Column_Id_ = 'REPORTID' then
+        open cur_ for
+          select t.* from BL_REPORT_V02 t where t.REPORTID = row_.Reportid;
+        fetch cur_
+          into row1_;
+        if cur_%found then
+          Row_.Part_No     := row1_.Part_No;
+          Row_.Buy_Qty_Due := row1_.CHECK_MIN_QTY * (-1);
+        end if;
+        close cur_;
+      else
+        Row_.Part_No     := Pkg_a.Get_Item_Value('PART_NO', Rowlist_);
+        Row_.Buy_Qty_Due := Pkg_a.Get_Item_Value('BUY_QTY_DUE', Rowlist_);
+      end if;
+      if nvl(row_.PART_NO, 'NULL') = 'NULL' then
+        Raise_Application_Error(-20101, '请先录入零件号');
+      end if;
+      Row_.Price_With_Tax := Pkg_a.Get_Item_Value('PRICE_WITH_TAX',
+                                                  Mainrowlist_);
+      Purchase_Part_Supplier_Api.Get_Price_Info__(Price_Conv_Factor_      => Price_Conv_Factor_,
+                                                  Price_Unit_Meas_        => Price_Unit_Meas_,
+                                                  Discount_               => Discount_,
+                                                  Additional_Cost_Amount_ => Additional_Cost_Amount_,
+                                                  Curr_Rate_              => Curr_Rate_,
+                                                  Buy_Unit_Price_         => Row_.Buy_Unit_Price,
+                                                  Fbuy_Unit_Price_        => Row_.Fbuy_Unit_Price,
+                                                  Curr_Code_              => Curr_Code_,
+                                                  Contract_               => Row_.Contract,
+                                                  Part_No_                => Row_.Part_No,
+                                                  Vendor_No_              => Row_.Vendor_No,
+                                                  Qty_Purchase_           => NULL,
+                                                  Price_Date_             => NULL,
+                                                  Currency_Type_          => NULL,
+                                                  Service_Type_           => NULL,
+                                                  Condition_Code_         => NULL,
+                                                  Exchange_Item_          => NULL);
+      Pkg_a.Set_Item_Value('BUY_QTY_DUE', Row_.Buy_Qty_Due, Attr_Out);
+      Main_Row_.AGREEMENT_ID := PKG_A.Get_Item_Value('AGREEMENT_ID',
+                                                     Mainrowlist_);
+      IF NVL(Main_Row_.AGREEMENT_ID, 'NULL') <> 'NULL' then
+        Open Cur_ For
+          Select *
+            From Agreement_Sales_Part_Deal t
+           Where t.Contract = Row_.Contract
+             And t.Catalog_No = Row_.Part_No
+             And t.Agreement_Id = Main_Row_.Agreement_Id;
+        Fetch Cur_
+          Into Agreement_;
+        if cur_%found then
+          Row_.Fbuy_Unit_Price := Agreement_.deal_price;
+        end if;
+        close cur_;
+      end if;
+      IF Row_.Price_With_Tax = 'FALSE' THEN
+        Pkg_a.Set_Item_Value('FBUY_UNIT_PRICE',
+                             Row_.Fbuy_Unit_Price,
+                             Attr_Out); --价格取值不对
+        Pkg_a.Set_Item_Value('BUY_UNIT_PRICE',
+                             Row_.Fbuy_Unit_Price,
+                             Attr_Out);
+        Pkg_a.Set_Item_Value('FBUY_TAX_UNIT_PRICE',
+                             Row_.Fbuy_Unit_Price,
+                             Attr_Out);
+      ELSE
+        Pkg_a.Set_Item_Value('FBUY_TAX_UNIT_PRICE',
+                             Row_.Fbuy_Unit_Price,
+                             Attr_Out);
+        Row_.Def_Vat_Code    := Pkg_a.Get_Item_Value('DEF_VAT_CODE',
+                                                     Rowlist_);
+        Percentage_          := Statutory_Fee_Api.Get_Percentage(Ifsapp.Site_Api.Get_Company(Row_.Contract),
+                                                                 Row_.Def_Vat_Code);
+        Row_.Fbuy_Unit_Price := Round(Row_.Fbuy_Unit_Price * 100 /
+                                      (100 + Percentage_),
+                                      2);
+        Pkg_a.Set_Item_Value('FBUY_UNIT_PRICE',
+                             Row_.Fbuy_Unit_Price,
+                             Attr_Out); --价格取值不对
+        Pkg_a.Set_Item_Value('BUY_UNIT_PRICE',
+                             Row_.Fbuy_Unit_Price,
+                             Attr_Out);
+      END IF;
+      Pkg_a.Set_Item_Value('CURRENCY_CODE', Curr_Code_, Attr_Out);
+      Pkg_a.Set_Item_Value('PRICE_CONV_FACTOR',
+                           Price_Conv_Factor_,
+                           Attr_Out);
+      Pkg_a.Set_Item_Value('CURRENCY_RATE', Curr_Rate_, Attr_Out);
+    
+    END IF;
+    IF Column_Id_ = 'FBUY_UNIT_PRICE' OR Column_Id_ = 'DEF_VAT_CODE' THEN
+      -- 未税
+      Row_.Fbuy_Unit_Price := Pkg_a.Get_Item_Value('FBUY_UNIT_PRICE',
+                                                   Rowlist_);
+      Row_.Def_Vat_Code    := Pkg_a.Get_Item_Value('DEF_VAT_CODE', Rowlist_);
+      Row_.Contract        := Pkg_a.Get_Item_Value('CONTRACT', Mainrowlist_);
+    
+      Percentage_              := Statutory_Fee_Api.Get_Percentage(Ifsapp.Site_Api.Get_Company(Row_.Contract),
+                                                                   Row_.Def_Vat_Code);
+      Row_.Fbuy_Tax_Unit_Price := Row_.Fbuy_Unit_Price *
+                                  (100 + Percentage_) / 100;
+      Pkg_a.Set_Item_Value('BUY_UNIT_PRICE',
+                           Row_.Fbuy_Unit_Price,
+                           Attr_Out);
+      Pkg_a.Set_Item_Value('FBUY_UNIT_PRICE',
+                           Row_.Fbuy_Unit_Price,
+                           Attr_Out);
+      Pkg_a.Set_Item_Value('FBUY_TAX_UNIT_PRICE',
+                           Row_.Fbuy_Tax_Unit_Price,
+                           Attr_Out);
+    END IF;
+    IF Column_Id_ = 'FBUY_TAX_UNIT_PRICE' THEN
+      -- 未税
+      Row_.Fbuy_Tax_Unit_Price := Pkg_a.Get_Item_Value('FBUY_TAX_UNIT_PRICE',
+                                                       Rowlist_);
+      Row_.Def_Vat_Code        := Pkg_a.Get_Item_Value('DEF_VAT_CODE',
+                                                       Rowlist_);
+      Row_.Contract            := Pkg_a.Get_Item_Value('CONTRACT',
+                                                       Mainrowlist_);
+    
+      Percentage_          := Statutory_Fee_Api.Get_Percentage(Ifsapp.Site_Api.Get_Company(Row_.Contract),
+                                                               Row_.Def_Vat_Code);
+      Row_.Fbuy_Unit_Price := Round(Row_.Fbuy_Tax_Unit_Price * 100 /
+                                    (100 + Percentage_),
+                                    2);
+      Pkg_a.Set_Item_Value('BUY_UNIT_PRICE',
+                           Row_.Fbuy_Unit_Price,
+                           Attr_Out);
+      Pkg_a.Set_Item_Value('FBUY_UNIT_PRICE',
+                           Row_.Fbuy_Unit_Price,
+                           Attr_Out);
+      Pkg_a.Set_Item_Value('FBUY_TAX_UNIT_PRICE',
+                           Row_.Fbuy_Tax_Unit_Price,
+                           Attr_Out);
+    END IF;
+    Outrowlist_ := Attr_Out;
+    -- pkg_a.setResult(A311_KEY_,attr_out);   
+  END;
+  FUNCTION Checkuseable(Doaction_  IN VARCHAR2,
+                        Column_Id_ IN VARCHAR,
+                        Rowlist_   IN VARCHAR2) RETURN VARCHAR2 IS
+    cur_            t_Cursor;
+    Row_            Bl_v_Purchase_Order_Line_Part%ROWTYPE;
+    Mrow_           PURCHASE_ORDER%ROWTYPE;
+    Vendor_No_Type_ VARCHAR2(10);
+  BEGIN
+    Row_.Objid          := Pkg_a.Get_Item_Value('OBJID', Rowlist_);
+    Row_.State          := Pkg_a.Get_Item_Value('STATE', Rowlist_);
+    Row_.Price_With_Tax := Pkg_a.Get_Item_Value('PRICE_WITH_TAX', Rowlist_);
+    Row_.Contract       := Pkg_a.Get_Item_Value('CONTRACT', Rowlist_);
+    Row_.Vendor_No      := Pkg_a.Get_Item_Value('VENDOR_NO', Rowlist_);
+    Vendor_No_Type_     := Identity_Invoice_Info_Api.Get_Identity_Type(Site_Api.Get_Company(Row_.Contract),
+                                                                       Row_.Vendor_No,
+                                                                       'Supplier');
+    row_.ORDER_NO       := Pkg_a.Get_Item_Value('ORDER_NO', Rowlist_);
+    OPEN CUR_ for
+      select t.* from PURCHASE_ORDER t where t.order_no = row_.ORDER_NO;
+    fetch cur_
+      into mrow_;
+    close cur_;
+    IF Row_.Objid = '' OR Row_.Objid = 'NULL' THEN
+      IF Column_Id_ = 'FBUY_UNIT_PRICE' THEN
+        --未税
+        IF Row_.Price_With_Tax = 'FALSE' THEN
+          RETURN '1';
+        ELSE
+          RETURN '0';
+        END IF;
+      END IF;
+      IF Column_Id_ = 'FBUY_TAX_UNIT_PRICE' THEN
+        -- 含税
+        IF Row_.Price_With_Tax = 'FALSE' THEN
+          RETURN '0';
+        ELSE
+          RETURN '1';
+        END IF;
+      END IF;
+      RETURN '1';
+    ELSE
+      if Column_Id_ = 'DESCRIPTION' then
+        RETURN '1';
+      end if;
+      IF Column_Id_ = 'FBUY_UNIT_PRICE' THEN
+        --未税
+        IF Row_.Price_With_Tax = 'FALSE' THEN
+          RETURN '1';
+        ELSE
+          RETURN '0';
+        END IF;
+      END IF;
+      IF Column_Id_ = 'FBUY_TAX_UNIT_PRICE' THEN
+        -- 含税
+        IF Row_.Price_With_Tax = 'FALSE' THEN
+          RETURN '0';
+        ELSE
+          RETURN '1';
+        END IF;
+      END IF;
+      IF (Column_Id_ = 'LINE_NO' OR Column_Id_ = 'RELEASE_NO' OR
+         Column_Id_ = 'PART_NO') THEN
+        RETURN '0';
+      END IF;
+    
+      --内部供应商只要不是计划状态就不能修改数量，外部供应商只有是审核状态才不可以更改数量
+      IF Vendor_No_Type_ = 'INTERN' THEN
+        --  IF Row_.State <> 'Planned'  then --modify 2013-01-30 明细没有计划状态
+        if mrow_.state <> 'Planned' then
+          RETURN '0';
+        end if;
+        /*        IF Row_.State <> 'Planned' AND Column_Id_ <> 'FBUY_UNIT_PRICE' and column_id_='FBUY_TAX_UNIT_PRICE' THEN
+          RETURN '0';
+        END IF;*/
+      ELSE
+        IF (Row_.State = 'Authorized' OR Row_.State = 'Received' OR
+           Row_.State = 'Closed' OR Row_.State = 'Arrived' OR
+           Row_.State = 'Cancelled') AND Column_Id_ = 'BUY_QTY_DUE' THEN
+          RETURN '0';
+        END IF;
+      END IF;
+      RETURN '1';
+    END IF;
+  
+  END;
+  ----检查新增 修改 
+  FUNCTION Checkbutton__(Dotype_   IN VARCHAR2,
+                         Order_No_ IN VARCHAR2,
+                         User_Id_  IN VARCHAR2) RETURN VARCHAR2 IS
+    cur_ t_Cursor;
+    row_ bl_v_purchase_order%rowtype;
+  BEGIN
+    open cur_ for
+      select t.* from bl_v_purchase_order t where t.order_no = Order_No_;
+    fetch cur_
+      into row_;
+    if cur_%found then
+      if row_.STATE <> 'Planned' and
+         Identity_Invoice_Info_Api.Get_Identity_Type(row_.COMPANY,
+                                                     row_.VENDOR_NO,
+                                                     'Supplier') = 'INTERN' then
+        close cur_;
+        RETURN '0';
+      end if;
+    end if;
+    close cur_;
+    RETURN '1';
+  END;
+END Bl_Po_Line_Part_Api;
+/

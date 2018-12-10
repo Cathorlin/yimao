@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>LabelListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <LabelListResp>
+      <LABELID>10046</LABELID>
+      <LABELNAME>斤斤计较近几年</LABELNAME>
+      <GROUP_NO>
+      </GROUP_NO>
+    </LabelListResp>
+  </MIAP-Body>
+</MIAP>

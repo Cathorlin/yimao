@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>LabelListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <LabelListResp>
+      <LABELID>100302</LABELID>
+      <LABELNAME>编办1</LABELNAME>
+      <GROUP_NO>1</GROUP_NO>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>100301</LABELID>
+      <LABELNAME>编办</LABELNAME>
+      <GROUP_NO>2</GROUP_NO>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>100303</LABELID>
+      <LABELNAME>区府</LABELNAME>
+      <GROUP_NO>3</GROUP_NO>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>100307</LABELID>
+      <LABELNAME>人社</LABELNAME>
+      <GROUP_NO>
+      </GROUP_NO>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>100321</LABELID>
+      <LABELNAME>融沃</LABELNAME>
+      <GROUP_NO>
+      </GROUP_NO>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>101041</LABELID>
+      <LABELNAME>晋元</LABELNAME>
+      <GROUP_NO>
+      </GROUP_NO>
+    </LabelListResp>
+  </MIAP-Body>
+</MIAP>

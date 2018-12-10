@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MIAP>
+  <MIAP-Header>
+    <TransactionID>20110909090909000001</TransactionID>
+    <Version>1.0</Version>
+    <MessageName>LabelListResp</MessageName>
+    <TestFlag>1</TestFlag>
+    <ReturnCode>00</ReturnCode>
+    <ReturnMessage>
+    </ReturnMessage>
+  </MIAP-Header>
+  <MIAP-Body>
+    <LabelListResp>
+      <LABELID>100283</LABELID>
+      <LABELNAME>3号</LABELNAME>
+      <GROUP_NO>1</GROUP_NO>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>100281</LABELID>
+      <LABELNAME>1号</LABELNAME>
+      <GROUP_NO>2</GROUP_NO>
+    </LabelListResp>
+    <LabelListResp>
+      <LABELID>100282</LABELID>
+      <LABELNAME>2号</LABELNAME>
+      <GROUP_NO>3</GROUP_NO>
+    </LabelListResp>
+  </MIAP-Body>
+</MIAP>

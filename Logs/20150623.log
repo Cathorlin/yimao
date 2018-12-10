@@ -1,0 +1,874 @@
+2015-06-23 11:09:03:201:2.859:Select t.*,pkg_show.get_column_attr('ZHH','5001','dw_main','BL_V_CUSTOMER_ORDER',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5001'
+           and  t1.Control_Id= 'dw_main'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUSTOMER_ORDER'
+           order by t.col_x  
+2015-06-23 11:09:03:201:0.000:Select t.* from A00201_V01 t where a00201_key = '5001-0' order by  line_no  
+2015-06-23 11:09:03:294:0.016:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='C'
+2015-06-23 11:09:03:310:0.016:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='U'
+2015-06-23 11:09:03:310:0.000:select t.* from A00201_V01 t  where menu_id ='5001' order by line_no
+2015-06-23 11:09:03:357:0.047:select t.*   from a00201_v02 t  where a00201_key ='5001-0' order by sort_by
+2015-06-23 11:09:03:373:0.016:Select pkg_show.getshowdatasql('5001-0','ZHH') as c from dual 
+2015-06-23 11:09:03:373:0.000:Select pkg_show.getShowDataCountSql('5001-0','ZHH') as c from dual 
+2015-06-23 11:09:03:388:0.016:select t.*   from A00205 t  where menu_id ='5001' order by sort_by
+2015-06-23 11:09:03:419:0.000:Select t.col_name as  COLUMN_ID, t.COL_TYPE as COL_TYPE ,t.col_rela as CALC,t.col_value as VALUE,t.col_sort   from a006 t where t.user_id= 'ZHH' and A00201_KEY='5001-0' and query_id='最近的查询' order by t.col_sort,t.enter_date,t.rowid
+2015-06-23 11:09:03:482:0.016:Select b.*  from (Select a.* , rownum as rn from (Select  ORDER_NO,CONTRACT,CUSTOMER_NO,CUSTOMER_NAME,LABEL_NOTE,STATE,ORDER_ID,BLORDER_ID,BLORDER_NO,AUTHORIZE_CODE,CUSTOMER_PO_NO,WANTED_DELIVERY_DATE,CURRENCY_CODE,Q_FLAG,CUST_REF,ADDITIONAL_DISCOUNT,BLLOCATION_NO,WAREHOUSE,BLD001_ITEM,BL_UAMOUNT,PRICE_WITH_TAX,NOTE_TEXT1,SHIP_ADDR_NO,BILL_ADDR_NO,SHIP_VIA_CODE,DELIVERY_TERMS,AGREEMENT_ID,DATE_ENTERED,MARKET_CODE,DISTRICT_CODE,BL_STATE,REGION_CODE,PAY_TERM_ID,SALESMAN_CODE,SALESMAN_NAME,CANCEL_REASON,PICKLISTNO,NOTE_TEXT,NOTE_TEXT2,ENTER_USER,IF_FIRST,LANGUAGE_CODE,VAT_DB,OBJSTATE,NOTE_ID, OBJID   From BL_V_CUSTOMER_ORDER t WHERE EXISTS(Select b.contract from a00704 b where b.a007_id = 'ZHH' AND T.Contract=b.CONTRACT) AND exists (SELECT 1 FROM A00705 A    WHERE A.A007_ID   = 'ZHH'  AND  a.CUSTOMERNO = t.CUSTOMER_NO   AND  a.CONTRACT   =t.CONTRACT)   AND  (ORDER_NO LIKE  'V19741')   AND ROWNUM <=10000 ) a  where rownum <=  50) b where rn > 0
+2015-06-23 11:09:03:529:0.047:Select pkg_show.geta00204('5001-0','[LIST]','ZHH','1','Q') as c  from dual 
+2015-06-23 11:09:03:544:0.016:Select count(*) as c   From BL_V_CUSTOMER_ORDER t WHERE EXISTS(Select b.contract from a00704 b where b.a007_id = 'ZHH' AND T.Contract=b.CONTRACT) AND exists (SELECT 1 FROM A00705 A    WHERE A.A007_ID   = 'ZHH'  AND  a.CUSTOMERNO = t.CUSTOMER_NO   AND  a.CONTRACT   =t.CONTRACT)   AND  (ORDER_NO LIKE  'V19741') AND ROWNUM <=10000
+2015-06-23 11:09:03:654:0.000:Select  distinct  query_id  from A006 t  where user_id='ZHH' AND a00201_key ='5001-0'
+2015-06-23 11:09:03:779:0.125:Select id,name from BL_V_STATE where  type='CO' and  lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 11:09:03:794:0.016:Select t.* From (Select '1' As Id, '正常' As Name From Dual Union Select '2', '付费样品' From Dual  Union  Select '3', '免费样品' From Dual Union Select '4', '赔偿' From Dual Union Select '5', '费用订单' From Dual Union Select '6', '客户试用' From Dual) t Where Pkg_Attr.Userlanguage('ZHH') = 'CN' Union Select '1', 'NORMAL'  From Dual Where Pkg_Attr.Userlanguage('ZHH') = 'EN'
+2015-06-23 11:09:03:810:0.016:select t.id,t.name from (select 'CN' As Lang, 'TRUE' as id, ' 含税 ' as name from dual union select  'CN' As Lang, 'FALSE', ' 不含税 ' from dual union select  'EN', 'TRUE', ' TRUE ' from dual union select  'EN', 'FALSE', ' FALSE ' from dual) t where t.lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 11:09:03:982:0.109:Select id,name from BL_V_STATE where  type='CO' and  lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 11:09:03:982:0.000:Select t.* From (Select '1' As Id, '正常' As Name From Dual Union Select '2', '付费样品' From Dual  Union  Select '3', '免费样品' From Dual Union Select '4', '赔偿' From Dual Union Select '5', '费用订单' From Dual Union Select '6', '客户试用' From Dual) t Where Pkg_Attr.Userlanguage('ZHH') = 'CN' Union Select '1', 'NORMAL'  From Dual Where Pkg_Attr.Userlanguage('ZHH') = 'EN'
+2015-06-23 11:09:03:982:0.000:select t.id,t.name from (select 'CN' As Lang, 'TRUE' as id, ' 含税 ' as name from dual union select  'CN' As Lang, 'FALSE', ' 不含税 ' from dual union select  'EN', 'TRUE', ' TRUE ' from dual union select  'EN', 'FALSE', ' FALSE ' from dual) t where t.lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 11:13:58:916:0.000:Select t.* from A306 t  where  t.a306_name not like 'A30305_ID=%' and   t.rec_a007='ZHH' and  t.status='0'  and enter_date > sysdate - 2  and rownum < 20 order by  enter_date desc 
+2015-06-23 11:23:58:916:0.000:Select t.* from A306 t  where  t.a306_name not like 'A30305_ID=%' and   t.rec_a007='ZHH' and  t.status='0'  and enter_date > sysdate - 2  and rownum < 20 order by  enter_date desc 
+2015-06-23 11:32:55:810:1.078:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:33:55:904:0.016:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:33:58:904:0.000:Select t.* from A306 t  where  t.a306_name not like 'A30305_ID=%' and   t.rec_a007='ZHH' and  t.status='0'  and enter_date > sysdate - 2  and rownum < 20 order by  enter_date desc 
+2015-06-23 11:34:55:983:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:35:56:108:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:36:58:983:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:37:23:687:0.047:Select t.*,pkg_a.getmenuname(t.a002_key,'ZHH') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'ZHH',100249800) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 11:37:24:187:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 11:37:24:187:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:37:24:187:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:37:24:187:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:37:31:281:6.578:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, 'ZHH') As Useable, pkg_a.getmenuname(t.a002_key,'ZHH') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = 'ZHH' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 11:37:32:234:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:37:32:234:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:37:32:234:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:37:33:515:0.000:Select t.* from A306 t  where  t.a306_name not like 'A30305_ID=%' and   t.rec_a007='ZHH' and  t.status='0'  and enter_date > sysdate - 2  and rownum < 20 order by  enter_date desc 
+2015-06-23 11:41:20:829:0.016:Select t.*,pkg_a.getmenuname(t.a002_key,'ZHH') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'ZHH',100249800) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 11:41:21:391:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:41:21:391:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:41:21:407:0.016:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:41:28:407:6.500:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, 'ZHH') As Useable, pkg_a.getmenuname(t.a002_key,'ZHH') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = 'ZHH' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 11:41:29:423:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 11:41:29:423:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:41:29:423:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:41:29:423:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:41:29:688:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:41:29:688:0.000:Select t.* from A306 t  where  t.a306_name not like 'A30305_ID=%' and   t.rec_a007='ZHH' and  t.status='0'  and enter_date > sysdate - 2  and rownum < 20 order by  enter_date desc 
+2015-06-23 11:41:40:360:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:42:00:157:0.000:Select t.* from A306 t  where  t.a306_name not like 'A30305_ID=%' and   t.rec_a007='ZHH' and  t.status='0'  and enter_date > sysdate - 2  and rownum < 20 order by  enter_date desc 
+2015-06-23 11:42:41:673:0.047:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:42:42:595:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:42:42:751:0.125:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:42:47:486:0.016:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:42:49:954:0.031:Select  a022_name  from a022 t where  a022_id='CHECK_MAC_NAME' 
+2015-06-23 11:42:50:095:0.016:select f_get_data_index() as c  from dual 
+2015-06-23 11:42:50:095:0.000:Select pkg_show.getSysConfig('ZHH') as c from dual 
+2015-06-23 11:42:50:095:0.000:Select t.* from A001_V01 t where t.a007_id='ZHH'
+2015-06-23 11:42:50:220:0.000:Select t.* from A022 t 
+2015-06-23 11:42:50:236:0.016:Select pkg_user.get_num_dec('ZHH') as num from dual 
+2015-06-23 11:42:52:126:0.016:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:42:53:189:0.016:Select t.*,pkg_a.getmenuname(t.a002_key,'') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'',0) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 11:42:53:501:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:42:53:704:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:42:53:861:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:42:53:939:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:42:54:189:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 11:42:54:283:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:42:54:376:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:42:54:470:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:42:54:908:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:42:55:064:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:42:55:751:0.031:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, '') As Useable, pkg_a.getmenuname(t.a002_key,'') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = '' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 11:42:58:486:0.016:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:42:58:564:0.000:Select  a022_name  from a022 t where  a022_id='CHECK_MAC_NAME' 
+2015-06-23 11:42:58:720:0.000:select f_get_data_index() as c  from dual 
+2015-06-23 11:42:58:720:0.000:Select pkg_show.getSysConfig('ZHH') as c from dual 
+2015-06-23 11:42:58:720:0.000:Select t.* from A001_V01 t where t.a007_id='ZHH'
+2015-06-23 11:42:58:720:0.000:Select t.* from A022 t 
+2015-06-23 11:42:58:736:0.016:Select pkg_user.get_num_dec('ZHH') as num from dual 
+2015-06-23 11:42:59:064:0.016:Select t.*,pkg_a.getmenuname(t.a002_key,'ZHH') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'ZHH',100374997) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 11:42:59:158:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 11:42:59:158:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:42:59:173:0.016:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:42:59:189:0.016:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:42:59:673:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:42:59:689:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:42:59:689:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:43:03:626:3.875:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, 'ZHH') As Useable, pkg_a.getmenuname(t.a002_key,'ZHH') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = 'ZHH' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 11:43:04:908:0.016:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:43:04:908:0.000:Select t.* from A306 t  where  t.a306_name not like 'A30305_ID=%' and   t.rec_a007='ZHH' and  t.status='0'  and enter_date > sysdate - 2  and rownum < 20 order by  enter_date desc 
+2015-06-23 11:43:28:814:0.016:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:43:29:689:0.016:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:43:29:830:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:43:46:674:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:43:46:955:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:43:47:111:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:43:50:861:0.016:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:43:50:955:0.016:Select  a022_name  from a022 t where  a022_id='CHECK_MAC_NAME' 
+2015-06-23 11:43:51:017:0.000:select f_get_data_index() as c  from dual 
+2015-06-23 11:43:51:033:0.016:Select pkg_show.getSysConfig('ZHH') as c from dual 
+2015-06-23 11:43:51:033:0.000:Select t.* from A001_V01 t where t.a007_id='ZHH'
+2015-06-23 11:43:51:033:0.000:Select t.* from A022 t 
+2015-06-23 11:43:51:033:0.000:Select pkg_user.get_num_dec('ZHH') as num from dual 
+2015-06-23 11:43:52:377:0.016:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:43:53:439:0.000:Select t.*,pkg_a.getmenuname(t.a002_key,'') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'',0) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 11:43:53:767:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:43:53:955:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:43:54:080:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:43:54:174:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:43:54:424:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 11:43:54:517:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:43:54:611:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:43:54:705:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:43:55:142:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:43:55:283:0.094:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:43:55:924:0.016:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, '') As Useable, pkg_a.getmenuname(t.a002_key,'') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = '' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 11:43:58:517:0.016:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:43:58:595:0.000:Select  a022_name  from a022 t where  a022_id='CHECK_MAC_NAME' 
+2015-06-23 11:43:58:674:0.000:select f_get_data_index() as c  from dual 
+2015-06-23 11:43:58:674:0.000:Select pkg_show.getSysConfig('ZHH') as c from dual 
+2015-06-23 11:43:58:674:0.000:Select t.* from A001_V01 t where t.a007_id='ZHH'
+2015-06-23 11:43:58:689:0.016:Select t.* from A022 t 
+2015-06-23 11:43:58:689:0.000:Select pkg_user.get_num_dec('ZHH') as num from dual 
+2015-06-23 11:43:59:924:0.016:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:44:00:861:0.000:Select t.*,pkg_a.getmenuname(t.a002_key,'') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'',0) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 11:44:01:189:0.016:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:44:01:517:0.000:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, '') As Useable, pkg_a.getmenuname(t.a002_key,'') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = '' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 11:44:01:908:0.016:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 11:44:02:002:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:44:02:080:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:44:02:174:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:44:02:564:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:44:02:721:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:44:03:330:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:44:03:424:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:44:03:517:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:48:07:253:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:48:07:535:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:48:07:706:0.125:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:48:27:675:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:48:27:957:0.016:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:48:28:113:0.125:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:48:35:441:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:48:35:722:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:48:35:879:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:48:47:832:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:48:48:113:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:48:48:238:0.078:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:49:17:410:0.016:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:49:17:754:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:49:17:910:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:49:28:551:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:49:33:941:0.000:Select  a022_name  from a022 t where  a022_id='CHECK_MAC_NAME' 
+2015-06-23 11:49:34:004:0.000:select f_get_data_index() as c  from dual 
+2015-06-23 11:49:34:004:0.000:Select pkg_show.getSysConfig('ZHH') as c from dual 
+2015-06-23 11:49:34:020:0.000:Select t.* from A001_V01 t where t.a007_id='ZHH'
+2015-06-23 11:49:34:020:0.000:Select t.* from A022 t 
+2015-06-23 11:49:34:020:0.000:Select pkg_user.get_num_dec('ZHH') as num from dual 
+2015-06-23 11:49:36:113:0.016:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:49:37:066:0.000:Select t.*,pkg_a.getmenuname(t.a002_key,'') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'',0) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 11:49:37:363:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:49:37:629:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 11:49:37:723:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:49:37:832:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:49:37:926:0.016:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:49:38:207:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:49:38:348:0.094:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:49:38:691:0.000:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, '') As Useable, pkg_a.getmenuname(t.a002_key,'') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = '' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 11:49:39:066:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:49:39:160:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:49:39:254:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:49:45:723:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:49:45:816:0.000:Select  a022_name  from a022 t where  a022_id='CHECK_MAC_NAME' 
+2015-06-23 11:49:45:879:0.000:select f_get_data_index() as c  from dual 
+2015-06-23 11:49:45:879:0.000:Select pkg_show.getSysConfig('ZHH') as c from dual 
+2015-06-23 11:49:45:895:0.016:Select t.* from A001_V01 t where t.a007_id='ZHH'
+2015-06-23 11:49:45:895:0.000:Select t.* from A022 t 
+2015-06-23 11:49:45:895:0.000:Select pkg_user.get_num_dec('ZHH') as num from dual 
+2015-06-23 11:49:47:129:0.016:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:49:48:051:0.000:Select t.*,pkg_a.getmenuname(t.a002_key,'') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'',0) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 11:49:48:379:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:49:48:645:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 11:49:48:738:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:49:48:848:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:49:48:941:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:49:49:238:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:49:49:379:0.094:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:49:49:754:0.000:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, '') As Useable, pkg_a.getmenuname(t.a002_key,'') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = '' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 11:49:50:035:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:49:50:129:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:49:50:223:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:54:15:084:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:54:15:178:0.000:Select  a022_name  from a022 t where  a022_id='CHECK_MAC_NAME' 
+2015-06-23 11:54:15:240:0.000:select f_get_data_index() as c  from dual 
+2015-06-23 11:54:15:256:0.016:Select pkg_show.getSysConfig('ZHH') as c from dual 
+2015-06-23 11:54:15:256:0.000:Select t.* from A001_V01 t where t.a007_id='ZHH'
+2015-06-23 11:54:15:256:0.000:Select t.* from A022 t 
+2015-06-23 11:54:15:256:0.000:Select pkg_user.get_num_dec('ZHH') as num from dual 
+2015-06-23 11:54:16:631:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:54:17:553:0.000:Select t.*,pkg_a.getmenuname(t.a002_key,'') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'',0) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 11:54:17:834:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:54:18:193:0.016:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, '') As Useable, pkg_a.getmenuname(t.a002_key,'') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = '' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 11:54:18:599:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 11:54:18:693:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:54:18:787:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:54:18:881:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:54:19:178:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:54:19:334:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:54:19:553:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:54:19:646:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:54:19:740:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:55:29:944:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:55:33:881:0.016:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:55:35:272:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:55:35:428:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:55:38:866:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:55:38:959:0.000:Select  a022_name  from a022 t where  a022_id='CHECK_MAC_NAME' 
+2015-06-23 11:55:39:022:0.000:select f_get_data_index() as c  from dual 
+2015-06-23 11:55:39:022:0.000:Select pkg_show.getSysConfig('ZHH') as c from dual 
+2015-06-23 11:55:39:037:0.016:Select t.* from A001_V01 t where t.a007_id='ZHH'
+2015-06-23 11:55:39:037:0.000:Select t.* from A022 t 
+2015-06-23 11:55:39:037:0.000:Select pkg_user.get_num_dec('ZHH') as num from dual 
+2015-06-23 11:55:40:037:0.016:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:55:40:975:0.016:Select t.*,pkg_a.getmenuname(t.a002_key,'') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'',0) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 11:55:41:256:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:55:41:662:0.016:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, '') As Useable, pkg_a.getmenuname(t.a002_key,'') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = '' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 11:55:42:006:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 11:55:42:100:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:55:42:194:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:55:42:287:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:55:42:475:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 11:55:42:569:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 11:55:42:662:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 11:55:43:178:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:55:43:350:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:56:02:475:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:56:02:803:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:56:02:960:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 11:56:10:006:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 11:56:35:569:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 11:56:35:882:0.016:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 11:56:36:038:0.125:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 12:00:11:867:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 12:00:12:164:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 12:00:12:320:0.109:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 12:00:16:399:0.016:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 12:00:25:008:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 12:00:29:805:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 12:00:51:852:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 12:00:51:946:0.016:Select  a022_name  from a022 t where  a022_id='CHECK_MAC_NAME' 
+2015-06-23 12:00:52:008:0.000:select f_get_data_index() as c  from dual 
+2015-06-23 12:00:52:008:0.000:Select pkg_show.getSysConfig('ZHH') as c from dual 
+2015-06-23 12:00:52:024:0.016:Select t.* from A001_V01 t where t.a007_id='ZHH'
+2015-06-23 12:00:52:024:0.000:Select t.* from A022 t 
+2015-06-23 12:00:52:024:0.000:Select pkg_user.get_num_dec('ZHH') as num from dual 
+2015-06-23 12:00:56:055:0.031:Select t.*,pkg_a.getmenuname(t.a002_key,'ZHH') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'ZHH',100375014) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 12:01:01:508:4.938:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, 'ZHH') As Useable, pkg_a.getmenuname(t.a002_key,'ZHH') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = 'ZHH' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 12:01:02:602:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 12:01:02:602:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 12:01:02:602:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 12:01:02:602:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 12:01:03:180:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 12:01:03:180:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 12:01:03:180:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 12:01:04:399:0.016:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 12:01:04:399:0.000:Select t.* from A306 t  where  t.a306_name not like 'A30305_ID=%' and   t.rec_a007='ZHH' and  t.status='0'  and enter_date > sysdate - 2  and rownum < 20 order by  enter_date desc 
+2015-06-23 12:04:41:463:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 12:04:41:713:0.000:Select t.* from a022 t where t.a022_id='BS_TITLE'
+2015-06-23 12:04:42:103:0.000:SELECT a022_name from A022 t where t.a022_id='LOGIN_PIC'
+2015-06-23 12:04:42:260:0.125:Select pkg_user.get_last_user('127.0.0.1') as c from dual 
+2015-06-23 12:04:46:900:0.000:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 12:04:47:010:0.000:Select  a022_name  from a022 t where  a022_id='CHECK_MAC_NAME' 
+2015-06-23 12:04:47:072:0.000:select f_get_data_index() as c  from dual 
+2015-06-23 12:04:47:072:0.000:Select pkg_show.getSysConfig('ZHH') as c from dual 
+2015-06-23 12:04:47:072:0.000:Select t.* from A001_V01 t where t.a007_id='ZHH'
+2015-06-23 12:04:47:088:0.016:Select t.* from A022 t 
+2015-06-23 12:04:47:088:0.000:Select pkg_user.get_num_dec('ZHH') as num from dual 
+2015-06-23 12:04:57:697:0.047:Select t.*,pkg_a.getmenuname(t.a002_key,'ZHH') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'ZHH',100375017) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 12:05:01:541:3.734:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, 'ZHH') As Useable, pkg_a.getmenuname(t.a002_key,'ZHH') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = 'ZHH' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 12:05:02:838:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 12:05:02:838:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 12:05:02:838:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 12:05:02:838:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 12:05:03:338:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 12:05:03:338:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 12:05:03:338:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 12:05:04:541:0.016:Select t.* from A306 t where t.rec_a007 ='System' and   t.status ='0'
+2015-06-23 12:05:04:541:0.000:Select t.* from A306 t  where  t.a306_name not like 'A30305_ID=%' and   t.rec_a007='ZHH' and  t.status='0'  and enter_date > sysdate - 2  and rownum < 20 order by  enter_date desc 
+2015-06-23 12:10:56:200:0.016:Select t.*,pkg_a.getmenuname(t.a002_key,'ZHH') as show_name from A002_V01 t where  parent_id = '00'  and active ='1' and pkg_a.getUserMenu(t.menu_id,'ZHH',100375017) = '1' and READ_ONLY ='1' and rownum < 10 order by sort_by,menu_id
+2015-06-23 12:10:56:403:0.016:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 12:10:56:403:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 12:10:56:403:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 12:10:56:918:0.000:Select t.* from a022 t where t.a022_id='BS_TABS'
+2015-06-23 12:10:56:918:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_TIME'
+2015-06-23 12:10:56:918:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_SPEED'
+2015-06-23 12:10:56:918:0.000:Select t.* from a022 t where t.a022_id='BS_MSG_STEP'
+2015-06-23 12:11:01:122:3.703:Select t.*, Pkg_Fun.Get_User_Menu_(t.Menu_Id, 'ZHH') As Useable, pkg_a.getmenuname(t.a002_key,'ZHH') as show_name  From A002_V01 t Where t.Active = '1'  And Exists (Select 1  From A01301 a  Inner Join A00701 A1  On A1.A007_Id = 'ZHH' And A1.A013_Id = a.A013_Id      Where a.A002_Id = t.Menu_Id  And a.Rb_Do = 'Use'  And a.Useable = '1') order by  PARENT_ID ,sort_by,menu_id 
+2015-06-23 12:11:02:168:0.000:Select t.* from A306 t  where  t.a306_name not like 'A30305_ID=%' and   t.rec_a007='ZHH' and  t.status='0'  and enter_date > sysdate - 2  and rownum < 20 order by  enter_date desc 
+2015-06-23 12:11:05:262:0.016:Select t.*,pkg_a.getmenuname(t.a002_key,'ZHH') as show_name from A002_V01 t where a002_key = '5001-0'
+2015-06-23 12:11:05:418:0.000:Select t.* from A002_v01 t where a002_key='5001-0'
+2015-06-23 12:11:05:434:0.000:Select t.* from A00201_V01 t where t.menu_id='5001' and line_no > 0  and 1=2 order by control_id
+2015-06-23 12:11:05:450:0.016:Select query_id  from A006 t  where user_id='ZHH' AND a00201_key ='5001-0' and DEF_FLAG ='1' and rownum = 1
+2015-06-23 12:11:06:731:1.000:Select t.*,pkg_show.get_column_attr('ZHH','5001','dw_main','BL_V_CUSTOMER_ORDER',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5001'
+           and  t1.Control_Id= 'dw_main'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUSTOMER_ORDER'
+           order by t.col_x  
+2015-06-23 12:11:06:731:0.000:Select t.* from A00201_V01 t where a00201_key = '5001-0' order by  line_no  
+2015-06-23 12:11:06:747:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='C'
+2015-06-23 12:11:06:747:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='U'
+2015-06-23 12:11:06:747:0.000:select t.* from A00201_V01 t  where menu_id ='5001' order by line_no
+2015-06-23 12:11:06:762:0.016:select t.*   from a00201_v02 t  where a00201_key ='5001-0' order by sort_by
+2015-06-23 12:11:06:762:0.000:Select pkg_show.getshowdatasql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:06:778:0.016:Select pkg_show.getShowDataCountSql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:06:778:0.000:select t.*   from A00205 t  where menu_id ='5001' order by sort_by
+2015-06-23 12:11:06:825:0.000:Select b.*  from (Select a.* , rownum as rn from (Select  ORDER_NO,CONTRACT,CUSTOMER_NO,CUSTOMER_NAME,LABEL_NOTE,STATE,BLORDER_ID,ORDER_ID,BLORDER_NO,AUTHORIZE_CODE,CUSTOMER_PO_NO,WANTED_DELIVERY_DATE,CURRENCY_CODE,Q_FLAG,CUST_REF,ADDITIONAL_DISCOUNT,BLLOCATION_NO,WAREHOUSE,BLD001_ITEM,BL_UAMOUNT,PRICE_WITH_TAX,NOTE_TEXT1,SHIP_ADDR_NO,BILL_ADDR_NO,SHIP_VIA_CODE,DELIVERY_TERMS,AGREEMENT_ID,DATE_ENTERED,NOTE_TEXT3,MARKET_CODE,DISTRICT_CODE,BL_STATE,REGION_CODE,PAY_TERM_ID,SALESMAN_CODE,SALESMAN_NAME,CANCEL_REASON,PICKLISTNO,NOTE_TEXT,NOTE_TEXT2,ENTER_USER,IF_FIRST,LANGUAGE_CODE,VAT_DB,OBJSTATE,NOTE_ID, OBJID   From BL_V_CUSTOMER_ORDER t WHERE EXISTS(Select b.contract from a00704 b where b.a007_id = 'ZHH' AND T.Contract=b.CONTRACT) AND exists (SELECT 1 FROM A00705 A    WHERE A.A007_ID   = 'ZHH'  AND  a.CUSTOMERNO = t.CUSTOMER_NO   AND  a.CONTRACT   =t.CONTRACT)   AND 1=2 AND ROWNUM <=10000 ) a  where rownum <=  0) b where rn > -50
+2015-06-23 12:11:06:840:0.016:Select pkg_show.geta00204('5001-0','[LIST]','ZHH','1','Q') as c  from dual 
+2015-06-23 12:11:06:840:0.000:Select count(*) as c   From BL_V_CUSTOMER_ORDER t WHERE EXISTS(Select b.contract from a00704 b where b.a007_id = 'ZHH' AND T.Contract=b.CONTRACT) AND exists (SELECT 1 FROM A00705 A    WHERE A.A007_ID   = 'ZHH'  AND  a.CUSTOMERNO = t.CUSTOMER_NO   AND  a.CONTRACT   =t.CONTRACT)   AND 1=2 AND ROWNUM <=10000
+2015-06-23 12:11:06:903:0.000:Select  distinct  query_id  from A006 t  where user_id='ZHH' AND a00201_key ='5001-0'
+2015-06-23 12:11:06:950:0.031:Select id,name from BL_V_STATE where  type='CO' and  lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:06:965:0.016:Select t.* From (Select '1' As Id, '正常' As Name From Dual Union Select '2', '付费样品' From Dual  Union  Select '3', '免费样品' From Dual Union Select '4', '赔偿' From Dual Union Select '5', '费用订单' From Dual Union Select '6', '客户试用' From Dual) t Where Pkg_Attr.Userlanguage('ZHH') = 'CN' Union Select '1', 'NORMAL'  From Dual Where Pkg_Attr.Userlanguage('ZHH') = 'EN'
+2015-06-23 12:11:06:965:0.000:select t.id,t.name from (select 'CN' As Lang, 'TRUE' as id, ' 含税 ' as name from dual union select  'CN' As Lang, 'FALSE', ' 不含税 ' from dual union select  'EN', 'TRUE', ' TRUE ' from dual union select  'EN', 'FALSE', ' FALSE ' from dual) t where t.lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:09:575:0.734:Select t.*,pkg_show.get_column_attr('ZHH','5001','dw_main','BL_V_CUSTOMER_ORDER',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5001'
+           and  t1.Control_Id= 'dw_main'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUSTOMER_ORDER'
+           order by t.col_x  
+2015-06-23 12:11:09:590:0.016:Select t.* from A00201_V01 t where a00201_key = '5001-0' order by  line_no  
+2015-06-23 12:11:09:590:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='C'
+2015-06-23 12:11:09:590:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='U'
+2015-06-23 12:11:09:606:0.016:select t.* from A00201_V01 t  where menu_id ='5001' order by line_no
+2015-06-23 12:11:09:606:0.000:select t.*   from a00201_v02 t  where a00201_key ='5001-0' order by sort_by
+2015-06-23 12:11:09:622:0.016:Select pkg_show.getshowdatasql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:09:622:0.000:Select pkg_show.getShowDataCountSql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:09:637:0.016:select t.*   from A00205 t  where menu_id ='5001' order by sort_by
+2015-06-23 12:11:09:653:0.000:Select t.col_name as  COLUMN_ID, t.COL_TYPE as COL_TYPE ,t.col_rela as CALC,t.col_value as VALUE,t.col_sort   from a006 t where t.user_id= 'ZHH' and A00201_KEY='5001-0' and query_id='最近的查询' order by t.col_sort,t.enter_date,t.rowid
+2015-06-23 12:11:09:731:0.016:Select b.*  from (Select a.* , rownum as rn from (Select  ORDER_NO,CONTRACT,CUSTOMER_NO,CUSTOMER_NAME,LABEL_NOTE,STATE,BLORDER_ID,ORDER_ID,BLORDER_NO,AUTHORIZE_CODE,CUSTOMER_PO_NO,WANTED_DELIVERY_DATE,CURRENCY_CODE,Q_FLAG,CUST_REF,ADDITIONAL_DISCOUNT,BLLOCATION_NO,WAREHOUSE,BLD001_ITEM,BL_UAMOUNT,PRICE_WITH_TAX,NOTE_TEXT1,SHIP_ADDR_NO,BILL_ADDR_NO,SHIP_VIA_CODE,DELIVERY_TERMS,AGREEMENT_ID,DATE_ENTERED,NOTE_TEXT3,MARKET_CODE,DISTRICT_CODE,BL_STATE,REGION_CODE,PAY_TERM_ID,SALESMAN_CODE,SALESMAN_NAME,CANCEL_REASON,PICKLISTNO,NOTE_TEXT,NOTE_TEXT2,ENTER_USER,IF_FIRST,LANGUAGE_CODE,VAT_DB,OBJSTATE,NOTE_ID, OBJID   From BL_V_CUSTOMER_ORDER t WHERE EXISTS(Select b.contract from a00704 b where b.a007_id = 'ZHH' AND T.Contract=b.CONTRACT) AND exists (SELECT 1 FROM A00705 A    WHERE A.A007_ID   = 'ZHH'  AND  a.CUSTOMERNO = t.CUSTOMER_NO   AND  a.CONTRACT   =t.CONTRACT)   AND  (ORDER_NO LIKE  'B72489')   AND ROWNUM <=10000 ) a  where rownum <=  50) b where rn > 0
+2015-06-23 12:11:09:731:0.000:Select pkg_show.geta00204('5001-0','[LIST]','ZHH','1','Q') as c  from dual 
+2015-06-23 12:11:09:747:0.016:Select count(*) as c   From BL_V_CUSTOMER_ORDER t WHERE EXISTS(Select b.contract from a00704 b where b.a007_id = 'ZHH' AND T.Contract=b.CONTRACT) AND exists (SELECT 1 FROM A00705 A    WHERE A.A007_ID   = 'ZHH'  AND  a.CUSTOMERNO = t.CUSTOMER_NO   AND  a.CONTRACT   =t.CONTRACT)   AND  (ORDER_NO LIKE  'B72489') AND ROWNUM <=10000
+2015-06-23 12:11:09:793:0.000:Select  distinct  query_id  from A006 t  where user_id='ZHH' AND a00201_key ='5001-0'
+2015-06-23 12:11:09:840:0.047:Select id,name from BL_V_STATE where  type='CO' and  lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:09:840:0.000:Select t.* From (Select '1' As Id, '正常' As Name From Dual Union Select '2', '付费样品' From Dual  Union  Select '3', '免费样品' From Dual Union Select '4', '赔偿' From Dual Union Select '5', '费用订单' From Dual Union Select '6', '客户试用' From Dual) t Where Pkg_Attr.Userlanguage('ZHH') = 'CN' Union Select '1', 'NORMAL'  From Dual Where Pkg_Attr.Userlanguage('ZHH') = 'EN'
+2015-06-23 12:11:09:840:0.000:select t.id,t.name from (select 'CN' As Lang, 'TRUE' as id, ' 含税 ' as name from dual union select  'CN' As Lang, 'FALSE', ' 不含税 ' from dual union select  'EN', 'TRUE', ' TRUE ' from dual union select  'EN', 'FALSE', ' FALSE ' from dual) t where t.lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:09:950:0.047:Select id,name from BL_V_STATE where  type='CO' and  lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:09:950:0.000:Select t.* From (Select '1' As Id, '正常' As Name From Dual Union Select '2', '付费样品' From Dual  Union  Select '3', '免费样品' From Dual Union Select '4', '赔偿' From Dual Union Select '5', '费用订单' From Dual Union Select '6', '客户试用' From Dual) t Where Pkg_Attr.Userlanguage('ZHH') = 'CN' Union Select '1', 'NORMAL'  From Dual Where Pkg_Attr.Userlanguage('ZHH') = 'EN'
+2015-06-23 12:11:09:965:0.016:select t.id,t.name from (select 'CN' As Lang, 'TRUE' as id, ' 含税 ' as name from dual union select  'CN' As Lang, 'FALSE', ' 不含税 ' from dual union select  'EN', 'TRUE', ' TRUE ' from dual union select  'EN', 'FALSE', ' FALSE ' from dual) t where t.lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:11:809:0.016:Select t.* from A002 t where menu_id='5001'
+2015-06-23 12:11:11:809:0.000:Select t.* from A313 t where t.a313_id='5001' and t.a313_name='B72489'
+2015-06-23 12:11:11:825:0.016:Select t.* from A00211 t where menu_id='5001' order by sort_by
+2015-06-23 12:11:11:825:0.000:Select t.* from A00212 t where menu_id='5001' and rownum <= 1
+2015-06-23 12:11:11:825:0.000:Select t.* from A00201_V01 t where t.a00201_key='5001-0'
+2015-06-23 12:11:11:840:0.016:Select t.* from A00201_V01 t where t.menu_id='5001' and line_no > 0  order by control_id
+2015-06-23 12:11:12:668:0.391:Select t.*,pkg_show.get_column_attr('ZHH','5001','dw_1','BL_V_CUSTOMER_ORDER_LINE',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5001'
+           and  t1.Control_Id= 'dw_1'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUSTOMER_ORDER_LINE'
+           order by t.col_x  
+2015-06-23 12:11:12:684:0.016:Select t.* from A00201_V01 t where a00201_key = '5001-2' order by  line_no  
+2015-06-23 12:11:12:700:0.016:select t.*   from a00201_v02 t  where a00201_key ='5001-2' order by sort_by
+2015-06-23 12:11:12:700:0.000:Select pkg_show.getshowdatasql('5001-2','ZHH') as c from dual 
+2015-06-23 12:11:12:715:0.016:Select pkg_show.getShowDataCountSql('5001-2','ZHH') as c from dual 
+2015-06-23 12:11:12:887:0.031:Select b.*  from (Select a.* , rownum as rn from (Select  t.*  From BL_V_CUSTOMER_ORDER_LINE t WHERE 1 = 1  AND line_item_no <=0  AND ORDER_NO='B72489'  ORDER BY to_number(line_no),to_number(rel_no),objid) a  where rownum <=  100) b where rn > 0
+2015-06-23 12:11:12:903:0.016:Select pkg_show.geta00204('5001-2','B72489','ZHH','0','M','') as c  from dual 
+2015-06-23 12:11:12:950:0.047:Select count(*) as c   From BL_V_CUSTOMER_ORDER_LINE t WHERE 1 = 1  AND line_item_no <=0  AND ORDER_NO='B72489'
+2015-06-23 12:11:13:106:0.000:Select 'B72489'  as c from dual 
+2015-06-23 12:11:13:122:0.016:Select  id,name  from BL_V_CO_SUPPLY_CODE  t  where    t.lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:13:168:0.047:Select id,name from BL_V_STATE where  type='CO' and  lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:13:168:0.000:Select '33'  as c from dual 
+2015-06-23 12:11:13:168:0.000:Select 'Y'  as c from dual 
+2015-06-23 12:11:13:168:0.000:Select '2014-07-14-00.00.00'  as c from dual 
+2015-06-23 12:11:13:168:0.000:Select '2014-07-14-00.00.00'  as c from dual 
+2015-06-23 12:11:13:168:0.000:Select '0'  as c from dual 
+2015-06-23 12:11:13:168:0.000:Select 'TRUE'  as c from dual 
+2015-06-23 12:11:13:184:0.000:Select '0'  as c from dual 
+2015-06-23 12:11:13:184:0.000:Select '0'  as c from dual 
+2015-06-23 12:11:13:184:0.000:select 'Agreement' as id, '协议' as name from dual union select 'Base', '基本' from dual
+2015-06-23 12:11:13:184:0.000:Select '0'  as c from dual 
+2015-06-23 12:11:13:215:0.016:Select BL_Customer_Order_Line_Api.checkUseable('M','CATALOG_NO','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:215:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','CATALOG_DESC','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:215:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','BUY_QTY_DUE','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:231:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','SALE_UNIT_PRICE','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:231:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','SALE_UNIT_PRICE_WITH_TAX','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:231:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','CUSTOMER_PART_NO','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:247:0.016:Select BL_Customer_Order_Line_Api.checkUseable('M','LINE_NO','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:247:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','REL_NO','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:247:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','SUPPLY_CODE','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:262:0.016:Select  id,name  from BL_V_CO_SUPPLY_CODE  t  where    t.lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:13:262:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','VENDOR_NO','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:262:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','PO_IDENTIFIER','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:262:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','BLD001_PACK','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:278:0.016:Select BL_Customer_Order_Line_Api.checkUseable('M','WANTED_DELIVERY_DATE','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:278:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','PROMISED_DELIVERY_DATE','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:278:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','FEE_CODE','OBJID|NULLUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|CATALOG_DESC|BUY_QTY_DUE|SALE_UNIT_PRICE|SALE_UNIT_PRICE_WITH_TAX|CUSTOMER_PART_NO|SALES_UNIT_MEAS|LINE_NO|REL_NO|SUPPLY_CODE|STATE|VENDOR_NO|OBJSTATE|PO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|YWANTED_DELIVERY_DATE|2014-07-14 00:00:00PLANNED_DELIVERY_DATE|2014-07-14 00:00:00BASE_SALE_UNIT_PRICE|CURRENCY_RATE|COST|0ADDITIONAL_DISCOUNT|MAINSTATE|PRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|PROMISED_DELIVERY_DATE|PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|FEE_CODE|FINISHQTY|LINE_ITEM_NO|DESIRED_QTY|QTY_ON_ORDER|PRICE_SOURCE|PLANNED_SHIP_DATE|DISCOUNT|0BL_DISCOUNT_AMOUNT|BL_TAX_AMOUNT|') as c from dual 
+2015-06-23 12:11:13:293:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','CATALOG_NO','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:293:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','CATALOG_DESC','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:293:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','BUY_QTY_DUE','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:309:0.016:Select BL_Customer_Order_Line_Api.checkUseable('M','SALE_UNIT_PRICE','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:309:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','SALE_UNIT_PRICE_WITH_TAX','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:309:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','CUSTOMER_PART_NO','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:325:0.016:Select BL_Customer_Order_Line_Api.checkUseable('M','LINE_NO','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:325:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','REL_NO','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:325:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','SUPPLY_CODE','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:340:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','VENDOR_NO','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:340:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','PO_IDENTIFIER','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:356:0.016:Select BL_Customer_Order_Line_Api.checkUseable('M','BLD001_PACK','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:356:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','WANTED_DELIVERY_DATE','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:356:0.000:Select BL_Customer_Order_Line_Api.checkUseable('M','PROMISED_DELIVERY_DATE','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:13:372:0.016:Select BL_Customer_Order_Line_Api.checkUseable('M','FEE_CODE','OBJID|AAAM7JAANAABT03AAAUSER_ID|ZHHORDER_NO|B72489CATALOG_NO|140501010003CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TBUY_QTY_DUE|1020SALE_UNIT_PRICE|14.85922564SALE_UNIT_PRICE_WITH_TAX|17.385294CUSTOMER_PART_NO|SALES_UNIT_MEAS|pcsLINE_NO|1REL_NO|1SUPPLY_CODE|Invent OrderSTATE|DeliveredVENDOR_NO|OBJSTATE|DeliveredPO_IDENTIFIER|BLD001_PACK|BLD001_NAME|CONTRACT|33VAT_DB|Pay taxWANTED_DELIVERY_DATE|2014-7-15 0:00:00PLANNED_DELIVERY_DATE|2014-7-15 0:00:00BASE_SALE_UNIT_PRICE|17.385294CURRENCY_RATE|1COST|0ADDITIONAL_DISCOUNT|0MAINSTATE|DeliveredPRICE_WITH_TAX|TRUECONDITION_CODE|PRICE_LIST_NO|SUPPLIER|33PROMISED_DELIVERY_DATE|2014-7-15 0:00:00PRICE_SOURCE_ID|SUPPLY_SITE|CATALOG_TYPE|Inventory partFEE_CODE|17FINISHQTY|1020LINE_ITEM_NO|0DESIRED_QTY|1020QTY_ON_ORDER|0PRICE_SOURCE|BasePLANNED_SHIP_DATE|2014-7-15 0:00:00DISCOUNT|0BL_DISCOUNT_AMOUNT|0BL_TAX_AMOUNT|0') as c from dual 
+2015-06-23 12:11:14:543:0.750:Select t.*,pkg_show.get_column_attr('ZHH','5001','dw_main','BL_V_CUSTOMER_ORDER',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5001'
+           and  t1.Control_Id= 'dw_main'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUSTOMER_ORDER'
+           order by t.col_x  
+2015-06-23 12:11:14:543:0.000:Select t.* from A00201_V01 t where a00201_key = '5001-0' order by  line_no  
+2015-06-23 12:11:14:543:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='C'
+2015-06-23 12:11:14:559:0.016:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='U'
+2015-06-23 12:11:14:559:0.000:select t.* from A00201_V01 t  where menu_id ='5001' order by line_no
+2015-06-23 12:11:14:575:0.016:select t.*   from a00201_v02 t  where a00201_key ='5001-0' order by sort_by
+2015-06-23 12:11:14:575:0.000:Select pkg_show.getshowdatasql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:14:590:0.016:Select pkg_show.getShowDataCountSql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:14:590:0.000:select t.*   from A00205 t  where menu_id ='5001' order by sort_by
+2015-06-23 12:11:14:622:0.016:Select pkg_show.geta00204('5001-0','B72489','ZHH','0','M','0') as c  from dual 
+2015-06-23 12:11:15:543:0.734:Select t.*,pkg_show.get_column_attr('ZHH','5001','dw_main','BL_V_CUSTOMER_ORDER',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5001'
+           and  t1.Control_Id= 'dw_main'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUSTOMER_ORDER'
+           order by t.col_x  
+2015-06-23 12:11:15:559:0.016:Select t.* from A00201_V01 t where a00201_key = '5001-0' order by  line_no  
+2015-06-23 12:11:15:559:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='C'
+2015-06-23 12:11:15:559:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='U'
+2015-06-23 12:11:15:575:0.016:select t.* from A00201_V01 t  where menu_id ='5001' order by line_no
+2015-06-23 12:11:15:575:0.000:select t.*   from a00201_v02 t  where a00201_key ='5001-0' order by sort_by
+2015-06-23 12:11:15:590:0.016:Select pkg_show.getshowdatasql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:15:590:0.000:Select pkg_show.getShowDataCountSql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:15:606:0.016:select t.*   from A00205 t  where menu_id ='5001' order by sort_by
+2015-06-23 12:11:15:731:0.078:Select  t.*  From BL_V_CUSTOMER_ORDER t WHERE EXISTS(Select b.contract from a00704 b where b.a007_id = 'ZHH' AND T.Contract=b.CONTRACT) AND exists (SELECT 1 FROM A00705 A    WHERE A.A007_ID   = 'ZHH'  AND  a.CUSTOMERNO = t.CUSTOMER_NO   AND  a.CONTRACT   =t.CONTRACT)   AND ORDER_NO='B72489'
+2015-06-23 12:11:15:809:0.016:Select BL_Customer_Order_Api.checkUseable('M','CONTRACT','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:809:0.000:Select BL_Customer_Order_Api.checkUseable('M','CUSTOMER_NO','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:856:0.047:Select id,name from BL_V_STATE where  type='CO' and  lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:15:856:0.000:Select BL_Customer_Order_Api.checkUseable('M','BLORDER_ID','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:872:0.016:Select t.* From (Select '1' As Id, '正常' As Name From Dual Union Select '2', '付费样品' From Dual  Union  Select '3', '免费样品' From Dual Union Select '4', '赔偿' From Dual Union Select '5', '费用订单' From Dual Union Select '6', '客户试用' From Dual) t Where Pkg_Attr.Userlanguage('ZHH') = 'CN' Union Select '1', 'NORMAL'  From Dual Where Pkg_Attr.Userlanguage('ZHH') = 'EN'
+2015-06-23 12:11:15:872:0.000:Select BL_Customer_Order_Api.checkUseable('M','ORDER_ID','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:872:0.000:Select BL_Customer_Order_Api.checkUseable('M','AUTHORIZE_CODE','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:872:0.000:Select BL_Customer_Order_Api.checkUseable('M','CUSTOMER_PO_NO','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:887:0.000:Select BL_Customer_Order_Api.checkUseable('M','WANTED_DELIVERY_DATE','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:887:0.000:Select BL_Customer_Order_Api.checkUseable('M','CURRENCY_CODE','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:887:0.000:Select BL_Customer_Order_Api.checkUseable('M','CUST_REF','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:903:0.016:Select BL_Customer_Order_Api.checkUseable('M','ADDITIONAL_DISCOUNT','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:903:0.000:Select BL_Customer_Order_Api.checkUseable('M','BLLOCATION_NO','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:903:0.000:Select BL_Customer_Order_Api.checkUseable('M','BLD001_ITEM','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:918:0.016:Select BL_Customer_Order_Api.checkUseable('M','PRICE_WITH_TAX','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:918:0.000:select t.id,t.name from (select 'CN' As Lang, 'TRUE' as id, ' 含税 ' as name from dual union select  'CN' As Lang, 'FALSE', ' 不含税 ' from dual union select  'EN', 'TRUE', ' TRUE ' from dual union select  'EN', 'FALSE', ' FALSE ' from dual) t where t.lang=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:15:918:0.000:Select BL_Customer_Order_Api.checkUseable('M','SHIP_ADDR_NO','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:918:0.000:Select BL_Customer_Order_Api.checkUseable('M','SHIP_ADDR','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:934:0.016:Select BL_Customer_Order_Api.checkUseable('M','BILL_ADDR_NO','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:934:0.000:Select BL_Customer_Order_Api.checkUseable('M','SHIP_VIA_CODE','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:934:0.000:Select BL_Customer_Order_Api.checkUseable('M','DELIVERY_TERMS','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:950:0.016:Select BL_Customer_Order_Api.checkUseable('M','DATE_ENTERED','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:950:0.000:Select BL_Customer_Order_Api.checkUseable('M','MARKET_CODE','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:950:0.000:Select BL_Customer_Order_Api.checkUseable('M','DISTRICT_CODE','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:950:0.000:Select BL_Customer_Order_Api.checkUseable('M','REGION_CODE','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:965:0.016:Select BL_Customer_Order_Api.checkUseable('M','PAY_TERM_ID','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:965:0.000:Select BL_Customer_Order_Api.checkUseable('M','SALESMAN_CODE','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:965:0.000:Select BL_Customer_Order_Api.checkUseable('M','CANCEL_REASON','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:15:981:0.016:Select BL_Customer_Order_Api.checkUseable('M','NOTE_TEXT','OBJID|AAAM7gAANAABE1GAAYOBJVERSION|20140717080059USER_ID|ZHHORDER_NO|B72489CONTRACT|33CUSTOMER_NO|200010LABEL_NOTE|200010STATE|DeliveredBLORDER_ID|1ORDER_ID|10AUTHORIZE_CODE|*CUSTOMER_PO_NO|WANTED_DELIVERY_DATE|2014-7-14 0:00:00CURRENCY_CODE|CNYTOTALQTY|1020CUST_REF|ADDITIONAL_DISCOUNT|0BLLOCATION_NO|11BLD001_ITEM|1410712PRICE_WITH_TAX|TRUESHIP_ADDR_NO|01SHIP_ADDR|昆山双桥传感器测控技术有限公司BILL_ADDR_NO|01BILL_ADDR|昆山双桥传感器测控技术有限公司SHIP_VIA_CODE|Y07SHIP_VIA_DESC|路运DELIVERY_TERMS|21DELIVERY_TERMS_DESC|直接进指定仓库AGREEMENT_ID|DATE_ENTERED|2014-7-14 14:14:17MARKET_CODE|DISTRICT_CODE|REGION_CODE|PAY_TERM_ID|32SALESMAN_CODE|*PICKLISTNO|NOTE_TEXT|LANGUAGE_CODE|zhVAT_DB|YNOTE_ID|22301029') as c from dual 
+2015-06-23 12:11:17:559:0.719:Select t.*,pkg_show.get_column_attr('ZHH','5001','dw_main','BL_V_CUSTOMER_ORDER',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5001'
+           and  t1.Control_Id= 'dw_main'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUSTOMER_ORDER'
+           order by t.col_x  
+2015-06-23 12:11:17:575:0.016:Select t.* from A00201_V01 t where a00201_key = '5001-0' order by  line_no  
+2015-06-23 12:11:17:575:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='C'
+2015-06-23 12:11:17:575:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='U'
+2015-06-23 12:11:17:590:0.016:select t.* from A00201_V01 t  where menu_id ='5001' order by line_no
+2015-06-23 12:11:17:590:0.000:select t.*   from a00201_v02 t  where a00201_key ='5001-0' order by sort_by
+2015-06-23 12:11:17:606:0.016:Select pkg_show.getshowdatasql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:17:606:0.000:Select pkg_show.getShowDataCountSql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:17:622:0.016:select t.*   from A00205 t  where menu_id ='5001' order by sort_by
+2015-06-23 12:11:17:715:0.000:Select f_Check_A014_Use('5001-0','Order_Socket','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:17:715:0.000:Select f_Check_A014_Use('5001-0','Order_Release','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:17:731:0.000:Select f_Check_A014_Use('5001-0','Order_Appvoe','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:17:778:0.047:Select f_Check_A014_Use('5001-0','Order_Invoice__','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:17:903:0.125:Select f_Check_A014_Use('5001-0','Order_Change','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:17:918:0.016:Select f_Check_A014_Use('5001-0','Order_Cancel','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:059:0.141:Select f_Check_A014_Use('5001-0','Order_PriceChange','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:106:0.047:Select f_Check_A014_Use('5001-0','PO_PiMessage','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:106:0.000:Select f_Check_A014_Use('5001-0','Order_Linkpdelive','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:168:0.063:Select '[HTTP_URL]/showform/MainForm.aspx?option=M&A002KEY=5013&key=' ||       t.ORDER_S_NO as url,   '交货计划确认-' || ORDER_S_NO as menu_id,       t.CONTRACT,       '' as con  from BL_V_CUST_DELIVERY_PLAN t where exists (select 1          from CUSTOMER_ORDER co         where co.ORDER_NO = t.ORDER_NO            and co.objid = 'AAAM7gAANAABE1GAAY')
+2015-06-23 12:11:18:200:0.031:Select f_Check_A014_Use('5001-0','Order_Pdelive','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:215:0.016:Select f_Check_A014_Use('5001-0','Order_Linkpur','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:215:0.000:Select f_Check_A014_Use('5001-0','Order_Linkchg','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:215:0.000:Select f_Check_A014_Use('5001-0','Order_Description','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:215:0.000:Select f_Check_A014_Use('5001-0','Order_Text','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:231:0.016:Select f_Check_A014_Use('5001-0','BL_COC_AUTOObligate','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:372:0.141:Select f_Check_A014_Use('5001-0','BL_CO_Create_PL','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:18:512:0.141:Select f_Check_A014_Use('5001-0','BL_CO_AUTO_ALL','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:20:965:0.703:Select t.*,pkg_show.get_column_attr('ZHH','5001','dw_main','BL_V_CUSTOMER_ORDER',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5001'
+           and  t1.Control_Id= 'dw_main'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUSTOMER_ORDER'
+           order by t.col_x  
+2015-06-23 12:11:20:981:0.016:Select t.* from A00201_V01 t where a00201_key = '5001-0' order by  line_no  
+2015-06-23 12:11:20:981:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='C'
+2015-06-23 12:11:20:981:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='U'
+2015-06-23 12:11:20:981:0.000:select t.* from A00201_V01 t  where menu_id ='5001' order by line_no
+2015-06-23 12:11:20:997:0.000:select t.*   from a00201_v02 t  where a00201_key ='5001-0' order by sort_by
+2015-06-23 12:11:20:997:0.000:Select pkg_show.getshowdatasql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:21:012:0.016:Select pkg_show.getShowDataCountSql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:21:012:0.000:select t.*   from A00205 t  where menu_id ='5001' order by sort_by
+2015-06-23 12:11:21:106:0.000:Select f_Check_A014_Use('5001-0','Order_Socket','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:106:0.000:Select f_Check_A014_Use('5001-0','Order_Release','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:106:0.000:Select f_Check_A014_Use('5001-0','Order_Appvoe','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:153:0.047:Select f_Check_A014_Use('5001-0','Order_Invoice__','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:278:0.125:Select f_Check_A014_Use('5001-0','Order_Change','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:278:0.000:Select f_Check_A014_Use('5001-0','Order_Cancel','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:403:0.125:Select f_Check_A014_Use('5001-0','Order_PriceChange','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:450:0.047:Select f_Check_A014_Use('5001-0','PO_PiMessage','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:465:0.000:Select f_Check_A014_Use('5001-0','Order_Linkpdelive','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:465:0.000:Select '[HTTP_URL]/showform/MainForm.aspx?option=M&A002KEY=5013&key=' ||       t.ORDER_S_NO as url,   '交货计划确认-' || ORDER_S_NO as menu_id,       t.CONTRACT,       '' as con  from BL_V_CUST_DELIVERY_PLAN t where exists (select 1          from CUSTOMER_ORDER co         where co.ORDER_NO = t.ORDER_NO            and co.objid = 'AAAM7gAANAABE1GAAY')
+2015-06-23 12:11:21:497:0.031:Select f_Check_A014_Use('5001-0','Order_Pdelive','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:497:0.000:Select f_Check_A014_Use('5001-0','Order_Linkpur','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:497:0.000:Select f_Check_A014_Use('5001-0','Order_Linkchg','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:512:0.016:Select f_Check_A014_Use('5001-0','Order_Description','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:512:0.000:Select f_Check_A014_Use('5001-0','Order_Text','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:512:0.000:Select f_Check_A014_Use('5001-0','BL_COC_AUTOObligate','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:637:0.125:Select f_Check_A014_Use('5001-0','BL_CO_Create_PL','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:21:778:0.141:Select f_Check_A014_Use('5001-0','BL_CO_AUTO_ALL','AAAM7gAANAABE1GAAY', '[USER_ID]')  as c from dual
+2015-06-23 12:11:25:372:0.672:Select t.*,pkg_show.get_column_attr('ZHH','5001','dw_main','BL_V_CUSTOMER_ORDER',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5001'
+           and  t1.Control_Id= 'dw_main'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUSTOMER_ORDER'
+           order by t.col_x  
+2015-06-23 12:11:25:387:0.016:Select t.* from A00201_V01 t where a00201_key = '5001-0' order by  line_no  
+2015-06-23 12:11:25:387:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='C'
+2015-06-23 12:11:25:387:0.000:select t.* from A00210_V01 t  where menu_id ='5001' and   rb_type='U'
+2015-06-23 12:11:25:403:0.016:select t.* from A00201_V01 t  where menu_id ='5001' order by line_no
+2015-06-23 12:11:25:403:0.000:select t.*   from a00201_v02 t  where a00201_key ='5001-0' order by sort_by
+2015-06-23 12:11:25:419:0.016:Select pkg_show.getshowdatasql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:25:419:0.000:Select pkg_show.getShowDataCountSql('5001-0','ZHH') as c from dual 
+2015-06-23 12:11:25:434:0.016:select t.*   from A00205 t  where menu_id ='5001' order by sort_by
+2015-06-23 12:11:25:731:0.156:Select case nvl(t1.DELPLAN_NO, '-')         when '-' then          'MainForm.aspx?ISAVE=1&key=0&option=I&A002KEY=5003&BLORDER_NO=' ||          t.BLORDER_NO || '&CONTRACT=' || t.CONTRACT || '&TYPE=1' ||          '&code=0'         else          'MainForm.aspx?option=M&A002KEY=5003&KEY=' || t1.DELPLAN_NO       end as url,       '800' as width,       '500' as height  from BL_V_CUSTOMER_ORDER t  left outer join BL_V_CUST_ORDER_LINE_PHDELIVE t1    on t1.BLORDER_NO = t.BLORDER_NO  and  t1.PSTATE<> '3'  and  t1.SUPPLIER = t.contract  AND EXISTS(SELECT 1 FROM BL_V_CUST_ORDER_LINE_PDELIVE P WHERE P.F_ORDER_NO = T.Order_No AND P.DELPLAN_NO = T1.DELPLAN_NO  AND (p.Qty_Delived > 0 Or p.STATE in ('2','5') ) )   where T.OBJID = 'AAAM7gAANAABE1GAAY'
+2015-06-23 12:11:25:825:0.000:Select t.* from A002 t where menu_id='5003'
+2015-06-23 12:11:25:840:0.016:Select t.* from A313 t where t.a313_id='5003' and t.a313_name='143300000073'
+2015-06-23 12:11:25:872:0.016:Select t.* from A00211 t where menu_id='5003' order by sort_by
+2015-06-23 12:11:25:872:0.000:Select t.* from A00212 t where menu_id='5003' and rownum <= 1
+2015-06-23 12:11:25:872:0.000:Select t.* from A00201_V01 t where t.a00201_key='5003-0'
+2015-06-23 12:11:25:887:0.016:Select t.* from A00201_V01 t where t.menu_id='5003' and line_no > 0  order by control_id
+2015-06-23 12:11:25:950:0.016:SELECT 'http://localhost//ShowForm/MainForm.aspx?option=M&A002KEY=5003&key=' || t.delplan_no AS LINK_URL, Case When  t.Ppstate ='5' Then  '<span style=''color:red;''>' || To_Char(t.Delived_Datef, 'YYYY-MM-DD')  || '</span>' Else To_Char(t.Delived_Datef, 'YYYY-MM-DD')  End   AS LINK_NAME,case t.delplan_no when '143300000073' then '1' else '0' end as LINK_CURR  FROM Bl_v_Cust_Order_Line_Phdelive t WHERE (t.Order_No, t.Supplier) IN (SELECT T1.Order_No, T1.Supplier FROM BL_DELIVERY_PLAN T1   WHERE T1.Delplan_No = '143300000073')  and t.Ppstate<> '3' order by  t.delived_datef asc 
+2015-06-23 12:11:26:622:0.313:Select t.*,pkg_show.get_column_attr('ZHH','5003','dw_1','BL_V_CUST_ORDER_LINE_PDELIVE',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5003'
+           and  t1.Control_Id= 'dw_1'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUST_ORDER_LINE_PDELIVE'
+           order by t.col_x  
+2015-06-23 12:11:26:637:0.000:Select t.* from A00201_V01 t where a00201_key = '5003-1' order by  line_no  
+2015-06-23 12:11:26:637:0.000:select t.*   from a00201_v02 t  where a00201_key ='5003-1' order by sort_by
+2015-06-23 12:11:26:653:0.016:Select pkg_show.getshowdatasql('5003-1','ZHH') as c from dual 
+2015-06-23 12:11:26:653:0.000:Select pkg_show.getShowDataCountSql('5003-1','ZHH') as c from dual 
+2015-06-23 12:11:26:950:0.078:Select b.*  from (Select a.* , rownum as rn from (Select  t.*  From BL_V_CUST_ORDER_LINE_PDELIVE t WHERE 1=1  AND DELPLAN_NO='143300000073' ORDER BY  ORDER_NO,to_number(line_no),to_number(rel_no),objid) a  where rownum <=  50) b where rn > 0
+2015-06-23 12:11:26:997:0.047:Select pkg_show.geta00204('5003-1','143300000073','ZHH','0','M','') as c  from dual 
+2015-06-23 12:11:27:387:0.391:Select count(*) as c   From BL_V_CUST_ORDER_LINE_PDELIVE t WHERE 1=1  AND DELPLAN_NO='143300000073'
+2015-06-23 12:11:27:465:0.000:Select '143300000073'  as c from dual 
+2015-06-23 12:11:27:465:0.000:Select '5'  as c from dual 
+2015-06-23 12:11:27:700:0.234:select id,name from BL_V_STATE WHERE 
+TYPE='PH' AND LANG=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:27:700:0.000:Select '2014-07-14'  as c from dual 
+2015-06-23 12:11:27:700:0.000:Select '1'  as c from dual 
+2015-06-23 12:11:27:700:0.000:Select '1'  as c from dual 
+2015-06-23 12:11:27:731:0.016:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','LINE_KEY','OBJID|NULLUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|CATALOG_NO|DELPLAN_KEY|CATALOG_DESC|QTY_DELIVED|CUSTOMER_NO|BUY_QTY_DUE|CUSTOMER_REF|PICKLISTNO|QLIST|STATE0|DELIVED_DATE|2014-07-14VERSION|1REMARK|LINE_NO|COLUMN_NO|1ORDER_NO|ROWSTATE|CONTRACT|SUPPLIER|MODI_DATE|QTY_PLANNED|MAINPLANNER|BASE_DELPLAN_NO|QTY_ASSIGNED|MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|') as c from dual 
+2015-06-23 12:11:27:731:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','CATALOG_NO','OBJID|NULLUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|CATALOG_NO|DELPLAN_KEY|CATALOG_DESC|QTY_DELIVED|CUSTOMER_NO|BUY_QTY_DUE|CUSTOMER_REF|PICKLISTNO|QLIST|STATE0|DELIVED_DATE|2014-07-14VERSION|1REMARK|LINE_NO|COLUMN_NO|1ORDER_NO|ROWSTATE|CONTRACT|SUPPLIER|MODI_DATE|QTY_PLANNED|MAINPLANNER|BASE_DELPLAN_NO|QTY_ASSIGNED|MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|') as c from dual 
+2015-06-23 12:11:27:731:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','QTY_DELIVED','OBJID|NULLUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|CATALOG_NO|DELPLAN_KEY|CATALOG_DESC|QTY_DELIVED|CUSTOMER_NO|BUY_QTY_DUE|CUSTOMER_REF|PICKLISTNO|QLIST|STATE0|DELIVED_DATE|2014-07-14VERSION|1REMARK|LINE_NO|COLUMN_NO|1ORDER_NO|ROWSTATE|CONTRACT|SUPPLIER|MODI_DATE|QTY_PLANNED|MAINPLANNER|BASE_DELPLAN_NO|QTY_ASSIGNED|MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|') as c from dual 
+2015-06-23 12:11:27:731:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','QLIST','OBJID|NULLUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|CATALOG_NO|DELPLAN_KEY|CATALOG_DESC|QTY_DELIVED|CUSTOMER_NO|BUY_QTY_DUE|CUSTOMER_REF|PICKLISTNO|QLIST|STATE0|DELIVED_DATE|2014-07-14VERSION|1REMARK|LINE_NO|COLUMN_NO|1ORDER_NO|ROWSTATE|CONTRACT|SUPPLIER|MODI_DATE|QTY_PLANNED|MAINPLANNER|BASE_DELPLAN_NO|QTY_ASSIGNED|MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|') as c from dual 
+2015-06-23 12:11:27:747:0.016:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','REMARK','OBJID|NULLUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|CATALOG_NO|DELPLAN_KEY|CATALOG_DESC|QTY_DELIVED|CUSTOMER_NO|BUY_QTY_DUE|CUSTOMER_REF|PICKLISTNO|QLIST|STATE0|DELIVED_DATE|2014-07-14VERSION|1REMARK|LINE_NO|COLUMN_NO|1ORDER_NO|ROWSTATE|CONTRACT|SUPPLIER|MODI_DATE|QTY_PLANNED|MAINPLANNER|BASE_DELPLAN_NO|QTY_ASSIGNED|MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|') as c from dual 
+2015-06-23 12:11:27:747:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','SUPPLIER','OBJID|NULLUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|CATALOG_NO|DELPLAN_KEY|CATALOG_DESC|QTY_DELIVED|CUSTOMER_NO|BUY_QTY_DUE|CUSTOMER_REF|PICKLISTNO|QLIST|STATE0|DELIVED_DATE|2014-07-14VERSION|1REMARK|LINE_NO|COLUMN_NO|1ORDER_NO|ROWSTATE|CONTRACT|SUPPLIER|MODI_DATE|QTY_PLANNED|MAINPLANNER|BASE_DELPLAN_NO|QTY_ASSIGNED|MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|') as c from dual 
+2015-06-23 12:11:27:747:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','MODI_DATE','OBJID|NULLUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|CATALOG_NO|DELPLAN_KEY|CATALOG_DESC|QTY_DELIVED|CUSTOMER_NO|BUY_QTY_DUE|CUSTOMER_REF|PICKLISTNO|QLIST|STATE0|DELIVED_DATE|2014-07-14VERSION|1REMARK|LINE_NO|COLUMN_NO|1ORDER_NO|ROWSTATE|CONTRACT|SUPPLIER|MODI_DATE|QTY_PLANNED|MAINPLANNER|BASE_DELPLAN_NO|QTY_ASSIGNED|MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|') as c from dual 
+2015-06-23 12:11:27:747:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','MAINPLANNER','OBJID|NULLUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|CATALOG_NO|DELPLAN_KEY|CATALOG_DESC|QTY_DELIVED|CUSTOMER_NO|BUY_QTY_DUE|CUSTOMER_REF|PICKLISTNO|QLIST|STATE0|DELIVED_DATE|2014-07-14VERSION|1REMARK|LINE_NO|COLUMN_NO|1ORDER_NO|ROWSTATE|CONTRACT|SUPPLIER|MODI_DATE|QTY_PLANNED|MAINPLANNER|BASE_DELPLAN_NO|QTY_ASSIGNED|MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|') as c from dual 
+2015-06-23 12:11:27:762:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','LINE_KEY','OBJID|AABi5lAANAABTgMAAAUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|B72489-1-1-0CATALOG_NO|140501010003DELPLAN_KEY|143300000073-1CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TQTY_DELIVED|1020CUSTOMER_NO|200010BUY_QTY_DUE|1020CUSTOMER_REF|200010PICKLISTNO|140010001QLIST|1020STATE0|0DELIVED_DATE|2014-7-14 0:00:00VERSION|1REMARK|LINE_NO|1COLUMN_NO|1ORDER_NO|B72489ROWSTATE|DeliveredCONTRACT|33SUPPLIER|33MODI_DATE|2014-7-14 16:02:45QTY_PLANNED|0MAINPLANNER|*BASE_DELPLAN_NO|143300000073QTY_ASSIGNED|0MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|1') as c from dual 
+2015-06-23 12:11:27:762:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','CATALOG_NO','OBJID|AABi5lAANAABTgMAAAUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|B72489-1-1-0CATALOG_NO|140501010003DELPLAN_KEY|143300000073-1CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TQTY_DELIVED|1020CUSTOMER_NO|200010BUY_QTY_DUE|1020CUSTOMER_REF|200010PICKLISTNO|140010001QLIST|1020STATE0|0DELIVED_DATE|2014-7-14 0:00:00VERSION|1REMARK|LINE_NO|1COLUMN_NO|1ORDER_NO|B72489ROWSTATE|DeliveredCONTRACT|33SUPPLIER|33MODI_DATE|2014-7-14 16:02:45QTY_PLANNED|0MAINPLANNER|*BASE_DELPLAN_NO|143300000073QTY_ASSIGNED|0MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|1') as c from dual 
+2015-06-23 12:11:27:762:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','QTY_DELIVED','OBJID|AABi5lAANAABTgMAAAUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|B72489-1-1-0CATALOG_NO|140501010003DELPLAN_KEY|143300000073-1CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TQTY_DELIVED|1020CUSTOMER_NO|200010BUY_QTY_DUE|1020CUSTOMER_REF|200010PICKLISTNO|140010001QLIST|1020STATE0|0DELIVED_DATE|2014-7-14 0:00:00VERSION|1REMARK|LINE_NO|1COLUMN_NO|1ORDER_NO|B72489ROWSTATE|DeliveredCONTRACT|33SUPPLIER|33MODI_DATE|2014-7-14 16:02:45QTY_PLANNED|0MAINPLANNER|*BASE_DELPLAN_NO|143300000073QTY_ASSIGNED|0MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|1') as c from dual 
+2015-06-23 12:11:27:778:0.016:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','QLIST','OBJID|AABi5lAANAABTgMAAAUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|B72489-1-1-0CATALOG_NO|140501010003DELPLAN_KEY|143300000073-1CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TQTY_DELIVED|1020CUSTOMER_NO|200010BUY_QTY_DUE|1020CUSTOMER_REF|200010PICKLISTNO|140010001QLIST|1020STATE0|0DELIVED_DATE|2014-7-14 0:00:00VERSION|1REMARK|LINE_NO|1COLUMN_NO|1ORDER_NO|B72489ROWSTATE|DeliveredCONTRACT|33SUPPLIER|33MODI_DATE|2014-7-14 16:02:45QTY_PLANNED|0MAINPLANNER|*BASE_DELPLAN_NO|143300000073QTY_ASSIGNED|0MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|1') as c from dual 
+2015-06-23 12:11:27:778:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','REMARK','OBJID|AABi5lAANAABTgMAAAUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|B72489-1-1-0CATALOG_NO|140501010003DELPLAN_KEY|143300000073-1CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TQTY_DELIVED|1020CUSTOMER_NO|200010BUY_QTY_DUE|1020CUSTOMER_REF|200010PICKLISTNO|140010001QLIST|1020STATE0|0DELIVED_DATE|2014-7-14 0:00:00VERSION|1REMARK|LINE_NO|1COLUMN_NO|1ORDER_NO|B72489ROWSTATE|DeliveredCONTRACT|33SUPPLIER|33MODI_DATE|2014-7-14 16:02:45QTY_PLANNED|0MAINPLANNER|*BASE_DELPLAN_NO|143300000073QTY_ASSIGNED|0MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|1') as c from dual 
+2015-06-23 12:11:27:778:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','SUPPLIER','OBJID|AABi5lAANAABTgMAAAUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|B72489-1-1-0CATALOG_NO|140501010003DELPLAN_KEY|143300000073-1CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TQTY_DELIVED|1020CUSTOMER_NO|200010BUY_QTY_DUE|1020CUSTOMER_REF|200010PICKLISTNO|140010001QLIST|1020STATE0|0DELIVED_DATE|2014-7-14 0:00:00VERSION|1REMARK|LINE_NO|1COLUMN_NO|1ORDER_NO|B72489ROWSTATE|DeliveredCONTRACT|33SUPPLIER|33MODI_DATE|2014-7-14 16:02:45QTY_PLANNED|0MAINPLANNER|*BASE_DELPLAN_NO|143300000073QTY_ASSIGNED|0MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|1') as c from dual 
+2015-06-23 12:11:27:778:0.000:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','MODI_DATE','OBJID|AABi5lAANAABTgMAAAUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|B72489-1-1-0CATALOG_NO|140501010003DELPLAN_KEY|143300000073-1CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TQTY_DELIVED|1020CUSTOMER_NO|200010BUY_QTY_DUE|1020CUSTOMER_REF|200010PICKLISTNO|140010001QLIST|1020STATE0|0DELIVED_DATE|2014-7-14 0:00:00VERSION|1REMARK|LINE_NO|1COLUMN_NO|1ORDER_NO|B72489ROWSTATE|DeliveredCONTRACT|33SUPPLIER|33MODI_DATE|2014-7-14 16:02:45QTY_PLANNED|0MAINPLANNER|*BASE_DELPLAN_NO|143300000073QTY_ASSIGNED|0MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|1') as c from dual 
+2015-06-23 12:11:27:794:0.016:Select BLDELIVERY_PLAN_LINE_API.checkUseable('M','MAINPLANNER','OBJID|AABi5lAANAABTgMAAAUSER_ID|ZHHDELPLAN_NO|143300000073STATE|5LINE_KEY|B72489-1-1-0CATALOG_NO|140501010003DELPLAN_KEY|143300000073-1CATALOG_DESC|SMT半成品;校准板;WX001006-01-00PB-V01;ZMD31010CEG1-TQTY_DELIVED|1020CUSTOMER_NO|200010BUY_QTY_DUE|1020CUSTOMER_REF|200010PICKLISTNO|140010001QLIST|1020STATE0|0DELIVED_DATE|2014-7-14 0:00:00VERSION|1REMARK|LINE_NO|1COLUMN_NO|1ORDER_NO|B72489ROWSTATE|DeliveredCONTRACT|33SUPPLIER|33MODI_DATE|2014-7-14 16:02:45QTY_PLANNED|0MAINPLANNER|*BASE_DELPLAN_NO|143300000073QTY_ASSIGNED|0MODIFY_ID|MODIFY_LINENO|DELPLAN_LINE|1') as c from dual 
+2015-06-23 12:11:28:247:0.391:Select t.*,pkg_show.get_column_attr('ZHH','5003','dw_main','BL_V_CUST_ORDER_LINE_PHDELIVE',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5003'
+           and  t1.Control_Id= 'dw_main'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUST_ORDER_LINE_PHDELIVE'
+           order by t.col_x  
+2015-06-23 12:11:28:262:0.016:Select t.* from A00201_V01 t where a00201_key = '5003-0' order by  line_no  
+2015-06-23 12:11:28:262:0.000:select t.* from A00210_V01 t  where menu_id ='5003' and   rb_type='C'
+2015-06-23 12:11:28:262:0.000:select t.* from A00210_V01 t  where menu_id ='5003' and   rb_type='U'
+2015-06-23 12:11:28:262:0.000:select t.* from A00201_V01 t  where menu_id ='5003' order by line_no
+2015-06-23 12:11:28:278:0.016:select t.*   from a00201_v02 t  where a00201_key ='5003-0' order by sort_by
+2015-06-23 12:11:28:294:0.016:Select pkg_show.getshowdatasql('5003-0','ZHH') as c from dual 
+2015-06-23 12:11:28:294:0.000:Select pkg_show.getShowDataCountSql('5003-0','ZHH') as c from dual 
+2015-06-23 12:11:28:294:0.000:select t.*   from A00205 t  where menu_id ='5003' order by sort_by
+2015-06-23 12:11:28:340:0.016:Select pkg_show.geta00204('5003-0','143300000073','ZHH','0','M','0') as c  from dual 
+2015-06-23 12:11:29:075:0.203:Select t.*,pkg_show.get_column_attr('ZHH','5003','dw_main','BL_V_CUST_ORDER_LINE_PHDELIVE',t.column_id,t.sys_visible,t.sys_enable,t.sys_necessary) as ev,
+           '0' as col_visible,
+           '0' as col_enable,
+           '0' as col_necessary,
+           t1.col_visible as a016_visible,
+           t1.col_enable as a016_enable,
+           t1.col_necessary as a016_necessary,
+           t1.Col_Width      as a016_bs_width ,
+           t1.col_x      as a016_col_x ,
+           t.line_no as A10001_KEY,
+           GET_A008_COUNT(t.table_id || '.'||t.COLUMN_ID) AS A008_COUNT,
+           GET_COLUMN_FORMAT(t.COL_EDIT) AS pbf_frmt,
+           GET_TABLE_user_flag(t.SELECT_FLAG , t.std_flag  ,t.table_select  ,t.column_id ) AS c_user_flag
+           from A10001 t
+           left outer join  a016 t1 on t1.a016_id='ZHH'
+           and  t1.A002_Id= '5003'
+           and  t1.Control_Id= 'dw_main'
+           and  t1.Column_Id= t.Column_Id
+           where t.table_id= 'BL_V_CUST_ORDER_LINE_PHDELIVE'
+           order by t.col_x  
+2015-06-23 12:11:29:075:0.000:Select t.* from A00201_V01 t where a00201_key = '5003-0' order by  line_no  
+2015-06-23 12:11:29:075:0.000:select t.* from A00210_V01 t  where menu_id ='5003' and   rb_type='C'
+2015-06-23 12:11:29:090:0.016:select t.* from A00210_V01 t  where menu_id ='5003' and   rb_type='U'
+2015-06-23 12:11:29:090:0.000:select t.* from A00201_V01 t  where menu_id ='5003' order by line_no
+2015-06-23 12:11:29:090:0.000:select t.*   from a00201_v02 t  where a00201_key ='5003-0' order by sort_by
+2015-06-23 12:11:29:106:0.016:Select pkg_show.getshowdatasql('5003-0','ZHH') as c from dual 
+2015-06-23 12:11:29:122:0.016:Select pkg_show.getShowDataCountSql('5003-0','ZHH') as c from dual 
+2015-06-23 12:11:29:122:0.000:select t.*   from A00205 t  where menu_id ='5003' order by sort_by
+2015-06-23 12:11:29:215:0.031:Select  t.*  From (Select t.*
+From (SELECT
+CO.ORDER_NO                                                                                   ORDER_NO,
+CO.CUSTOMER_NO                                                                                CUSTOMER_NO,
+CUST_ORD_CUSTOMER_API.GET_NAME(DP.CUSTOMER_REF)                                                CUSTOMER_NAME,
+CO.WANTED_DELIVERY_DATE                                                                       WANTED_DELIVERY_DATE,
+BCO.BLORDER_ID                                                                                   ORDER_ID,
+CO.AUTHORIZE_CODE                                                                             AUTHORIZE_CODE,
+DP.DELPLAN_NO                                                                                 DELPLAN_NO,
+Case DP.STATE When '0'
+  Then bldelivery_plan_api.get_deliver_state(dp.delplan_no,'ZHH',dp.state)
+Else dp.state end As PPSTATE,
+DP.STATE                                                                                      PSTATE,
+DP.DELIVED_DATE                                                                               DELIVED_DATE,
+DP.COLUMN_NO                                                                                  COLUMN_NO,
+DP.CUSTOMER_REF                                                                               CUSTOMER_REF,
+BCO.BLORDER_NO                                                                                BLORDER_NO,
+DP.ENTER_USER                                                                                 ENTER_USER,
+DP.ROWID                                                                                      OBJID,
+DP.REMARK AS  REMARK,
+DP.SUPPLIER                                                                                   SUPPLIER,
+DP.TYPE_ID                                                                                    TYPE_ID,
+
+DECODE(CO.CONTRACT,'12','内销','31','AMT工厂','32','群英工厂','33','文襄工厂','40','国际贸易',41,'中东欧','35','车轮工厂','30','车轮工厂','外销')CONTRACTDESC,
+CO.CONTRACT,
+CO.LABEL_NOTE as LABEL_NOTE,
+DP.VERSION AS VERSION,
+dp.enter_date,
+Dp.PICKLISTNO,
+DP.Base_Delplan_No,
+       Case
+         When Dp.Delived_Date < To_Date('2000-01-01', 'YYYY-MM-DD') Then
+          '1'
+         Else
+          '0'
+       End As If_Datef,
+       Case
+         When Dp.Delived_Date < To_Date('2000-01-01', 'YYYY-MM-DD') Then
+          To_Date('20' || Substr(To_Char(Dp.Delived_Date, 'YYYY-MM-DD'), 3),
+                  'YYYY-MM-DD')
+         Else
+          Dp.Delived_Date
+       End As Delived_Datef
+
+FROM CUSTOMER_ORDER   CO
+INNER JOIN BL_DELIVERY_PLAN  DP  ON CO.ORDER_NO = DP.ORDER_NO
+INNER JOIN BL_CUSTOMER_ORDER BCO ON CO.ORDER_NO=BCO.ORDER_NO
+   And Not Exists (Select 1
+          From Bl_Purchase_Order a
+         Where a.Blorder_No = Bco.Blorder_No
+           And a.If_Plan = '0')
+) t where 1=1) t WHERE 1 = 1 and pkg_ATTR.CheckcontractPlan('ZHH', t.SUPPLIER)=1 AND
+  PSTATE <> '3'  and ( t.SUPPLIER ='35' OR  exists
+  (select 1
+           from bl_customer_order b
+          inner join bl_customer_order_line a on b.order_no = a.order_no
+                                             and a.if_end = '1'
+          inner join customer_order_line_tab a1 on a1.order_no = a.ORDER_NO
+                                               and a1.line_no = a.line_no
+                                               and a1.rel_no = a.rel_no
+                                               and a1.line_item_no =
+                                                   a.line_item_no
+                                               and Pkg_Attr.Checkpartno('ZHH',
+                                                                        a1.contract,
+                                                                        a1.Catalog_No) > 0
+          where b.blorder_no = t.BLORDER_NO
+            and a1.contract = t.SUPPLIER)
+) AND DELPLAN_NO='143300000073'
+2015-06-23 12:11:29:294:0.000:Select BLDELIVERY_PLAN_API.checkUseable('M','SUPPLIER','OBJID|AABi5dAANAAAlCZAA/OBJVERSION|USER_ID|ZHHDELPLAN_NO|143300000073SUPPLIER|33CONTRACT|33CONTRACTDESC|文襄工厂CUSTOMER_NO|200010CUSTOMER_NAME|昆山双桥传感器测控技术有限公司LABEL_NOTE|200010PSTATE|5PPSTATE|5ORDER_ID|1DELIVED_DATE|2014-7-14 0:00:00DELIVED_DATEF|2014-7-14 0:00:00BLORDER_NO|142000100002ORDER_NO|B72489COLUMN_NO|1WANTED_DELIVERY_DATE|2014-7-14 0:00:00AUTHORIZE_CODE|*PICKLISTNO|140010001VERSION|1CUSTOMER_REF|200010REMARK|ENTER_USER|32040004IF_DATEF|0TYPE_ID|AUTO') as c from dual 
+2015-06-23 12:11:29:294:0.000:Select BLDELIVERY_PLAN_API.checkUseable('M','CUSTOMER_NO','OBJID|AABi5dAANAAAlCZAA/OBJVERSION|USER_ID|ZHHDELPLAN_NO|143300000073SUPPLIER|33CONTRACT|33CONTRACTDESC|文襄工厂CUSTOMER_NO|200010CUSTOMER_NAME|昆山双桥传感器测控技术有限公司LABEL_NOTE|200010PSTATE|5PPSTATE|5ORDER_ID|1DELIVED_DATE|2014-7-14 0:00:00DELIVED_DATEF|2014-7-14 0:00:00BLORDER_NO|142000100002ORDER_NO|B72489COLUMN_NO|1WANTED_DELIVERY_DATE|2014-7-14 0:00:00AUTHORIZE_CODE|*PICKLISTNO|140010001VERSION|1CUSTOMER_REF|200010REMARK|ENTER_USER|32040004IF_DATEF|0TYPE_ID|AUTO') as c from dual 
+2015-06-23 12:11:29:309:0.016:Select BLDELIVERY_PLAN_API.checkUseable('M','LABEL_NOTE','OBJID|AABi5dAANAAAlCZAA/OBJVERSION|USER_ID|ZHHDELPLAN_NO|143300000073SUPPLIER|33CONTRACT|33CONTRACTDESC|文襄工厂CUSTOMER_NO|200010CUSTOMER_NAME|昆山双桥传感器测控技术有限公司LABEL_NOTE|200010PSTATE|5PPSTATE|5ORDER_ID|1DELIVED_DATE|2014-7-14 0:00:00DELIVED_DATEF|2014-7-14 0:00:00BLORDER_NO|142000100002ORDER_NO|B72489COLUMN_NO|1WANTED_DELIVERY_DATE|2014-7-14 0:00:00AUTHORIZE_CODE|*PICKLISTNO|140010001VERSION|1CUSTOMER_REF|200010REMARK|ENTER_USER|32040004IF_DATEF|0TYPE_ID|AUTO') as c from dual 
+2015-06-23 12:11:29:512:0.203:select id,name from BL_V_STATE WHERE TYPE='PH' AND LANG=pkg_attr.userlanguage('ZHH')
+2015-06-23 12:11:29:512:0.000:Select '1' as id,'正常' as name from dual union select '2' , '样品付费' from dual union select '3','免费样品' from dual union select '4','赔偿' from dual 
+2015-06-23 12:11:29:528:0.016:Select BLDELIVERY_PLAN_API.checkUseable('M','DELIVED_DATEF','OBJID|AABi5dAANAAAlCZAA/OBJVERSION|USER_ID|ZHHDELPLAN_NO|143300000073SUPPLIER|33CONTRACT|33CONTRACTDESC|文襄工厂CUSTOMER_NO|200010CUSTOMER_NAME|昆山双桥传感器测控技术有限公司LABEL_NOTE|200010PSTATE|5PPSTATE|5ORDER_ID|1DELIVED_DATE|2014-7-14 0:00:00DELIVED_DATEF|2014-7-14 0:00:00BLORDER_NO|142000100002ORDER_NO|B72489COLUMN_NO|1WANTED_DELIVERY_DATE|2014-7-14 0:00:00AUTHORIZE_CODE|*PICKLISTNO|140010001VERSION|1CUSTOMER_REF|200010REMARK|ENTER_USER|32040004IF_DATEF|0TYPE_ID|AUTO') as c from dual 
+2015-06-23 12:11:29:528:0.000:Select BLDELIVERY_PLAN_API.checkUseable('M','BLORDER_NO','OBJID|AABi5dAANAAAlCZAA/OBJVERSION|USER_ID|ZHHDELPLAN_NO|143300000073SUPPLIER|33CONTRACT|33CONTRACTDESC|文襄工厂CUSTOMER_NO|200010CUSTOMER_NAME|昆山双桥传感器测控技术有限公司LABEL_NOTE|200010PSTATE|5PPSTATE|5ORDER_ID|1DELIVED_DATE|2014-7-14 0:00:00DELIVED_DATEF|2014-7-14 0:00:00BLORDER_NO|142000100002ORDER_NO|B72489COLUMN_NO|1WANTED_DELIVERY_DATE|2014-7-14 0:00:00AUTHORIZE_CODE|*PICKLISTNO|140010001VERSION|1CUSTOMER_REF|200010REMARK|ENTER_USER|32040004IF_DATEF|0TYPE_ID|AUTO') as c from dual 
+2015-06-23 12:11:29:528:0.000:Select BLDELIVERY_PLAN_API.checkUseable('M','PICKLISTNO','OBJID|AABi5dAANAAAlCZAA/OBJVERSION|USER_ID|ZHHDELPLAN_NO|143300000073SUPPLIER|33CONTRACT|33CONTRACTDESC|文襄工厂CUSTOMER_NO|200010CUSTOMER_NAME|昆山双桥传感器测控技术有限公司LABEL_NOTE|200010PSTATE|5PPSTATE|5ORDER_ID|1DELIVED_DATE|2014-7-14 0:00:00DELIVED_DATEF|2014-7-14 0:00:00BLORDER_NO|142000100002ORDER_NO|B72489COLUMN_NO|1WANTED_DELIVERY_DATE|2014-7-14 0:00:00AUTHORIZE_CODE|*PICKLISTNO|140010001VERSION|1CUSTOMER_REF|200010REMARK|ENTER_USER|32040004IF_DATEF|0TYPE_ID|AUTO') as c from dual 
+2015-06-23 12:11:29:528:0.000:Select BLDELIVERY_PLAN_API.checkUseable('M','REMARK','OBJID|AABi5dAANAAAlCZAA/OBJVERSION|USER_ID|ZHHDELPLAN_NO|143300000073SUPPLIER|33CONTRACT|33CONTRACTDESC|文襄工厂CUSTOMER_NO|200010CUSTOMER_NAME|昆山双桥传感器测控技术有限公司LABEL_NOTE|200010PSTATE|5PPSTATE|5ORDER_ID|1DELIVED_DATE|2014-7-14 0:00:00DELIVED_DATEF|2014-7-14 0:00:00BLORDER_NO|142000100002ORDER_NO|B72489COLUMN_NO|1WANTED_DELIVERY_DATE|2014-7-14 0:00:00AUTHORIZE_CODE|*PICKLISTNO|140010001VERSION|1CUSTOMER_REF|200010REMARK|ENTER_USER|32040004IF_DATEF|0TYPE_ID|AUTO') as c from dual 
+2015-06-23 12:11:29:544:0.016:SELECT  'SUPPLIER' AS ID ,'采购' as name from dual union select 'CUSTOMER'  as id ,'客户' as name from dual union SELECT  'AUTO' AS ID ,'自动生成' as name from dual 

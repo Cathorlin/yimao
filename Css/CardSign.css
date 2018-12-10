@@ -1,0 +1,20 @@
+﻿body
+{
+    font:bold 12pt 微软雅黑;
+    color:#535353;
+}
+
+#top{width:550px;height:110px;margin:30px auto;}
+.top_kh{width:500px;height:40px;margin:10px auto;}
+
+#b_color{ border-radius:5px;  font-weight:bold; color:White; height:32px; width:80px; border:0; background-color:#0080ff;}
+#b_color:hover{ cursor:pointer;  background-color:#1e99ff;}
+.top_aj{width:270px;height:30px;margin:0px auto;}
+.top_aj input{width:100px;height:30px; margin:15px 0 0 20px;}
+#autograph{  background-color:#0080ff; font-weight:bold;  color:White; height:32px; border-radius:5px;  border:0; }
+#autograph:hover{ cursor:pointer; background-color:#1e99ff;}
+#card_no,#mobile_no,#vip_name{ height:25px; width:220px;}
+#cardsign{ font:bold 11pt 微软雅黑;width:100px;height:25px;margin:5px 0 0 25px;}
+#center{width:580px;height:130px;margin:20px auto;}
+.center_xx{width:500px;height:40px;margin:20px auto;}
+.center_xx input{width:220px;height:25px;}
